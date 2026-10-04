@@ -1,0 +1,8 @@
+{
+  "author": "RoiMcp contributors",
+  "name": "RoiMcpObserver",
+  "version": 1,
+  "versionString": "1.0.0",
+  "dependencies": [],
+  "description": "Read-only observer for the Rise of Industry MCP integration. Publishes game state snapshots to the local exchange folder (LOCALAPPDATA/RoiMcp). Never changes game state."
+}

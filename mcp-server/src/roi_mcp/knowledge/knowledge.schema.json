@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://roi-mcp.local/schemas/knowledge.schema.json",
+  "title": "roi-mcp curated knowledge base (V1.1)",
+  "description": "Every entry carries evidence (repository files) and a verification status. See docs/v1.1/PRD-ADDENDUM.md section 7.",
+  "$defs": {
+    "Evidence": {
+      "type": "object",
+      "properties": {"file": {"type": "string", "minLength": 1}, "location": {"type": "string", "minLength": 1}, "note": {"type": "string", "minLength": 1}},
+      "required": ["file", "location", "note"],
+      "additionalProperties": false
+    },
+    "EvidenceList": {"type": "array", "items": {"$ref": "#/$defs/Evidence"}, "minItems": 1},
+    "Verification": {"enum": ["CONFIRMED_IN_GAME", "CONFIRMED_SOURCE", "HIGH_CONFIDENCE", "INFERRED", "UNKNOWN"]},
+    "Confidence": {"enum": ["high", "medium", "low"]},
+    "Id": {"type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"},
+    "Header": {
+      "type": "object",
+      "properties": {"applies_to": {"type": "object"}, "curated_from": {"type": "string"}},
+      "required": ["applies_to", "curated_from"]
+    },
+    "Mechanic": {
+      "type": "object",
+      "properties": {
+        "id": {"$ref": "#/$defs/Id"}, "title": {"type": "string", "minLength": 1}, "title_fr": {"type": "string", "minLength": 1},
+        "aliases": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "summary": {"type": "string", "minLength": 20}, "formula": {"type": ["string", "null"]},
+        "evidence": {"$ref": "#/$defs/EvidenceList"}, "verification": {"$ref": "#/$defs/Verification"},
+        "confidence": {"$ref": "#/$defs/Confidence"}, "caveats": {"type": ["string", "null"]},
+        "related": {"type": "array", "items": {"$ref": "#/$defs/Id"}}
+      },
+      "required": ["id", "title", "title_fr", "aliases", "summary", "formula", "evidence", "verification", "confidence", "caveats", "related"],
+      "additionalProperties": false
+    },
+    "Term": {
+      "type": "object",
+      "properties": {
+        "en": {"type": "string", "minLength": 1}, "fr": {"type": ["string", "null"]}, "internal": {"type": "string"},
+        "mcp_field": {"type": ["string", "null"]}, "definition": {"type": "string", "minLength": 1},
+        "evidence": {"$ref": "#/$defs/EvidenceList"}, "verification": {"$ref": "#/$defs/Verification"},
+        "confidence": {"$ref": "#/$defs/Confidence"}, "note": {"type": ["string", "null"]}
+      },
+      "required": ["en", "fr", "internal", "mcp_field", "definition", "evidence", "verification", "confidence", "note"],
+      "additionalProperties": false
+    },
+    "Pitfall": {
+      "type": "object",
+      "properties": {
+        "id": {"$ref": "#/$defs/Id"}, "title": {"type": "string", "minLength": 1}, "correction": {"type": "string", "minLength": 1},
+        "evidence": {"$ref": "#/$defs/EvidenceList"}, "verification": {"$ref": "#/$defs/Verification"},
+        "confidence": {"$ref": "#/$defs/Confidence"}, "related": {"type": "array", "items": {"$ref": "#/$defs/Id"}}
+      },
+      "required": ["id", "title", "correction", "evidence", "verification", "confidence", "related"],
+      "additionalProperties": false
+    },
+    "HowTo": {
+      "type": "object",
+      "properties": {
+        "id": {"$ref": "#/$defs/Id"}, "title": {"type": "string", "minLength": 1}, "title_fr": {"type": "string", "minLength": 1},
+        "audience": {"enum": ["player_in_game", "mcp_client"]},
+        "aliases": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "steps": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1},
+        "evidence": {"$ref": "#/$defs/EvidenceList"}, "verification": {"$ref": "#/$defs/Verification"},
+        "confidence": {"$ref": "#/$defs/Confidence"}, "caveats": {"type": ["string", "null"]},
+        "related_tools": {"type": "array", "items": {"type": "string"}}
+      },
+      "required": ["id", "title", "title_fr", "audience", "aliases", "steps", "evidence", "verification", "confidence", "caveats", "related_tools"],
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    {"allOf": [{"$ref": "#/$defs/Header"}, {"type": "object", "properties": {"mechanics": {"type": "array", "items": {"$ref": "#/$defs/Mechanic"}, "minItems": 1}}, "required": ["mechanics"]}]},
+    {"allOf": [{"$ref": "#/$defs/Header"}, {"type": "object", "properties": {"terms": {"type": "array", "items": {"$ref": "#/$defs/Term"}, "minItems": 1}}, "required": ["terms"]}]},
+    {"allOf": [{"$ref": "#/$defs/Header"}, {"type": "object", "properties": {"pitfalls": {"type": "array", "items": {"$ref": "#/$defs/Pitfall"}, "minItems": 1}}, "required": ["pitfalls"]}]},
+    {"allOf": [{"$ref": "#/$defs/Header"}, {"type": "object", "properties": {"entries": {"type": "array", "items": {"$ref": "#/$defs/HowTo"}, "minItems": 1}}, "required": ["entries"]}]}
+  ]
+}

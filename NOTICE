@@ -1,0 +1,17 @@
+Rise of Industry MCP
+Copyright (c) 2026 BENZOOgataga and Rise of Industry MCP contributors
+
+This project's original code and documentation are licensed under the MIT License (see LICENSE).
+
+Rise of Industry MCP is an unofficial community project. It is not affiliated with, endorsed by, or
+sponsored by Dapper Penguin Studios or Kasedo Games. Rise of Industry and related names and assets are
+trademarks and property of their respective owners.
+
+The MIT License does not apply to Rise of Industry, its binaries, assets, data, source code or trademarks,
+or to any other third-party material. This repository contains no game binaries, game assets, saves or
+decompiled game source. It refers to game type and member names only as far as needed for
+interoperability (reading the running game's state). Building the observer references the assemblies of
+your own legitimately installed copy of the game; they are not redistributed.
+
+Third-party software used by this project (not bundled in this repository) is listed with its licenses in
+README.md ("Dependencies and licenses").

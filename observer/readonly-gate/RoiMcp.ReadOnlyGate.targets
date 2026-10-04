@@ -1,0 +1,69 @@
+<Project>
+  <!--
+    RoiMcp read-only IL gate (PRD 10). Import from the observer project:
+
+      <Import Project="..\..\readonly-gate\RoiMcp.ReadOnlyGate.targets" />
+
+    After every build of the observer, the gate tool is built (MSBuild task on its csproj) and run
+    against $(TargetPath). Any violation (exit code 1) or configuration error (exit code 2) fails
+    the build. There is no switch to skip the gate.
+
+    Properties (all optional):
+      RoiGameDir               Rise of Industry install dir. Default: $(ROI_GAME_DIR), else the Steam default path.
+      RoiGateAllowDebugFaults  true ONLY for the DEBUG_FAULTS validation build (PRD 22 E5). Never for a release build.
+      RoiGateAllowlist         Default: allowlist.json next to this file.
+      RoiGateDenylist          Default: denylist.json next to this file.
+      RoiGateReport            JSON report path. Default: $(IntermediateOutputPath)readonly-gate-report.json
+      RoiGateSuggest           true to print allowlist skeletons for unlisted references (development aid).
+      RoiGateConfiguration     Configuration used to build the gate tool. Default: Release.
+  -->
+
+  <PropertyGroup>
+    <RoiGateDir>$(MSBuildThisFileDirectory)</RoiGateDir>
+    <RoiGateProject>$(RoiGateDir)RoiMcp.ReadOnlyGate\RoiMcp.ReadOnlyGate.csproj</RoiGateProject>
+    <RoiGateConfiguration Condition="'$(RoiGateConfiguration)' == ''">Release</RoiGateConfiguration>
+    <RoiGateToolDll>$(RoiGateDir)RoiMcp.ReadOnlyGate\bin\$(RoiGateConfiguration)\net8.0\RoiMcp.ReadOnlyGate.dll</RoiGateToolDll>
+    <RoiGateAllowlist Condition="'$(RoiGateAllowlist)' == ''">$(RoiGateDir)allowlist.json</RoiGateAllowlist>
+    <RoiGateDenylist Condition="'$(RoiGateDenylist)' == ''">$(RoiGateDir)denylist.json</RoiGateDenylist>
+    <RoiGameDir Condition="'$(RoiGameDir)' == ''">$(ROI_GAME_DIR)</RoiGameDir>
+    <RoiGameDir Condition="'$(RoiGameDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\RiseOfIndustry</RoiGameDir>
+    <RoiGateAllowDebugFaults Condition="'$(RoiGateAllowDebugFaults)' == ''">false</RoiGateAllowDebugFaults>
+    <RoiGateSuggest Condition="'$(RoiGateSuggest)' == ''">false</RoiGateSuggest>
+  </PropertyGroup>
+
+  <!-- Build the gate tool (net8.0) without inheriting the observer's framework/output properties. -->
+  <Target Name="RoiMcpBuildReadOnlyGate">
+    <MSBuild Projects="$(RoiGateProject)"
+             Targets="Restore"
+             Properties="Configuration=$(RoiGateConfiguration);RoiGateRestorePass=true"
+             RemoveProperties="TargetFramework;TargetFrameworks;RuntimeIdentifier;Platform;OutDir;OutputPath;IntermediateOutputPath;BaseIntermediateOutputPath;BaseOutputPath;PublishDir;SolutionDir;SolutionPath" />
+    <MSBuild Projects="$(RoiGateProject)"
+             Targets="Build"
+             Properties="Configuration=$(RoiGateConfiguration)"
+             RemoveProperties="TargetFramework;TargetFrameworks;RuntimeIdentifier;Platform;OutDir;OutputPath;IntermediateOutputPath;BaseIntermediateOutputPath;BaseOutputPath;PublishDir;SolutionDir;SolutionPath" />
+  </Target>
+
+  <Target Name="RoiMcpReadOnlyGate" AfterTargets="Build" DependsOnTargets="RoiMcpBuildReadOnlyGate">
+    <PropertyGroup>
+      <RoiGateReport Condition="'$(RoiGateReport)' == ''">$(ProjectDir)$(IntermediateOutputPath)readonly-gate-report.json</RoiGateReport>
+      <_RoiGateArgs>--assembly &quot;$(TargetPath)&quot; --game-dir &quot;$(RoiGameDir.TrimEnd('\'))&quot; --allowlist &quot;$(RoiGateAllowlist)&quot; --denylist &quot;$(RoiGateDenylist)&quot; --report &quot;$(RoiGateReport)&quot;</_RoiGateArgs>
+      <_RoiGateArgs Condition="'$(RoiGateSuggest)' == 'true'">$(_RoiGateArgs) --suggest</_RoiGateArgs>
+      <_RoiGateArgs Condition="'$(RoiGateAllowDebugFaults)' == 'true'">$(_RoiGateArgs) --allow-debug-faults</_RoiGateArgs>
+    </PropertyGroup>
+
+    <Warning Condition="'$(RoiGateAllowDebugFaults)' == 'true'"
+             Text="RoiMcp read-only gate: RoiGateAllowDebugFaults=true. This DEBUG_FAULTS build must never be released." />
+
+    <Exec Command="dotnet &quot;$(RoiGateToolDll)&quot; $(_RoiGateArgs)"
+          IgnoreExitCode="true"
+          StandardOutputImportance="high"
+          StandardErrorImportance="high">
+      <Output TaskParameter="ExitCode" PropertyName="_RoiGateExitCode" />
+    </Exec>
+
+    <Error Condition="'$(_RoiGateExitCode)' == '1'"
+           Text="RoiMcp read-only gate FAILED for $(TargetPath): violations listed above (report: $(RoiGateReport))." />
+    <Error Condition="'$(_RoiGateExitCode)' != '0' and '$(_RoiGateExitCode)' != '1'"
+           Text="RoiMcp read-only gate could not run (exit code $(_RoiGateExitCode)): usage or configuration error, see output above." />
+  </Target>
+</Project>

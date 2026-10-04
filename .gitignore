@@ -1,0 +1,23 @@
+# Local-only research material: copyrighted game binaries, decompiled game source,
+# and the user's personal save copies. Never commit these.
+research/_local/
+research/references/*/
+!research/references/README.md
+
+# Build outputs and local tooling
+.local/
+bin/
+obj/
+*.user
+.vs/
+.vscode/
+**/.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+TestResults/
+*.nupkg
+
+# Local notes for the user (never commit)
+.future-ideas.md

@@ -1,0 +1,378 @@
+{
+ "applies_to": {
+  "game": "Rise of Industry (Steam App 671440)",
+  "build": "2.3.3 : 0507b (Steam build 9064059)"
+ },
+ "curated_from": "repository evidence only (research/, PRD.md, docs/)",
+ "pitfalls": [
+  {
+   "id": "max-send-not-per-trip",
+   "title": "Max Send is not a per-trip amount or per-route quota",
+   "correction": "It is a shared cap on the destination's stock including in-flight deliveries.",
+   "evidence": [
+    {
+     "file": "research/notes/logistics.md",
+     "location": "section 0; section 1.3",
+     "note": "cap on destination stock"
+    },
+    {
+     "file": "PRD.md",
+     "location": "section 12.3.1",
+     "note": "not a per-trip quantity"
+    }
+   ],
+   "verification": "CONFIRMED_IN_GAME",
+   "confidence": "high",
+   "related": [
+    "max-send"
+   ]
+  },
+  {
+   "id": "max-send-shared",
+   "title": "Changing Max Send on one route changes it for every origin",
+   "correction": "The value lives on the destination per product; all suppliers of that product to that destination share it.",
+   "evidence": [
+    {
+     "file": "docs/VALIDATION-REPORT.md",
+     "location": "Session D, gate E2",
+     "note": "B and C changed with A"
+    },
+    {
+     "file": "docs/KNOWN-LIMITATIONS.md",
+     "location": "Behavioural notes",
+     "note": "changes it for every origin"
+    }
+   ],
+   "verification": "CONFIRMED_IN_GAME",
+   "confidence": "high",
+   "related": [
+    "max-send"
+   ]
+  },
+  {
+   "id": "max-send-zero",
+   "title": "Max Send 0 means unlimited, not zero",
+   "correction": "The UI shows infinity; the stored value is 0.",
+   "evidence": [
+    {
+     "file": "docs/VALIDATION-REPORT.md",
+     "location": "Session D, gate E2",
+     "note": "infinity is value 0, unlimited true"
+    }
+   ],
+   "verification": "CONFIRMED_IN_GAME",
+   "confidence": "high",
+   "related": [
+    "max-send"
+   ]
+  },
+  {
+   "id": "min-keep-keep-all",
+   "title": "Min Keep 'keep all' stops the route entirely",
+   "correction": "A keep-all Min Keep means the route never dispatches.",
+   "evidence": [
+    {
+     "file": "PRD.md",
+     "location": "section 12.3.2",
+     "note": "int.MaxValue means keep all"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "related": [
+    "min-keep"
+   ]
+  },
+  {
+   "id": "demand-per-interval",
+   "title": "Shop demand is per consumption interval, not per month",
+   "correction": "Scale by 30 / consumption_interval_days for a monthly figure.",
+   "evidence": [
+    {
+     "file": "docs/KNOWN-LIMITATIONS.md",
+     "location": "Behavioural notes",
+     "note": "units per consumption interval"
+    },
+    {
+     "file": "PRD.md",
+     "location": "section 15 D-SHOP-1",
+     "note": "x 30 / interval"
+    }
+   ],
+   "verification": "HIGH_CONFIDENCE",
+   "confidence": "medium",
+   "related": [
+    "shop-demand-unit"
+   ]
+  },
+  {
+   "id": "code-defaults-vs-assets",
+   "title": "Code defaults are not the game's values",
+   "correction": "Asset values win: upkeep 0.025 (not 0.25), efficiency arrays {0.25..2}, initial index 3, 3 modules (catalogue maximum; research raises it, live validation saw 5 on every hub), 8 shop products, research queue 9, market update every 15 days.",
+   "evidence": [
+    {
+     "file": "PRD.md",
+     "location": "section 27.1 C1",
+     "note": "asset values are authoritative"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "related": [
+    "building-upkeep",
+    "building-efficiency"
+   ]
+  },
+  {
+   "id": "dispatch-not-throughput",
+   "title": "A dispatch amount is not throughput",
+   "correction": "dispatch_amount_now is what the next dispatch would request now; scheduler, vehicles and priorities decide real flow.",
+   "evidence": [
+    {
+     "file": "PRD.md",
+     "location": "section 12.3.3",
+     "note": "not a throughput guarantee"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "related": [
+    "dispatch-amount"
+   ]
+  },
+  {
+   "id": "dispatch-cost-per-dispatch",
+   "title": "Dispatch cost is per vehicle dispatch, not per unit",
+   "correction": "A half-empty vehicle costs as much as a full one; divide by capacity for a per-unit figure.",
+   "evidence": [
+    {
+     "file": "research/notes/logistics.md",
+     "location": "section 2.4",
+     "note": "per vehicle dispatch, not per unit"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "related": [
+    "dispatch-cost"
+   ]
+  },
+  {
+   "id": "auto-wh-dormant",
+   "title": "Routes of an AUTO_WH building are dormant",
+   "correction": "Their slots still exist but do not dispatch.",
+   "evidence": [
+    {
+     "file": "research/notes/logistics.md",
+     "location": "section 2.6",
+     "note": "manual slots are inactive"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "related": [
+    "auto-warehouse"
+   ]
+  },
+  {
+   "id": "ai-cash-infinite",
+   "title": "AI cash is meaningless",
+   "correction": "AI companies have infinite money; compare them by buildings, regions and production instead.",
+   "evidence": [
+    {
+     "file": "research/notes/static-dump.md",
+     "location": "section 5",
+     "note": "_infiniteMoney 1"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "related": [
+    "ai-infinite-money"
+   ]
+  },
+  {
+   "id": "no-price-history",
+   "title": "There is no market price history",
+   "correction": "Only current prices and trends exist; do not infer past prices.",
+   "evidence": [
+    {
+     "file": "PRD.md",
+     "location": "section 12.4",
+     "note": "market price history does not exist"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "related": [
+    "no-price-history"
+   ]
+  },
+  {
+   "id": "no-daily-ledger",
+   "title": "There is no daily ledger and no per-route history",
+   "correction": "Finances are monthly aggregates; routes keep no history.",
+   "evidence": [
+    {
+     "file": "PRD.md",
+     "location": "section 12.4",
+     "note": "no daily money ledger; no per-route history"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "related": [
+    "money-ledger"
+   ]
+  },
+  {
+   "id": "no-wages",
+   "title": "There are no wages",
+   "correction": "The efficiency slider is the equivalent; it scales output and upkeep together.",
+   "evidence": [
+    {
+     "file": "PRD.md",
+     "location": "section 27.1 C10",
+     "note": "RoI has no wages"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "related": [
+    "building-efficiency"
+   ]
+  },
+  {
+   "id": "names-not-keys",
+   "title": "Display names are not identifiers",
+   "correction": "Names are localized, user-editable and duplicated ('FACTORY 5' exists per owner); use ids.",
+   "evidence": [
+    {
+     "file": "research/RISKS.md",
+     "location": "R-ID-1",
+     "note": "never key by name"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "related": []
+  },
+  {
+   "id": "recipe-days-not-cycle",
+   "title": "Recipe game days are not the effective cycle time",
+   "correction": "Efficiency and company modifiers change the speed; use cycle_days_effective.",
+   "evidence": [
+    {
+     "file": "research/notes/buildings-production.md",
+     "location": "section 3.1",
+     "note": "GetFinalProductionTime = gameDays / final speed"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "related": [
+    "production-cycle"
+   ]
+  },
+  {
+   "id": "distance-zero",
+   "title": "Route distance 0 means no cached path",
+   "correction": "It is not a zero-length route; the MCP reports null with path_status unavailable.",
+   "evidence": [
+    {
+     "file": "PRD.md",
+     "location": "section 12.3",
+     "note": "game value 0 means no cached path"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "related": [
+    "route-distance"
+   ]
+  },
+  {
+   "id": "estimate-not-route",
+   "title": "A straight-line cost estimate is not a route",
+   "correction": "straight_line_cost_estimate is non-authoritative and exists only where no route is known.",
+   "evidence": [
+    {
+     "file": "PRD.md",
+     "location": "section 15 D-ROUTE-2",
+     "note": "non-authoritative estimate"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "related": [
+    "dispatch-cost"
+   ]
+  },
+  {
+   "id": "state-buys-base-price",
+   "title": "Selling to the State pays the base price",
+   "correction": "The State pays the base price without the market modifier.",
+   "evidence": [
+    {
+     "file": "research/notes/cities-shops-markets-world.md",
+     "location": "section 4.2",
+     "note": "base price, without the market modifier"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "related": [
+    "state-trading"
+   ]
+  },
+  {
+   "id": "research-no-refund",
+   "title": "Cancelling research refunds nothing",
+   "correction": "Money already spent on a cancelled research is lost.",
+   "evidence": [
+    {
+     "file": "research/notes/tech-static-content.md",
+     "location": "section 2.3",
+     "note": "no money is returned"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "related": [
+    "research"
+   ]
+  },
+  {
+   "id": "cash-not-company-value",
+   "title": "Cash is not part of company value",
+   "correction": "Company value counts owned regions only.",
+   "evidence": [
+    {
+     "file": "research/notes/company-finance-time.md",
+     "location": "section 5.2",
+     "note": "cash is not part of company value"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "related": [
+    "company-value"
+   ]
+  },
+  {
+   "id": "estimates-are-estimates",
+   "title": "Advisor estimates are estimates",
+   "correction": "Advisor numbers marked kind=estimate rely on the listed assumptions; check confidence and assumptions before acting.",
+   "evidence": [
+    {
+     "file": "docs/v1.1/PRD-ADDENDUM.md",
+     "location": "section 3",
+     "note": "advisor contract"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "related": []
+  }
+ ]
+}

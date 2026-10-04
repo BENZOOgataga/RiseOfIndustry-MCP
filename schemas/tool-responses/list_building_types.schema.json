@@ -1,0 +1,880 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://roi-mcp.local/schemas/tool-responses/list_building_types.schema.json",
+  "title": "roi-mcp tool response: list_building_types",
+  "description": "Generated from mcp-server/src/roi_mcp/response_schemas.py (PRD 13.3 envelope + PRD 14 top-level data keys).",
+  "x-schema-version": "1.0.0",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/Success"
+    },
+    {
+      "$ref": "#/$defs/Error"
+    }
+  ],
+  "$defs": {
+    "Warning": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "enum": [
+            "stale",
+            "refresh_timeout",
+            "fresh_not_applicable",
+            "snapshot_invalid_using_previous",
+            "static_mismatch",
+            "inconsistent_snapshot",
+            "english_name_unavailable",
+            "ui_label_unvalidated",
+            "section_degraded",
+            "active_actor_differs",
+            "catalog_from_previous_session",
+            "game_unresponsive",
+            "truncated"
+          ]
+        },
+        "detail": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "code",
+        "detail"
+      ]
+    },
+    "SnapshotRef": {
+      "type": "object",
+      "properties": {
+        "family": {
+          "enum": [
+            "state",
+            "history",
+            "static"
+          ]
+        },
+        "seq": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "captured_utc": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "age_s": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "game_date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "consistent": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sections_used": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sections_unavailable": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "family",
+        "seq",
+        "captured_utc",
+        "age_s",
+        "game_date",
+        "consistent",
+        "sections_used",
+        "sections_unavailable"
+      ]
+    },
+    "Meta": {
+      "type": "object",
+      "properties": {
+        "server_version": {
+          "type": "string"
+        },
+        "schema_versions": {
+          "type": "object"
+        },
+        "game_state": {
+          "anyOf": [
+            {
+              "enum": [
+                "ready",
+                "game_not_running",
+                "observer_not_detected",
+                "starting",
+                "observer_unresponsive",
+                "menu",
+                "loading",
+                "disabled",
+                "unsupported_build",
+                "faulted"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "compatibility": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "world_session": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source": {
+          "enum": [
+            "live_snapshot",
+            "static_catalog",
+            "stale_snapshot",
+            "none"
+          ]
+        },
+        "snapshot": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SnapshotRef"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "snapshots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SnapshotRef"
+          }
+        },
+        "paused": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "stale": {
+          "type": "boolean"
+        },
+        "stale_reason": {
+          "anyOf": [
+            {
+              "enum": [
+                "age",
+                "world_session_changed",
+                "not_in_game",
+                "game_not_running",
+                "observer_unresponsive"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Warning"
+          }
+        }
+      },
+      "required": [
+        "server_version",
+        "schema_versions",
+        "game_state",
+        "compatibility",
+        "world_session",
+        "source",
+        "snapshot",
+        "snapshots",
+        "paused",
+        "stale",
+        "stale_reason",
+        "warnings"
+      ]
+    },
+    "Page": {
+      "type": "object",
+      "properties": {
+        "next_cursor": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "total": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "next_cursor",
+        "total"
+      ]
+    },
+    "Provenance": {
+      "type": "object",
+      "properties": {
+        "observed": {
+          "type": "object",
+          "properties": {
+            "fields": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "persistence": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "fields",
+            "persistence"
+          ]
+        },
+        "definition": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "game_computed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "derived": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "field": {
+                "type": "string"
+              },
+              "method": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "field",
+              "method"
+            ]
+          }
+        }
+      },
+      "required": [
+        "observed",
+        "definition",
+        "game_computed",
+        "derived"
+      ]
+    },
+    "Unavailable": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "field",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "ActorRef": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "actor_id": {
+              "type": "integer"
+            },
+            "kind": {
+              "enum": [
+                "company",
+                "city",
+                "state",
+                "other"
+              ]
+            }
+          },
+          "required": [
+            "actor_id",
+            "kind"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "Ref": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "Coords": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "x": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "y": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "x",
+            "y"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "Method": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "method"
+      ]
+    },
+    "MaxSend": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "integer"
+        },
+        "unlimited": {
+          "type": "boolean"
+        },
+        "mode": {
+          "enum": [
+            "manual",
+            "auto_shop_demand"
+          ]
+        },
+        "scope": {
+          "const": "destination_product_shared"
+        },
+        "headroom_now": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ui_label_validated": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "value",
+        "unlimited",
+        "mode",
+        "scope",
+        "headroom_now",
+        "ui_label_validated"
+      ]
+    },
+    "MinKeep": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "integer"
+        },
+        "keep_all": {
+          "type": "boolean"
+        },
+        "ui_label_validated": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "value",
+        "keep_all",
+        "ui_label_validated"
+      ]
+    },
+    "RouteCompact": {
+      "type": "object",
+      "properties": {
+        "route_id": {
+          "type": "string",
+          "pattern": "^route:"
+        },
+        "origin": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^building:"
+            },
+            "name": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "coordinates": {
+              "$ref": "#/$defs/Coords"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "coordinates"
+          ]
+        },
+        "destination": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "pattern": "^building:"
+            },
+            "name": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "kind": {
+              "type": "string"
+            },
+            "city": {
+              "$ref": "#/$defs/Ref"
+            },
+            "coordinates": {
+              "$ref": "#/$defs/Coords"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "kind",
+            "city",
+            "coordinates"
+          ]
+        },
+        "product": {
+          "type": "string",
+          "pattern": "^product:"
+        },
+        "transport_mode": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "max_send": {
+          "$ref": "#/$defs/MaxSend"
+        },
+        "min_keep": {
+          "$ref": "#/$defs/MinKeep"
+        },
+        "distance_tiles": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "dispatch_cost": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "vehicle_capacity": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "dispatch_amount_now": {},
+        "in_flight": {
+          "anyOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "paused": {
+          "type": "boolean"
+        },
+        "dormant": {
+          "type": "boolean"
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "route_id",
+        "origin",
+        "destination",
+        "product",
+        "transport_mode",
+        "max_send",
+        "min_keep",
+        "distance_tiles",
+        "dispatch_cost",
+        "vehicle_capacity",
+        "dispatch_amount_now",
+        "in_flight",
+        "paused",
+        "dormant",
+        "errors"
+      ]
+    },
+    "Data": {
+      "type": "object",
+      "properties": {
+        "building_types": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^building_type:"
+              },
+              "display_name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "english_name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "base_cost": {
+                "type": "number"
+              },
+              "upkeep_monthly_base": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "unlocked": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "display_name",
+              "english_name",
+              "base_cost",
+              "upkeep_monthly_base",
+              "tags",
+              "unlocked"
+            ]
+          }
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "unavailable": {
+          "$ref": "#/$defs/Unavailable"
+        }
+      },
+      "required": [
+        "building_types",
+        "provenance",
+        "unavailable"
+      ]
+    },
+    "Success": {
+      "type": "object",
+      "properties": {
+        "ok": {
+          "const": true
+        },
+        "meta": {
+          "$ref": "#/$defs/Meta"
+        },
+        "data": {
+          "$ref": "#/$defs/Data"
+        },
+        "page": {
+          "$ref": "#/$defs/Page"
+        }
+      },
+      "required": [
+        "ok",
+        "meta",
+        "data",
+        "page"
+      ],
+      "additionalProperties": false
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "ok": {
+          "const": false
+        },
+        "error": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "enum": [
+                "game_not_running",
+                "observer_not_detected",
+                "observer_unresponsive",
+                "at_main_menu",
+                "loading",
+                "observer_disabled",
+                "observer_faulted",
+                "unsupported_build",
+                "snapshot_unavailable",
+                "section_unavailable",
+                "schema_mismatch",
+                "not_found",
+                "ambiguous",
+                "stale_reference",
+                "invalid_argument",
+                "internal_error"
+              ]
+            },
+            "message": {
+              "type": "string"
+            },
+            "hint": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "candidates": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "kind": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "kind"
+                ]
+              }
+            },
+            "details": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "code",
+            "message",
+            "hint"
+          ]
+        },
+        "meta": {
+          "$ref": "#/$defs/Meta"
+        }
+      },
+      "required": [
+        "ok",
+        "error",
+        "meta"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

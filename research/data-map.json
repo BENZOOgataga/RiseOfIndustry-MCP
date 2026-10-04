@@ -1,0 +1,3654 @@
+{
+  "schema": "roi-mcp/data-map",
+  "schema_version": "1.0.0",
+  "generated": "2026-10-03",
+  "description": "Machine-readable map from user-facing Rise of Industry concepts to the internal members that hold them, for a read-only observer. Human-readable rendering: DATA-MAP.md (generated from this file by research/tools/datamap/render_datamap.py).",
+  "game": {
+    "title": "Rise of Industry (original)",
+    "steam_app_id": 671440,
+    "steam_build_id": 9064059,
+    "game_version": "2.3.3 : 0507b",
+    "commit": "76359e59644ebf55cafacf9a50b3d19800df22d7",
+    "savegame_version": 2304,
+    "unity": "2018.4.11",
+    "scripting_backend": "Mono",
+    "main_assembly": "Assembly-CSharp.dll"
+  },
+  "schema_doc": {
+    "categories[]": "Ordered list of concept groups. Each has id, title, entries[].",
+    "entries[].id": "Stable dotted identifier for the concept (use in code comments and tests).",
+    "entries[].concept": "User-facing concept.",
+    "entries[].assembly": "Assembly containing the type. Default Assembly-CSharp.",
+    "entries[].namespace": "Namespace of the type. Default ProjectAutomata. '-' for derived values.",
+    "entries[].type": "Type that owns the member (or '(derived)').",
+    "entries[].access": "Recommended read path, written as member paths and plain-language steps. Always executed on the Unity main thread.",
+    "entries[].member_kind": "field | property | method | static | reflection | derived | unavailable",
+    "entries[].id_strategy": "How to identify the entity the value belongs to (see id_strategies).",
+    "entries[].source": "Subset of [STATIC, SAVE, RUNTIME, DERIVED] (see enums.source).",
+    "entries[].update_frequency": "How often the underlying value changes in game.",
+    "entries[].read_safety": "One of enums.read_safety.",
+    "entries[].avoid": "Members that look like reads but must not be called, with the reason.",
+    "entries[].confidence": "One of enums.confidence.",
+    "entries[].evidence": "File:line references relative to research/_local/decompiled/Assembly-CSharp/ProjectAutomata/ unless prefixed; or other evidence.",
+    "entries[].notes": "Free text."
+  },
+  "enums": {
+    "confidence": {
+      "CONFIRMED": "Read directly in decompiled source, game files, or save bytes.",
+      "HIGH": "Strongly implied; one link not directly observed (usually prefab/asset data).",
+      "INFERRED": "Reasoned from naming/usage; not verified.",
+      "UNKNOWN": "Not determined."
+    },
+    "source": {
+      "STATIC": "Game definition data (GameData assets, content mods). Constant for a game module.",
+      "SAVE": "Persisted in the .sav file and restored on load.",
+      "RUNTIME": "Only in live memory (recomputed or transient).",
+      "DERIVED": "Computed deterministically by the observer or MCP server from other values."
+    },
+    "read_safety": {
+      "SAFE": "Pure field/property read with no side effects. Main thread only (applies to everything).",
+      "SAFE_REFLECTION": "Pure read of a private/protected field via FieldInfo.GetValue. Main thread only. Version-coupled.",
+      "CAUTION": "Side-effect free but costly, allocating, pooled (ListPool) or returning a live collection that must be copied immediately.",
+      "AVOID_USE_ALTERNATIVE": "The obvious getter/method has a side effect (dictionary insert, RNG, cache mutation, GUID minting). Use the access path given instead.",
+      "DERIVED": "Not read from the game; computed from other entries.",
+      "NOT_AVAILABLE": "The game does not hold this data."
+    },
+    "update_frequency": [
+      "static",
+      "on_load",
+      "per_frame",
+      "per_dispatch",
+      "per_game_day",
+      "per_consumption_tick (default 15 game days)",
+      "per_month",
+      "per_year",
+      "on_user_action",
+      "on_event"
+    ]
+  },
+  "global_rules": [
+    "Every read happens on the Unity main thread (game collections are unsynchronized; ManagerBehaviour<T>.instance, ListPool, Formula pools and GetComponent are main-thread-only).",
+    "Use Unity null checks (the overloaded bool conversion or comparison with null on UnityEngine.Object) on managers and game objects; destroyed objects remain referenced.",
+    "Never call setters, Set*/Add*/Remove*/Clear*/Toggle*/Increment*/Decrement*, Validate*, Unlock*, Research*, Purchase*/Sell*, or any view-model method.",
+    "Never call Utils.GetSafe-backed getters on game dictionaries; read the dictionary with TryGetValue.",
+    "Never call GuidMapper.GetGUIDForObject, MoneyManager.GetBalance/GetRawBalance/RegisterAgent, DevConsole.Console.ExecuteCommand, SavegameManager.CreateSavegame, GameData.editorInstance.",
+    "Copy live collections (List/HashSet/Queue/ReadOnlyList) into observer-owned buffers before yielding a frame.",
+    "Use Player.humanPlayer for 'the player', never Player.activeActor (UI/debug can switch it) and never call Player.SetActiveActor."
+  ],
+  "id_strategies": {
+    "actor": {
+      "key": "Actor.id (int)",
+      "stability": "Persisted (ActorManager._uniqueActorId is saved; restored via constructor params). Stable across save/load.",
+      "confidence": "CONFIRMED",
+      "evidence": [
+        "ActorManager.cs:15-27",
+        "HumanPlayer.cs:15",
+        "AiPlayer.cs:67-74"
+      ]
+    },
+    "building": {
+      "key": "\"{prefab.name}@{x},{y}\" where x and y are the coordinates given by Tile.GetCoordinates for building.tile",
+      "secondary_key": "Savegame GUID from GuidMapper.objMappings (private Dictionary<object,Guid>) via TryGetValue; absent for buildings created since the last save/load",
+      "stability": "Origin tile + prefab is persisted through constructorParams and is unique per origin tile. Rebuilding the same prefab on the same tile reuses the key.",
+      "confidence": "CONFIRMED (persistence); HIGH (uniqueness for warehouse module buildings, see U6)",
+      "evidence": [
+        "Building.cs:69,276-300",
+        "BuildingManager.cs:145-160",
+        "GuidMapper.cs:38-47",
+        "SavegameManager.cs:15,319,344",
+        "notes/save-format.md §3"
+      ]
+    },
+    "settlement": {
+      "key": "Actor.id of the settlement (int); human label settlementName (same as the region name)",
+      "confidence": "CONFIRMED",
+      "evidence": [
+        "SettlementBase.cs:15-60",
+        "Settlement.cs:212-213"
+      ]
+    },
+    "region": {
+      "key": "Region.id (System.Guid)",
+      "confidence": "CONFIRMED",
+      "evidence": [
+        "Region.cs:51,89-111",
+        "RegionManager.cs:65"
+      ]
+    },
+    "definition": {
+      "key": "UnityEngine.Object.name of the asset (ProductDefinition, Recipe, TechTreeUnlock, Building prefab, Formula, ...)",
+      "stability": "Used by savegames; stable within a build and very likely across builds. GetInstanceID()/ProductDefinition.AssetId are session-only and must never be exposed.",
+      "confidence": "CONFIRMED",
+      "evidence": [
+        "SavegamePrefabIdentifier.cs:23-45",
+        "ProductDefinition.cs:102",
+        "GameDataManifest.cs:387-449"
+      ]
+    },
+    "destination_slot": {
+      "key": "(origin building key, product.name, destination building key, source module prefab name or 'default', occurrence index among identical tuples)",
+      "stability": "Slots have no id; list indices shift when the user edits destinations.",
+      "confidence": "CONFIRMED",
+      "evidence": [
+        "ManualDestinationManager.cs:165-186,503-514"
+      ]
+    },
+    "vehicle": {
+      "key": "Session-local: GetInstanceID(). Vehicle.id (ushort) is reassigned on every pool pull.",
+      "confidence": "CONFIRMED",
+      "evidence": [
+        "Vehicle.cs:17",
+        "VehicleManager.cs:48,91-99"
+      ]
+    },
+    "logistic_request": {
+      "key": "(endpoint building key, product.name, occurrence index)",
+      "confidence": "CONFIRMED",
+      "evidence": [
+        "LogisticNetworkEndpoint.cs:13-18",
+        "LogisticRequest.cs"
+      ]
+    },
+    "shop": {
+      "key": "Building key of the shop building",
+      "confidence": "CONFIRMED"
+    }
+  },
+  "categories": [
+    {
+      "id": "game",
+      "title": "Game, session and time",
+      "entries": [
+        {
+          "id": "game.version",
+          "concept": "Game version / build",
+          "type": "GameVersion",
+          "access": "GameVersion.Get(): major, minor, revision, build, suffix, commitHash, savegameVersion",
+          "member_kind": "static",
+          "id_strategy": "-",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [
+            "GameVersion.ToString() (allocates; fine once)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "GameVersion.cs:7-110",
+            "resources.assets path_id 40454 (2.3.3 0507b, savegame 2304)"
+          ],
+          "notes": "Observer should refuse to run on an unexpected savegameVersion/build unless explicitly allowed."
+        },
+        {
+          "id": "game.scene_state",
+          "concept": "Main menu / loading / in game",
+          "assembly": "UnityEngine.CoreModule + Assembly-CSharp",
+          "type": "SceneManager, World, WorldLoadingScreen",
+          "access": "active scene name (SceneManager.GetActiveScene().name) is \"game\"; World.instance is non-null and World.instance.isWorldReady is true; WorldLoadingScreen.instance active?; first TimeManager.onDayStart or date change seen",
+          "member_kind": "property",
+          "id_strategy": "-",
+          "source": [
+            "RUNTIME"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "SAFE",
+          "avoid": [
+            "IWorldReadyListener on mod components (never called: only active-scene roots are scanned)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "World.cs:111,272-303,384-402",
+            "WorldLoadingScreen.cs:53-77",
+            "MainMenu.cs:241-385",
+            "notes/runtime-lifecycle.md §3.5"
+          ],
+          "notes": "Use SceneManager.sceneLoaded/sceneUnloaded/activeSceneChanged. game->game reload happens on quickload."
+        },
+        {
+          "id": "game.date",
+          "concept": "Current in-game date",
+          "type": "TimeManager",
+          "access": "ManagerBehaviour<TimeManager>.instance.today (GameDate Year/Month/Day); day/month/year; private _days absolute counter",
+          "member_kind": "field",
+          "id_strategy": "-",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_game_day",
+          "read_safety": "SAFE",
+          "avoid": [
+            "constructing a GameDate with invalid values (logs errors)",
+            "GameDate.RandomInRange (consumes RNG)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "TimeManager.cs:13-104",
+            "GameDate.cs:9-106"
+          ],
+          "notes": "30-day months, 12 months, 360-day years, year starts at 1. onDay/Month/YearEnd fire before today is updated; *Start after."
+        },
+        {
+          "id": "game.speed",
+          "concept": "Pause state and game speed",
+          "type": "SpeedControls; UnityEngine.Time",
+          "access": "SpeedControls.instance.level (-1 = paused), isPaused, speedLevels[]; Time.timeScale (0 = effectively paused)",
+          "member_kind": "property",
+          "id_strategy": "-",
+          "source": [
+            "RUNTIME"
+          ],
+          "update_frequency": "on_user_action",
+          "read_safety": "SAFE",
+          "avoid": [
+            "SetLevel/SetPause/TogglePause/UpdateTimeScale/ForceTimeScale"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "SpeedControls.cs:34-160",
+            "notes/static-dump.md §6"
+          ],
+          "notes": "Report both: menus set Time.timeScale to 0 without changing level. speedLevels asset value [1, 3, 6, 10]."
+        },
+        {
+          "id": "game.seconds_per_day",
+          "concept": "Real seconds per game day at 1x",
+          "type": "TimeManager",
+          "access": "TimeManager.instance.secondsPerDay",
+          "member_kind": "field",
+          "id_strategy": "-",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "TimeManager.cs:13,151-154",
+            "notes/static-dump.md §6"
+          ],
+          "notes": "Asset value 8.0 (game scene level4): 1 day = 8 s at 1x, 0.8 s at 10x."
+        },
+        {
+          "id": "game.difficulty",
+          "concept": "Difficulty / economy parameters",
+          "type": "GameParametersManager, DifficultyParameters, WorldParameters",
+          "access": "GameParametersManager.instance.difficulty (prices additive, upkeep multiplicative, dispatch, loan, easyChains, ...); .world (seed, size, aiCount, techTree, regions); GetDifficultyParameters(actor) for AI overrides",
+          "member_kind": "field",
+          "id_strategy": "-",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_load",
+          "read_safety": "SAFE",
+          "avoid": [
+            "Writing any field (they are public)",
+            "GetParameterValue (lazy cache write)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "GameParametersManager.cs:20-49",
+            "DifficultyParameters.cs",
+            "notes/tech-static-content.md §5"
+          ],
+          "notes": "difficulty.demand and difficulty.balance are never read by game code."
+        },
+        {
+          "id": "game.module",
+          "concept": "Active game module (content set)",
+          "type": "GameModuleRepository",
+          "access": "GameModuleRepository.instance.currentModule (id Guid, displayName)",
+          "member_kind": "property",
+          "id_strategy": "module id (Guid)",
+          "source": [
+            "SAVE",
+            "RUNTIME"
+          ],
+          "update_frequency": "on_load",
+          "read_safety": "SAFE",
+          "avoid": [
+            "SetModule"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "GameModuleRepository.cs:315-329",
+            "GameModule.cs"
+          ],
+          "notes": "Static definitions depend on the module: re-export static data when it changes."
+        },
+        {
+          "id": "game.mods",
+          "concept": "Loaded mods",
+          "type": "ModLoader",
+          "access": "CachedManagerBehaviour<ModLoader>.instance.loadedMods[i].description (name, version, versionString)",
+          "member_kind": "field",
+          "id_strategy": "mod name",
+          "source": [
+            "RUNTIME"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [
+            "EnableMod/DisableMod/SetModOrder (PlayerPrefs writes)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ModLoader.cs:46-70"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "game.language",
+          "concept": "UI language",
+          "type": "I18n",
+          "access": "I18n.instance.currentLanguage.keycode",
+          "member_kind": "property",
+          "id_strategy": "-",
+          "source": [
+            "RUNTIME"
+          ],
+          "update_frequency": "on_user_action",
+          "read_safety": "SAFE",
+          "avoid": [
+            "I18n.LoadLanguage / ReloadCurrentLanguage (rewrites every asset string)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "I18n.cs:10,145-170"
+          ],
+          "notes": "fr-FR on this install."
+        },
+        {
+          "id": "game.cheats_achievements",
+          "concept": "Cheats used / achievements enabled",
+          "type": "EndGameManager, AchievementManager",
+          "access": "EndGameManager.instance.usedCheats; AchievementManager.achievementsEnabled",
+          "member_kind": "property",
+          "id_strategy": "-",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "HIGH",
+          "evidence": [
+            "PAConsole.cs:49-84",
+            "AchievementManager.cs:10-33",
+            "notes/static-dump.md §6"
+          ],
+          "notes": "Useful for the observer's own regression check that it never triggers cheat flags. AchievementManager.disableWithMods = 0 in menu and game scenes: mods do not disable achievements."
+        },
+        {
+          "id": "game.save_name",
+          "concept": "Name of the currently loaded save",
+          "type": "(unknown)",
+          "access": "UNKNOWN at runtime; offline: header of the most recent .sav",
+          "member_kind": "unavailable",
+          "id_strategy": "-",
+          "source": [
+            "RUNTIME"
+          ],
+          "update_frequency": "on_load",
+          "read_safety": "NOT_AVAILABLE",
+          "avoid": [],
+          "confidence": "UNKNOWN",
+          "evidence": [],
+          "notes": "Investigate WorldStartupParameters in the implementation phase (U7)."
+        }
+      ]
+    },
+    {
+      "id": "company",
+      "title": "Company, finances and competitors",
+      "entries": [
+        {
+          "id": "company.player",
+          "concept": "Player company",
+          "type": "Player / HumanPlayer",
+          "access": "Player.humanPlayer",
+          "member_kind": "static",
+          "id_strategy": "actor",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_load",
+          "read_safety": "SAFE",
+          "avoid": [
+            "Player.SetActiveActor/ClearActiveActor",
+            "relying on Player.activeActor"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Player.cs:14-16",
+            "ActorInfoViewModel.cs:30"
+          ],
+          "notes": "humanPlayer is a static that is not cleared on return to menu: gate on scene state."
+        },
+        {
+          "id": "company.ai_players",
+          "concept": "Competitors",
+          "type": "AiPlayerManager",
+          "access": "ManagerBehaviour<AiPlayerManager>.instance.aiPlayers (ReadOnlyList<AiPlayer>, copy)",
+          "member_kind": "property",
+          "id_strategy": "actor",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "CAUTION",
+          "avoid": [
+            "SpawnPlayer/RemovePlayer/TakeTurn/Tick"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "AiPlayerManager.cs:30-62,224-235",
+            "notes/static-dump.md §5"
+          ],
+          "notes": "AI removed on bankruptcy/takeover disappears from lists; history with it is deleted from ledgers. AI MoneyAgent has infinite money (prefab)."
+        },
+        {
+          "id": "company.all_actors",
+          "concept": "All actors (companies, State, settlements)",
+          "type": "ActorManager",
+          "access": "ManagerBehaviour<ActorManager>.instance.actors (copy); GetActor(int id)",
+          "member_kind": "property",
+          "id_strategy": "actor",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "CAUTION",
+          "avoid": [
+            "GetUniqueActorId (increments saved counter)",
+            "RegisterActor/DeregisterActor"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ActorManager.cs:15-48,310-315"
+          ],
+          "notes": "Kinds: HumanPlayer, AiPlayer, State, SettlementBase."
+        },
+        {
+          "id": "company.identity",
+          "concept": "Company name, colour, HQ",
+          "type": "Actor / Player",
+          "access": "actor.id, actor.actorName, actor.color; player.hq (Building), player.hqBuilt, player.hq.settlement.settlementName",
+          "member_kind": "property",
+          "id_strategy": "actor",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_load",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Actor.cs:37-61",
+            "Player.cs:22-41",
+            "HumanPlayer.cs:27-31"
+          ],
+          "notes": "Human name is overwritten from PlayerPrefs on each world-ready. No logo concept exists."
+        },
+        {
+          "id": "company.cash",
+          "concept": "Cash balance",
+          "type": "MoneyManager",
+          "access": "MoneyManager.instance.balances looked up with TryGetValue keyed by actor.money (value is a double); actor.money.infiniteMoney",
+          "member_kind": "property",
+          "id_strategy": "actor",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_frame",
+          "read_safety": "AVOID_USE_ALTERNATIVE",
+          "avoid": [
+            "MoneyManager.GetBalance / GetRawBalance (RegisterAgent inserts a saved 0 entry)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "MoneyManager.cs:78-125",
+            "notes/static-dump.md §5"
+          ],
+          "notes": "double. Negative allowed. AI players and the State have MoneyAgent._infiniteMoney = 1 (prefab): report their cash as infinite / not meaningful."
+        },
+        {
+          "id": "company.loans",
+          "concept": "Loans",
+          "type": "LoansAgent, Loan",
+          "access": "actor.loans.loans (List<Loan>, copy): type, title, grantingActor, amount, apr, duration, remainingPayments, amountWithApr, amountToPay; maxLoans",
+          "member_kind": "property",
+          "id_strategy": "actor + list index (no loan id)",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_month",
+          "read_safety": "CAUTION",
+          "avoid": [
+            "AddLoan/RepayLoan/PayForMonth/Repay",
+            "apr setter"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "LoansAgent.cs:26-144",
+            "Loan.cs:31-121",
+            "LoanType.cs:3"
+          ],
+          "notes": "LoanType STARTER/SETTLEMENT/BANKRUPTCY/FINE. Grace months counter freeMonthsLeft is private (SAFE_REFLECTION)."
+        },
+        {
+          "id": "company.loan_payment",
+          "concept": "Monthly loan payment",
+          "type": "(derived)",
+          "access": "amount × (1 + apr) / duration × modifier (modifier is payingActor.modifiers.GetLoanPaymentModifier(settlement) for settlement loans, otherwise 1); or Loan.GetMonthlyPaymentAmount()",
+          "member_kind": "derived",
+          "id_strategy": "actor",
+          "source": [
+            "DERIVED"
+          ],
+          "update_frequency": "per_month",
+          "read_safety": "DERIVED",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Loan.cs:83-121",
+            "LoansAgent.cs:125-144"
+          ],
+          "notes": "Flat interest; paid onMonthStart, dated day 1."
+        },
+        {
+          "id": "company.ledger",
+          "concept": "Revenues and expenses (financial history)",
+          "type": "MoneyAgent, MoneyBill, MoneyBillTimeTree",
+          "access": "actor.money.GetIncome/GetExpenses(from, to, category) with month-aligned dates (day 1 .. day 30); GetBills(from,to,opt,ownList) for line items; or reflect private _bills (Dictionary<int, MoneyBillTimeTree>)",
+          "member_kind": "method",
+          "id_strategy": "actor + category asset name + counterparty actor id + month",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_month",
+          "read_safety": "CAUTION",
+          "avoid": [
+            "HandleBill/ClearOldData/OnSavegameSerialize",
+            "mid-month 'from' dates (silently exclude that month)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "MoneyAgent.cs:23-32,64-74,106-148,198-254",
+            "MoneyBill.cs:26-93",
+            "TimeTree.cs:141-249"
+          ],
+          "notes": "Monthly aggregates per (category, payer, payee); about 3 years kept (historicalDataRange=3, pruned onYearEnd). MoneyBill.recipient = payer, originator = payee (naming is swapped)."
+        },
+        {
+          "id": "company.bill_categories",
+          "concept": "Revenue/expense categories",
+          "type": "MoneyBillCategory, MoneyOverviewCategory, TotalBudgetEntry",
+          "access": "GameData.instance.GetAssetsRO(typeof(MoneyBillCategory)) (name, categoryName); MoneyOverviewCategory (ONE_TIME/REOCCURRING groups)",
+          "member_kind": "property",
+          "id_strategy": "definition",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "MoneyBillCategory.cs",
+            "MoneyOverviewCategory.cs",
+            "notes/company-finance-time.md §3.4",
+            "save bills: Upkeep, VehicleUpkeep, ProductTrade, BuildingConstruction, Loan Payments, FinesAndGrants",
+            "notes/static-dump.md §3"
+          ],
+          "notes": "Categories are assets, not an enum. No wages/salaries exist in RoI. 24 category assets (e.g. ProductTrade, Upkeep, VehicleUpkeep, RouteVehicleUpkeep, ResearchCosts, Loan Payments, Contracts, FinesAndGrants, BuildingConstruction)."
+        },
+        {
+          "id": "company.revenue_breakdown",
+          "concept": "Revenue by source (shop sales, B2B, contracts, grants)",
+          "type": "(derived)",
+          "access": "GetIncome per MoneyBillCategory per month (productTradeCategory = shop sales paid by State; ProductSeller productBillCategory = B2B; contracts; grants)",
+          "member_kind": "derived",
+          "id_strategy": "actor",
+          "source": [
+            "DERIVED"
+          ],
+          "update_frequency": "per_month",
+          "read_safety": "DERIVED",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Shop.cs:463",
+            "ProductSellerTransportRequestPaymentHandler.cs:28-29",
+            "DeliveryContract.cs:165"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "company.maintenance",
+          "concept": "Maintenance / building upkeep expense",
+          "type": "Upkeep + ledger",
+          "access": "Ledger: MoneyManager.upkeepCategory expenses per month. Forecast: sum over actor buildings of Upkeep.totalActiveMonthlyUpkeep",
+          "member_kind": "derived",
+          "id_strategy": "actor / building",
+          "source": [
+            "SAVE",
+            "DERIVED"
+          ],
+          "update_frequency": "per_month",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Upkeep.cs:56-176"
+          ],
+          "notes": "Accrues daily, charged onMonthEnd (dated day 30)."
+        },
+        {
+          "id": "company.vehicle_expenses",
+          "concept": "Vehicle / transport expenses",
+          "type": "DefaultTransportRequestPaymentHandlerBehaviour + ledger",
+          "access": "Ledger category DefaultTransportRequestPaymentHandlerBehaviour.billCategory (dispatch fee per vehicle dispatch); ProductionStatsTracker.GetDistributionCost(product) for player",
+          "member_kind": "derived",
+          "id_strategy": "actor",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_dispatch",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "DefaultTransportRequestPaymentHandlerBehaviour.cs:16-58",
+            "MoneyManager.cs:35-76"
+          ],
+          "notes": "No per-vehicle upkeep code path; MoneyManager.vehicleCategory/vehicleUpkeepCategory have no call sites (a 'VehicleUpkeep' category name still appears in saves; INFERRED to be the asset used as dispatch billCategory)."
+        },
+        {
+          "id": "company.building_expenses",
+          "concept": "Construction / building expenses",
+          "type": "ledger",
+          "access": "MoneyManager.buildingConstructionCategory / infrastructureConstructionCategory / buildingRefundCategory",
+          "member_kind": "derived",
+          "id_strategy": "actor",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_user_action",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "BuildBuildingMode.cs:189",
+            "Demolish.cs:35-39"
+          ],
+          "notes": "AI construction does not create bills (HIGH)."
+        },
+        {
+          "id": "company.research_expenses",
+          "concept": "Research spending",
+          "type": "ledger",
+          "access": "TechTreeManagerConfig.researchCostsBillCategory expenses; research.currentResearchCost",
+          "member_kind": "derived",
+          "id_strategy": "actor",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_game_day",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ResearchExpensesHandler.cs:13-30",
+            "TechTreeAgentResearchState.cs:162-175"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "company.cashflow_label",
+          "concept": "Company health label (competitor intel)",
+          "type": "ActorStatisticsAgent",
+          "access": "actor.Get<ActorStatisticsAgent>(): cashflow (BLEEDING/LOSING/GAINING/PROSPERING), topProduction, topSales, ownedPermits, mainTechTree (copy lists)",
+          "member_kind": "property",
+          "id_strategy": "actor",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_month",
+          "read_safety": "CAUTION",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ActorStatisticsAgent.cs:73-195",
+            "ActorCashflow.cs:3",
+            "PlayerInfoViewModel.cs"
+          ],
+          "notes": "This is what the game itself shows about competitors."
+        },
+        {
+          "id": "company.bankruptcy",
+          "concept": "Bankruptcy risk / state",
+          "type": "(derived)",
+          "access": "balance below 0 (checked at next onMonthEnd); any loan whose type is BANKRUPTCY",
+          "member_kind": "derived",
+          "id_strategy": "actor",
+          "source": [
+            "DERIVED"
+          ],
+          "update_frequency": "per_month",
+          "read_safety": "DERIVED",
+          "avoid": [
+            "BankruptcyUI methods"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "BankruptcyAgent.cs:10-65",
+            "BankruptcyUI.cs:20-79"
+          ],
+          "notes": "No persisted bankrupt flag."
+        },
+        {
+          "id": "company.shares",
+          "concept": "Company shares",
+          "type": "CompanySharesAgent, CompanyShareBundle",
+          "access": "actor.Get<CompanySharesAgent>().bundles (10 x size 0.1): bundle.owner, bundle.company; CountBundlesOwnedByCompetition()",
+          "member_kind": "property",
+          "id_strategy": "actor",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "CAUTION",
+          "avoid": [
+            "PurchaseBundle/SellBundle (moves money, can trigger takeover)",
+            "GetOwnedBundles without own list (ListPool)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "CompanySharesAgent.cs:11-290",
+            "CompanyShareBundle.cs:6-29"
+          ],
+          "notes": "All 10 bundles owned by one competitor = hostile takeover."
+        },
+        {
+          "id": "company.value",
+          "concept": "Company value / share price",
+          "type": "(derived) mirrors CompanyStats",
+          "access": "Replicate: sum over regions whose full permit owner is actor of (permit cost + sum paidToBuildAmount of actor buildings in region), times max(1, 1 + 0.1 × bundlesOwnedByCompetition); bundle buy price is min(round(0.1 × value), 999,000,000)",
+          "member_kind": "derived",
+          "id_strategy": "actor",
+          "source": [
+            "DERIVED"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "AVOID_USE_ALTERNATIVE",
+          "avoid": [
+            "CompanyStats.ComputeCompanyValue / ComputeRegionsValue, CompanySharesAgent.GetCompanyValue (PermitManager.GetSafe inserts; O(regions x buildings))"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "CompanyStats.cs:7-42",
+            "CompanySharesAgent.cs:52-60",
+            "PermitManager.cs:184-215"
+          ],
+          "notes": "Cash is not part of company value."
+        },
+        {
+          "id": "company.total_assets",
+          "concept": "Total assets",
+          "type": "(derived)",
+          "access": "sum of building.paidToBuildAmount over actor buildings (+ balance for scenario objective)",
+          "member_kind": "derived",
+          "id_strategy": "actor",
+          "source": [
+            "DERIVED"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "AVOID_USE_ALTERNATIVE",
+          "avoid": [
+            "Headquarters.totalAssets (always uses Player.activeActor; O(all buildings))"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Headquarters.cs:50-62",
+            "ScenarioProfitObjective.cs:45-48"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "company.ai_state",
+          "concept": "Competitor behaviour state",
+          "type": "AiPlayer, BehaviourTreeAiPlayerBrainState",
+          "access": "ai.personality (asset name), ai.ownedRegions (copy), ai.hasInitiative, ai.GetState<BehaviourTreeAiPlayerBrainState>().productGoals / productGoalsOnHold (product, destination)",
+          "member_kind": "property",
+          "id_strategy": "actor",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_game_day",
+          "read_safety": "CAUTION",
+          "avoid": [
+            "AiProductGoal.IsSatisfied/GetDailyNeed/GetUrgency (side effects unknown)",
+            "TryGetDifficultyParametersOverride (lazy cache)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "AiPlayer.cs:38-187",
+            "BehaviourTreeAiPlayerBrainState.cs"
+          ],
+          "notes": "One AI takes a turn per day; all AI tick every frame."
+        },
+        {
+          "id": "company.buildings",
+          "concept": "Buildings owned by a company",
+          "type": "ActorBuildingCollection",
+          "access": "actor.buildings: count, recipeUsers, Count(prefab|tag), struct enumerator (wrap in EnterReadLock/ExitReadLock)",
+          "member_kind": "property",
+          "id_strategy": "building",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "CAUTION",
+          "avoid": [
+            "Add/Remove",
+            "Filter without own list"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ActorBuildingCollection.cs:12-191"
+          ],
+          "notes": "Only collection with a ReaderWriterLockSlim; still read on main thread."
+        }
+      ]
+    },
+    {
+      "id": "buildings",
+      "title": "Buildings",
+      "entries": [
+        {
+          "id": "building.enumerate",
+          "concept": "All buildings",
+          "type": "BuildingManager",
+          "access": "ManagerBehaviour<BuildingManager>.instance.buildingsList (List<Building>, copy references)",
+          "member_kind": "property",
+          "id_strategy": "building",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "CAUTION",
+          "avoid": [
+            "Register/DeRegister",
+            "CanBuild"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "BuildingManager.cs:15-27,145-160"
+          ],
+          "notes": "Includes every owner (settlement houses dominate: ~2,000 of 2,146 in the sample save) and modules (harvesters, fields). Filter by owner/tags."
+        },
+        {
+          "id": "building.id",
+          "concept": "Stable building identifier",
+          "type": "Building, GuidMapper",
+          "access": "prefab.name + Tile.GetCoordinates(tile); optional GUID: reflect GuidMapper.instance private objMappings.TryGetValue(building)",
+          "member_kind": "derived",
+          "id_strategy": "building",
+          "source": [
+            "SAVE",
+            "DERIVED"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "AVOID_USE_ALTERNATIVE",
+          "avoid": [
+            "GuidMapper.GetGUIDForObject (mints and stores a GUID)",
+            "GetInstanceID as persistent id"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Building.cs:69,276-300",
+            "GuidMapper.cs:38-47"
+          ],
+          "notes": "See id_strategies.building."
+        },
+        {
+          "id": "building.type",
+          "concept": "Building type",
+          "type": "Building (prefab)",
+          "access": "building.prefab.name (stable); building.prefab.buildingName (localized display); building.tags / HasTag(tag)",
+          "member_kind": "property",
+          "id_strategy": "definition",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Building.cs:58,283-294",
+            "BuildingTag.cs"
+          ],
+          "notes": "Tags: Factory, Farm, Gatherer, Logistics, Module, Shop, Urban, Residential, Wholesaler, ..."
+        },
+        {
+          "id": "building.name",
+          "concept": "Display name (e.g. 'GAS WELL 2')",
+          "type": "Building, BuildingNameGenerator",
+          "access": "building.buildingName; GetComponent<BuildingNameGenerator>(): index, usingCustomName",
+          "member_kind": "field",
+          "id_strategy": "building",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_user_action",
+          "read_safety": "SAFE",
+          "avoid": [
+            "SetBuildingName",
+            "BuildingNameGenerator.Initialize/UpdateBuildingName"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Building.cs:25-26,376-385",
+            "BuildingNameGenerator.cs:257-382"
+          ],
+          "notes": "Localized, upper-cased, user-renamable, not unique. Never use as a key."
+        },
+        {
+          "id": "building.position",
+          "concept": "Position / footprint",
+          "type": "Building, Tile",
+          "access": "building.tile -> Tile.GetCoordinates (gives x and y); building.rotation; topology.GetAffectedTiles(ownList)",
+          "member_kind": "field",
+          "id_strategy": "building",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Building.cs:69-72,285,503",
+            "Tile.cs:506,568-576"
+          ],
+          "notes": "Tile index is x + y × World.Size."
+        },
+        {
+          "id": "building.region",
+          "concept": "Region and city of a building",
+          "type": "Building",
+          "access": "building.region (Region: id, regionName); building.settlement",
+          "member_kind": "field",
+          "id_strategy": "region / settlement",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Building.cs:61,64,289-290"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "building.owner",
+          "concept": "Owner",
+          "type": "Building",
+          "access": "building.buildingOwner (IActor) -> id",
+          "member_kind": "property",
+          "id_strategy": "actor",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "SAFE",
+          "avoid": [
+            "ChangeOwner"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Building.cs:66,616-635"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "building.active",
+          "concept": "Active / paused / working state",
+          "type": "Building, BuildingStateFlags",
+          "access": "building.buildingStateFlags: UserEnabled (on/off toggle), RequirementsMet, IsWorking",
+          "member_kind": "field",
+          "id_strategy": "building",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_frame",
+          "read_safety": "SAFE",
+          "avoid": [
+            "SetStateFlag"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "BuildingStateFlags.cs",
+            "Building.cs:74-75,359-362",
+            "BuildingPanelViewModel.cs:120-128"
+          ],
+          "notes": "RequirementsMet re-evaluated every 3-5 s unscaled."
+        },
+        {
+          "id": "building.efficiency",
+          "concept": "Efficiency slider (the game's 'wage/salary' equivalent)",
+          "type": "BuildingEfficiency / BuildingSettlementEfficiency (IBuildingEfficiency)",
+          "access": "GetComponent<IBuildingEfficiency>(): efficiencyIndex, efficiency, upkeepModifier",
+          "member_kind": "property",
+          "id_strategy": "building",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_user_action",
+          "read_safety": "SAFE",
+          "avoid": [
+            "SetEfficiencyIndex",
+            "UpdateEfficiencyIcon"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "BuildingEfficiency.cs:59-156",
+            "BuildingSettlementEfficiency.cs",
+            "notes/static-dump.md §5"
+          ],
+          "notes": "There are no wages or workers in RoI. Prefab values (all 48 prefabs): output and upkeep multipliers both {0.25,0.5,0.75,1,1.25,1.5,2}; initial index 3 (100%)."
+        },
+        {
+          "id": "building.production_efficiency",
+          "concept": "Production efficiency / uptime",
+          "type": "RecipeUser, BuildingAnalysis",
+          "access": "recipeUser.GetFinalProductionSpeed(); framesSpentProducing / productionFrames; analysis.GetLastMonthValue(recipeUser.efficiencyAnalysisItemDef)",
+          "member_kind": "method",
+          "id_strategy": "building",
+          "source": [
+            "RUNTIME",
+            "SAVE"
+          ],
+          "update_frequency": "per_frame",
+          "read_safety": "CAUTION",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "RecipeUser.cs:66-70,501-539",
+            "BuildingAnalysis.cs:122-205"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "building.upkeep",
+          "concept": "Maintenance cost",
+          "type": "Upkeep",
+          "access": "GetComponent<Upkeep>(): totalMonthlyUpkeep, totalActiveMonthlyUpkeep; private upkeep (accrued this month), daysUp",
+          "member_kind": "property",
+          "id_strategy": "building",
+          "source": [
+            "SAVE",
+            "DERIVED"
+          ],
+          "update_frequency": "per_game_day",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Upkeep.cs:23-194",
+            "notes/static-dump.md §5"
+          ],
+          "notes": "baseCost × buildingCostPercentage × modifiers (difficulty.upkeep × actor × efficiency); minimum applies when not working. Prefab buildingCostPercentage = 0.025 (code default 0.25): monthly upkeep ~2.5% of base cost x modifiers."
+        },
+        {
+          "id": "building.cost",
+          "concept": "Build cost / paid",
+          "type": "Building",
+          "access": "prefab.baseCost; building.paidToBuildAmount; techTree.GetBuildingCost(prefab) for current price",
+          "member_kind": "field",
+          "id_strategy": "building",
+          "source": [
+            "STATIC",
+            "SAVE"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [
+            "GetCostForActor (fine but unnecessary)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Building.cs:32,189-193,404-423"
+          ],
+          "notes": "Refund on demolish = 75% of paid."
+        },
+        {
+          "id": "building.pollution",
+          "concept": "Pollution produced / suffered",
+          "type": "PolluterBuilding, ThresholdBuildingPollutionEffect, PollutionManager",
+          "access": "PolluterBuilding.pollutionAmount (formula); ThresholdBuildingPollutionEffect.isPolluted; PollutionManager.instance.GetPollution(tile) (0..1)",
+          "member_kind": "property",
+          "id_strategy": "building",
+          "source": [
+            "RUNTIME",
+            "SAVE"
+          ],
+          "update_frequency": "per_game_day",
+          "read_safety": "CAUTION",
+          "avoid": [
+            "AsTexture"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "PolluterBuilding.cs:49,169",
+            "PollutionManager.cs:88-101",
+            "HarvesterPollutionEffect.cs:17-44"
+          ],
+          "notes": "pollutionAmount evaluates a Formula (pooled, allocation possible)."
+        },
+        {
+          "id": "building.config_logistics",
+          "concept": "Logistics configuration",
+          "type": "BuildingLogistics",
+          "access": "building.logistics.options (LogisticsUserOptions, AUTO_WH bit), acceptedProducts, outgoingProducts (copy)",
+          "member_kind": "property",
+          "id_strategy": "building",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_user_action",
+          "read_safety": "SAFE",
+          "avoid": [
+            "options setter",
+            "UpdateLogistics"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "BuildingLogistics.cs:39-185",
+            "LogisticsUserOptions.cs"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "building.blocking",
+          "concept": "Why a building is not producing",
+          "type": "BuildingRequirementController + (derived)",
+          "access": "controller.notifications (player buildings only, debounced 5 checks; Notification.specification.name). Derive for all: UserEnabled not set; no recipe; RequirementsMet not set; any ingredient whose Count is below its amount; free room (slots minus Count of the result) below the result amount; moduleCount of 0; isPolluted",
+          "member_kind": "derived",
+          "id_strategy": "building",
+          "source": [
+            "RUNTIME",
+            "DERIVED"
+          ],
+          "update_frequency": "per_frame",
+          "read_safety": "AVOID_USE_ALTERNATIVE",
+          "avoid": [
+            "allRequirementsMet / Check() / IsRequirementMet (timers, reservations)",
+            "CanStartProducing (GathererHub writes IsWorking)",
+            "Harvester.CanStartWork / HasResources (reserve nodes)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "BuildingRequirementController.cs:73-249",
+            "GathererHub.cs:53-72",
+            "Harvester.cs:76-246",
+            "notes/buildings-production.md §3.5"
+          ],
+          "notes": "No single status enum exists."
+        },
+        {
+          "id": "building.history",
+          "concept": "Per-building monthly statistics",
+          "type": "BuildingAnalysis",
+          "access": "analysis.GetAllAnalysisItemDefs(), GetValues(def, from, to), GetLastMonthValue(def), GetLastYearValue(def)",
+          "member_kind": "method",
+          "id_strategy": "building",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_month",
+          "read_safety": "CAUTION",
+          "avoid": [
+            "LogAnalysisData"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "BuildingAnalysis.cs:122-205"
+          ],
+          "notes": "Items: production, efficiency %, upkeep, uptime, dispatch cost, dispatch count. Item asset names UNKNOWN until runtime."
+        }
+      ]
+    },
+    {
+      "id": "production",
+      "title": "Production buildings",
+      "entries": [
+        {
+          "id": "production.recipe",
+          "concept": "Selected recipe",
+          "type": "RecipeUser",
+          "access": "building.recipeUser.currentRecipe (getter only) -> recipe.name",
+          "member_kind": "property",
+          "id_strategy": "definition",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_user_action",
+          "read_safety": "SAFE",
+          "avoid": [
+            "currentRecipe setter / SetInitialRecipe / WriteMySettingsTo (clears storage, fires events)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "RecipeUser.cs:48-49,120-139,463-499"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "production.available_recipes",
+          "concept": "Recipes the building can run",
+          "type": "RecipeUser",
+          "access": "recipeUser.availableRecipes (Recipe[]); filter with techTree.IsRecipeUnlocked",
+          "member_kind": "field",
+          "id_strategy": "definition",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [
+            "knownRecipes (LINQ allocation)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "RecipeUser.cs:31-38,107-118"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "production.io",
+          "concept": "Inputs / outputs and quantities",
+          "type": "Recipe, ProductList, Product",
+          "access": "recipe.ingredients.entries / recipe.result.entries: {definition.name, amount}",
+          "member_kind": "field",
+          "id_strategy": "definition",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [
+            "firstIngredient/firstResult (throw when empty)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Recipe.cs:183-206",
+            "ProductList.cs",
+            "Product.cs:20-22"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "production.cycle",
+          "concept": "Cycle duration",
+          "type": "Recipe, RecipeUser",
+          "access": "recipe.gameDays (respects easyChains; needs GameParametersManager) or gameDaysForPriceCalculation (raw); recipeUser.GetFinalProductionTime() (gameDays / finalSpeed, in game days)",
+          "member_kind": "method",
+          "id_strategy": "definition / building",
+          "source": [
+            "STATIC",
+            "RUNTIME"
+          ],
+          "update_frequency": "on_user_action",
+          "read_safety": "SAFE",
+          "avoid": [
+            "Recipe.gameDays outside the game scene (NRE)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Recipe.cs:46-63,208-227",
+            "RecipeUser.cs:501-527"
+          ],
+          "notes": "finalSpeed is productionSpeed × actor recipe time modifier × efficiency."
+        },
+        {
+          "id": "production.progress",
+          "concept": "Current production progress",
+          "type": "Factory / Module",
+          "access": "Factory: currentProgress of the recipeUser viewed as a Factory (0..1). Gatherer/farm: moduleOwner.modules[i].currentProgress",
+          "member_kind": "field",
+          "id_strategy": "building",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_frame",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Factory.cs:8-127",
+            "Module.cs:13,62-63",
+            "GathererHub.cs:100-107"
+          ],
+          "notes": "Remaining days (derived) are (1 − progress) × GetFinalProductionTime()."
+        },
+        {
+          "id": "production.counters",
+          "concept": "Actual production",
+          "type": "RecipeUser",
+          "access": "producedThisMonth, producedLastMonth, totalProduced, currentProducedAverage (10 months)",
+          "member_kind": "field",
+          "id_strategy": "building",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_frame",
+          "read_safety": "SAFE",
+          "avoid": [
+            "AverageStatistic.currentAverage uses LINQ (minor)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "RecipeUser.cs:51-61,178,329-331"
+          ],
+          "notes": "Counts sum of all result amounts per completed cycle."
+        },
+        {
+          "id": "production.history",
+          "concept": "Historical production / consumption",
+          "type": "RecipeUser, ProductInfoCollection",
+          "access": "recipeUser.GetProducedInRange(def, from, to) / GetConsumedInRange (ListPool); or producedGoods / consumedGoods collections",
+          "member_kind": "method",
+          "id_strategy": "building + product",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_frame",
+          "read_safety": "CAUTION",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "RecipeUser.cs:72-76,361-379,541-551",
+            "ProductInfoCollection.cs:62-112"
+          ],
+          "notes": "Daily buckets; pruned yearly (~1-2 years)."
+        },
+        {
+          "id": "production.inventory",
+          "concept": "Inventory (inputs and outputs share one storage)",
+          "type": "IProductStorage / ProductSpecificProductStorage",
+          "access": "storage.Count(def) for each product of interest (recipe products / acceptedProducts); or reflect private _storage (Dictionary keyed by ProductDefinition.AssetId -> StorageData{pulls, puts, storage})",
+          "member_kind": "method",
+          "id_strategy": "building + product",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_frame",
+          "read_safety": "AVOID_USE_ALTERNATIVE",
+          "avoid": [
+            "IEnumerable enumeration of storage (allocates a Product per entry)",
+            "CanReserve/CanReserveAll/CanStore/Reserve/Clear (GetSafe inserts)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ProductSpecificProductStorage.cs:17-400",
+            "IProductStorage.cs"
+          ],
+          "notes": "Count is storage minus pulls. There is no separate input/output storage; the recipe decides roles."
+        },
+        {
+          "id": "production.capacity",
+          "concept": "Storage capacity",
+          "type": "ProductSpecificProductStorage",
+          "access": "storage.GetSlots(def) / slots (per-product cap)",
+          "member_kind": "method",
+          "id_strategy": "building",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ProductSpecificProductStorage.cs:30,172,192,326",
+            "notes/static-dump.md §5"
+          ],
+          "notes": "Prefab slots: 40 (33 prefabs), 100 (21), 74 (2)."
+        },
+        {
+          "id": "production.inbound_cap",
+          "concept": "Max accepted per product at this building (the 'Max Send' set by suppliers)",
+          "type": "ProductSpecificProductStorage",
+          "access": "reflect private _maxAcceptedMap (MaxAcceptedDictionary keyed by AssetId) TryGetValue; missing = 0 = unlimited. SingleProductStorage: _maxAccepted; InfiniteStorage: _maxAccepted TryGetValue",
+          "member_kind": "reflection",
+          "id_strategy": "building + product",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_user_action",
+          "read_safety": "AVOID_USE_ALTERNATIVE",
+          "avoid": [
+            "ProductSpecificProductStorage.GetMaxAccepted (Utils.GetSafe inserts key->0)",
+            "SetMaxAccepted/ClearMaxAccepted"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ProductSpecificProductStorage.cs:17,59-77",
+            "Utils.cs:269-278",
+            "SingleProductStorage.cs:16,73-75",
+            "InfiniteStorage.cs:23,158-178",
+            "ModuleSharedProductStorage.cs:165-178"
+          ],
+          "notes": "ModuleSharedProductStorage delegates to the owner hub's storage."
+        },
+        {
+          "id": "production.player_product_stats",
+          "concept": "Player per-product cost/profit statistics",
+          "type": "ProductionStatsTracker",
+          "access": "ProductionStatsTracker.instance: GetProducedAmount, GetProductionCost, GetDistributionCost, GetTotalCost, GetSoldCount, GetPriceSold, GetProfit, GetMarkup, GetUsedCount, GetRecipeUsersForProduct",
+          "member_kind": "method",
+          "id_strategy": "product",
+          "source": [
+            "SAVE",
+            "RUNTIME"
+          ],
+          "update_frequency": "per_game_day",
+          "read_safety": "CAUTION",
+          "avoid": [
+            "SetStatsTimeRange (changes UI window)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ProductionStatsTracker.cs:39,115-245,352-641"
+          ],
+          "notes": "Player only; window shifts monthly."
+        },
+        {
+          "id": "production.theoretical_rate",
+          "concept": "Theoretical output per 30 days",
+          "type": "(derived)",
+          "access": "for each result entry: amount × 30 / GetFinalProductionTime() × (1 for a factory, otherwise max(1, moduleCount))",
+          "member_kind": "derived",
+          "id_strategy": "building",
+          "source": [
+            "DERIVED"
+          ],
+          "update_frequency": "on_user_action",
+          "read_safety": "DERIVED",
+          "avoid": [],
+          "confidence": "HIGH",
+          "evidence": [
+            "Factory.cs:102-114",
+            "GathererHub.cs:32",
+            "Harvester.cs:186-206"
+          ],
+          "notes": "Gatherer harvester speed also scales with deposit/pollution factor (Harvester.GetProductionSpeed)."
+        },
+        {
+          "id": "production.bottleneck",
+          "concept": "Bottleneck / limiting input",
+          "type": "(derived)",
+          "access": "Compare per-input consumption rate (ingredient amount / cycle time) with inbound flow (destination slots into this building, recent deliveries) and stock; flag inputs with Count < amount while UserEnabled and not IsWorking; flag output full",
+          "member_kind": "derived",
+          "id_strategy": "building",
+          "source": [
+            "DERIVED"
+          ],
+          "update_frequency": "per_game_day",
+          "read_safety": "DERIVED",
+          "avoid": [],
+          "confidence": "INFERRED",
+          "evidence": [
+            "notes/buildings-production.md §3.5"
+          ],
+          "notes": "Report evidence, leave judgement to the AI."
+        }
+      ]
+    },
+    {
+      "id": "gatherers",
+      "title": "Gatherers and farms",
+      "entries": [
+        {
+          "id": "gatherer.hub",
+          "concept": "Gatherer / farm hub and its harvesters or fields",
+          "type": "GathererHub / Farm, ModuleOwner",
+          "access": "building.recipeUser is GathererHub; building.moduleOwner: modules (List<Module>), moduleCount, maxModuleCount, modulePrefab, radius",
+          "member_kind": "property",
+          "id_strategy": "building",
+          "source": [
+            "SAVE",
+            "STATIC"
+          ],
+          "update_frequency": "on_user_action",
+          "read_safety": "SAFE",
+          "avoid": [
+            "StartBuildNode",
+            "CanStartProducing"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "GathererHub.cs:8-186",
+            "ModuleOwner.cs:120-186",
+            "Farm.cs",
+            "Field.cs",
+            "notes/static-dump.md §5"
+          ],
+          "notes": "Harvester/field modules are Buildings themselves (building.module.moduleOwner -> hub). maxModuleCount = 3 for all hub prefabs."
+        },
+        {
+          "id": "gatherer.resource",
+          "concept": "Resource type",
+          "type": "Recipe, Harvester",
+          "access": "hub.currentRecipe.result (product); recipe.requiredModules[0] (harvester/field prefab); harvester private _resources (List<ResourceNode>) -> resourceProduct",
+          "member_kind": "field",
+          "id_strategy": "definition",
+          "source": [
+            "STATIC",
+            "SAVE"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Recipe.cs:198-199",
+            "GathererHub.cs:126-132",
+            "Harvester.cs:11-50"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "gatherer.rate",
+          "concept": "Extraction / production rate",
+          "type": "Harvester, Field, (derived)",
+          "access": "Harvester speed: each node counts 1 while it still has resources, otherwise depletedModifier; the sum over nodes / maxResources × _efficiency, clamped to the range minGuaranteedProductionSpeed .. 1. Field speed is _efficiency. Per-harvester rate is speed × hub final speed / recipe days",
+          "member_kind": "derived",
+          "id_strategy": "building",
+          "source": [
+            "DERIVED"
+          ],
+          "update_frequency": "per_game_day",
+          "read_safety": "DERIVED",
+          "avoid": [
+            "Harvester.CanStartWork/HasResources/StartWork (reserve/mine nodes)"
+          ],
+          "confidence": "HIGH",
+          "evidence": [
+            "Harvester.cs:186-206",
+            "Field.cs"
+          ],
+          "notes": "Replicate from fields rather than calling methods; GetProductionSpeed purity not fully verified."
+        },
+        {
+          "id": "gatherer.deposits",
+          "concept": "Deposits and depletion",
+          "type": "ResourceNode, ResourceSite",
+          "access": "World.ResourceNodes.GetResource(tile) / resourceNodes[tile]: resourceProduct, resourceAmount, canBeHarvestedIfDepleted, productionSpeedModifierIfDepleted; region.resourceSites (resourceAmount)",
+          "member_kind": "field",
+          "id_strategy": "tile",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_game_day",
+          "read_safety": "SAFE",
+          "avoid": [
+            "ResourceNode.All first access (lazy quad-tree allocation)",
+            "MineResource/Reserve"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ResourceNode.cs",
+            "WorldResourceNodes.cs:9-28",
+            "Region.cs:59-61"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "gatherer.water",
+          "concept": "Water / fertility requirements",
+          "type": "Recipe",
+          "access": "Water appears only as a recipe ingredient (consumed from hub storage when a module starts) and via water harvesters; Recipe.usedByWaterResourceHarvester",
+          "member_kind": "field",
+          "id_strategy": "definition",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "GathererHub.cs:109-119",
+            "Recipe.cs:187"
+          ],
+          "notes": "No fertility concept exists in code (grep). Fields slowed by pollution."
+        },
+        {
+          "id": "gatherer.delivery",
+          "concept": "Output delivered to hub or harvester storage",
+          "type": "GathererHub",
+          "access": "hub.productionIsDeliveredToHub",
+          "member_kind": "field",
+          "id_strategy": "building",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "GathererHub.cs:114-117,179-186",
+            "Harvester.cs:175-181",
+            "notes/static-dump.md §5"
+          ],
+          "notes": "productionIsDeliveredToHub: 0 on 14 hubs, 1 on 9."
+        }
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Logistics",
+      "entries": [
+        {
+          "id": "logistics.slots",
+          "concept": "Destinations of a building",
+          "type": "ManualDestinationManager, ManualDestinationSlot",
+          "access": "building.manualDestinations.slots (List<ManualDestinationSlot>, copy); keep slots whose destination and product are both set",
+          "member_kind": "property",
+          "id_strategy": "destination_slot",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_user_action",
+          "read_safety": "CAUTION",
+          "avoid": [
+            "UpdateSlots/ClearSlot/GetOrAddSlotWithoutDestination",
+            "slotCount setter"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Building.cs:173",
+            "ManualDestinationManager.cs:44-76,165-186,341-349"
+          ],
+          "notes": "In infinite-slot mode an empty slot is kept at index 0; indices shift."
+        },
+        {
+          "id": "logistics.source_building",
+          "concept": "Source building of a route",
+          "type": "ManualDestinationSlot",
+          "access": "slot.origin (same object as destinationManager.logistics) -> .building",
+          "member_kind": "property",
+          "id_strategy": "building",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ManualDestinationSlot.cs:12,42"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "logistics.product",
+          "concept": "Product transported",
+          "type": "ManualDestinationSlot",
+          "access": "slot.product.name (display: productName)",
+          "member_kind": "property",
+          "id_strategy": "definition",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_user_action",
+          "read_safety": "SAFE",
+          "avoid": [
+            "product setter (fires events, may null destination)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ManualDestinationSlot.cs:29,130-145"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "logistics.destination",
+          "concept": "Destination building / shop / State building",
+          "type": "ManualDestinationSlot, BuildingLogistics",
+          "access": "slot.destination (BuildingLogistics) -> .building (key, prefab, tags: Shop, ...), .userName; module-resolved endpoint: destinationManager.GetDestinationForSlot(slot); town: destination.settlement.settlementName",
+          "member_kind": "property",
+          "id_strategy": "building",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_user_action",
+          "read_safety": "SAFE",
+          "avoid": [
+            "destination setter (cancels requests, pathfinding, events)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ManualDestinationSlot.cs:23,58-82",
+            "ManualDestinationManager.cs:236-258",
+            "ManualDestinationSlotViewModel.cs:31,43"
+          ],
+          "notes": "Destination kind derived from building tags/components (Shop, Warehouse, StateTradingHandler, RecipeUser, Wholesaler)."
+        },
+        {
+          "id": "logistics.max_send",
+          "concept": "Max Send",
+          "type": "ManualDestinationSlot, IProductStorage",
+          "access": "when slot.autoMaxAccepted is set and the destination has a Shop: Shop demand (see logistics.max_send_auto); otherwise destination.productStorage max-accepted for slot.product read via TryGetValue (see production.inbound_cap). 0 = unlimited",
+          "member_kind": "derived",
+          "id_strategy": "destination building + product",
+          "source": [
+            "SAVE",
+            "DERIVED"
+          ],
+          "update_frequency": "on_user_action",
+          "read_safety": "AVOID_USE_ALTERNATIVE",
+          "avoid": [
+            "slot.maxAcceptedAtDestination and GetMaxAccepted on ProductSpecificProductStorage (GetSafe insert)",
+            "ManualDestinationSlotViewModel.SetMaxAmount/AddToMaxAmount"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ManualDestinationSlotViewModel.cs:63,81-115,253-259,308-320",
+            "ManualDestinationSlot.cs:159-173,187",
+            "ProductSpecificProductStorage.cs:59-77"
+          ],
+          "notes": "UI 'max amount' (label text in prefab: HIGH that it is 'Max Send'). It caps destination stock incl. in-flight deliveries and is SHARED by all origins shipping that product to that destination; it is not a per-trip amount."
+        },
+        {
+          "id": "logistics.max_send_auto",
+          "concept": "Max Send in automatic mode",
+          "type": "ManualDestinationSlot, Shop",
+          "access": "slot.autoMaxAccepted (bool); value comes from shop.GetDemand(product, origin.owner)",
+          "member_kind": "field",
+          "id_strategy": "destination_slot",
+          "source": [
+            "SAVE",
+            "RUNTIME"
+          ],
+          "update_frequency": "per_consumption_tick (default 15 game days)",
+          "read_safety": "SAFE",
+          "avoid": [
+            "autoMaxAccepted setter"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ManualDestinationSlot.cs:38,46-56",
+            "Shop.cs:234-246,642-645",
+            "ManualDestinationSlotViewModel.cs:65-77"
+          ],
+          "notes": "Toggle only offered for shop destinations."
+        },
+        {
+          "id": "logistics.min_keep",
+          "concept": "Min Keep",
+          "type": "ManualDestinationSlot",
+          "access": "slot.minStoredAtSource (int 0..99; int.MaxValue = keep all)",
+          "member_kind": "property",
+          "id_strategy": "destination_slot",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_user_action",
+          "read_safety": "SAFE",
+          "avoid": [
+            "minStoredAtSource setter",
+            "AddToMinAmount/SetMinAmount"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ManualDestinationSlot.cs:35,175-189",
+            "ManualDestinationSlotViewModel.cs:79,93-103,261-343",
+            "save bytes: _minStoredAtSource=4"
+          ],
+          "notes": "Per slot (per route), unlike Max Send."
+        },
+        {
+          "id": "logistics.slot_flags",
+          "concept": "Route paused / wait for full vehicle / error",
+          "type": "ManualDestinationSlot",
+          "access": "slot.paused, slot.waitTillVehicleFull, slot.validationError / hasError",
+          "member_kind": "field",
+          "id_strategy": "destination_slot",
+          "source": [
+            "SAVE",
+            "RUNTIME"
+          ],
+          "update_frequency": "on_user_action",
+          "read_safety": "SAFE",
+          "avoid": [
+            "Validate*/ValidateRequestForSlot"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ManualDestinationSlot.cs:17-20,32,191-205"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "logistics.auto_warehouse",
+          "concept": "Auto-warehouse mode (slots dormant)",
+          "type": "BuildingLogistics, IWarehouseClient",
+          "access": "AUTO_WH bit of building.logistics.options (LogisticsUserOptions) is set; target warehouse: GetComponent<IWarehouseClient>().warehouse",
+          "member_kind": "property",
+          "id_strategy": "building",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_user_action",
+          "read_safety": "SAFE",
+          "avoid": [
+            "warehouse setter",
+            "DestinationsPanelViewModel.autoWhDispatches (mutates VM lists)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "BuildingLogistics.cs:62-81",
+            "ManualDestinationManager.cs:658-699,778-785"
+          ],
+          "notes": "Predicted pushes: IWarehousePushPredictor.GetPredictedPush(ownList)."
+        },
+        {
+          "id": "logistics.transport_mode",
+          "concept": "Transport mode",
+          "type": "ManualDestinationManager, ManualDestinationSource, NetworkManager",
+          "access": "destinationManager.GetNetworkForSlot(slot).networkName ('Road', 'Rail', air network name); slot.source (null = building's own trucks) -> module prefab name",
+          "member_kind": "method",
+          "id_strategy": "destination_slot",
+          "source": [
+            "SAVE",
+            "STATIC"
+          ],
+          "update_frequency": "on_user_action",
+          "read_safety": "SAFE",
+          "avoid": [
+            "source setter",
+            "AddSource/RemoveSource"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ManualDestinationManager.cs:260-276,806",
+            "ManualDestinationSource.cs:25-28",
+            "ConnectivityNetworks.cs:15,27"
+          ],
+          "notes": "Air network name UNKNOWN (U5); no ship transport found (INFERRED)."
+        },
+        {
+          "id": "logistics.distance",
+          "concept": "Route distance",
+          "type": "ManualDestinationSlot",
+          "access": "slot.distance (tile count of cached path; straight-line for air; 0 if no cached path)",
+          "member_kind": "property",
+          "id_strategy": "destination_slot",
+          "source": [
+            "RUNTIME"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "SAFE",
+          "avoid": [
+            "BuildingTransportManager.AddPath / PathCache.UpdateCachedPath (start pathfinding)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ManualDestinationSlot.cs:101-116",
+            "PathCache.cs:53-114",
+            "NetworkManager.cs:29-32",
+            "AirNetworkManager.cs:38-41"
+          ],
+          "notes": "Paths are built on worker threads; read on main thread only."
+        },
+        {
+          "id": "logistics.dispatch_cost",
+          "concept": "Cost per vehicle dispatch on a route",
+          "type": "ManualDestinationSlot",
+          "access": "slot.dispatchCost (Formula evaluation with distance, productAmount=1, actor modifier, difficulty.dispatch)",
+          "member_kind": "property",
+          "id_strategy": "destination_slot",
+          "source": [
+            "RUNTIME"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "CAUTION",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ManualDestinationSlot.cs:118-128",
+            "DefaultTransportRequestPaymentHandlerBehaviour.cs:40-49",
+            "Formula.cs:11,32-36",
+            "notes/static-dump.md §2"
+          ],
+          "notes": "Per vehicle, not per unit. Asset formula ManualDestinationDispatchCost: (250 + distance × 10) × difficulty × actor; depots/terminals have their own (TruckDepot 350+15d, TrainTerminal 2250+25d, ZeppelinField 7500+40d, BoatDepot 4000+20d)."
+        },
+        {
+          "id": "logistics.per_trip_amount",
+          "concept": "Dispatch quantity",
+          "type": "(derived) mirrors ManualDestinationManager.GetRequestedAmount",
+          "access": "min(vehicle capacity, max(originStock - minKeep, 0), room under Max at destination counting incoming), further capped by contracts/world events; 0 if waitTillVehicleFull and below capacity",
+          "member_kind": "derived",
+          "id_strategy": "destination_slot",
+          "source": [
+            "DERIVED"
+          ],
+          "update_frequency": "per_dispatch",
+          "read_safety": "DERIVED",
+          "avoid": [
+            "calling GetRequestedAmount (touches FreeSpace/reservation paths; unnecessary)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ManualDestinationManager.cs:595-626",
+            "TransportJobVehicleDispatcher.cs:8-19"
+          ],
+          "notes": "Vehicle capacity: fleet.GetVehicleCapacity(product)."
+        },
+        {
+          "id": "logistics.in_flight",
+          "concept": "Active transport requests",
+          "type": "ManualDestinationSlot, TransportRequest",
+          "access": "slot.activeRequests.Count; TransportRequestManager entities: status, type, origin, destination, product, productAmount, distance, networkName",
+          "member_kind": "field",
+          "id_strategy": "TransportRequestHandle.id (session)",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_dispatch",
+          "read_safety": "CAUTION",
+          "avoid": [
+            "Validate/Complete/Fail/PayVehicleDispatch/Cancel*"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ManualDestinationSlot.cs:15",
+            "TransportRequest.cs:86-89",
+            "notes/save-format.md §3"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "logistics.logistic_requests",
+          "concept": "Warehouse pull requests (Logistics panel)",
+          "type": "LogisticNetworkEndpoint, LogisticRequest, LogisticNetworkAgent",
+          "access": "building.GetComponent<LogisticNetworkEndpoint>().requests: product, requestedAmount (int.MaxValue = fill), remainingAmount, amountBeingMoved, priority, active, useFullVehicles, allowedGraphs, expenses (this/last month); endpoint.isPullDisabled; actor.logisticNetwork.GetRequests(ownList)",
+          "member_kind": "property",
+          "id_strategy": "logistic_request",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_user_action",
+          "read_safety": "CAUTION",
+          "avoid": [
+            "requestName (localization)",
+            "all setters, MakeRequest/CancelRequest/SetPullStatus, priority changes"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "LogisticRequest.cs:62-184",
+            "LogisticNetworkEndpoint.cs:13-20",
+            "LogisticNetworkAgent.cs:19,163-190",
+            "GameOptions.cs:173"
+          ],
+          "notes": "Pull model; providers resolved dynamically. Disabled globally if GameOptions.logisticRequestsEnabled is false."
+        },
+        {
+          "id": "logistics.vehicles",
+          "concept": "Vehicles and their state",
+          "type": "VehicleManager, Vehicle, TransportJob",
+          "access": "VehicleManager.instance.vehicles (HashSet<Vehicle>, copy): vehicleName (prefab), networkName, fleet.building, GetOwner(), productStorage (cargo), IsGoingHome(), transform.position; activeJob as TransportJob: protected _origin/_destination/_product/_productAmount (reflection) or job.tooltipData.origin/destination",
+          "member_kind": "property",
+          "id_strategy": "vehicle",
+          "source": [
+            "SAVE",
+            "RUNTIME"
+          ],
+          "update_frequency": "per_frame",
+          "read_safety": "CAUTION",
+          "avoid": [
+            "mover internals while ThreadPool update runs (WaypointMover/TruckMover/TrainMover)",
+            "ExecuteJob/CancelJob/SetId/OverrideMaxSpeed",
+            "VehicleManager.NextVehicleIndex"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "VehicleManager.cs:27-127",
+            "Vehicle.cs:10-317",
+            "TransportJob.cs:8",
+            "VehicleMovementManager.cs:42-119"
+          ],
+          "notes": "Not ECS. 91 vehicles in the sample save, 535 in another."
+        },
+        {
+          "id": "logistics.fleet",
+          "concept": "Fleet per building",
+          "type": "JITVehicleFleet, VehicleDispatcher",
+          "access": "fleet.vehiclePrefab.name, activeVehicleCount, inactiveVehicleCount, maximumVehicleAmount, GetVehicleCapacity(product); dispatcher.pendingJobCount, availableVehicles, maxDispatchedVehiclesDaily",
+          "member_kind": "property",
+          "id_strategy": "building",
+          "source": [
+            "SAVE",
+            "STATIC"
+          ],
+          "update_frequency": "per_dispatch",
+          "read_safety": "SAFE",
+          "avoid": [
+            "PullVehicle/ReturnVehicle/RegisterVehicle",
+            "DeliverTo/PickUpFrom"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "JITVehicleFleet.cs:10",
+            "VehicleDispatcher.cs:9-199"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "logistics.vehicle_cost",
+          "concept": "Vehicle cost",
+          "type": "(see company.vehicle_expenses)",
+          "access": "dispatch fee per vehicle dispatch (slot.dispatchCost predicted; ledger actual)",
+          "member_kind": "derived",
+          "id_strategy": "-",
+          "source": [
+            "SAVE",
+            "RUNTIME"
+          ],
+          "update_frequency": "per_dispatch",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "BuildingTransportManager.cs:447-460",
+            "DefaultTransportRequestPaymentHandlerBehaviour.cs:22-29"
+          ],
+          "notes": "No per-vehicle purchase or upkeep code path found."
+        },
+        {
+          "id": "logistics.routes",
+          "concept": "Route geometry",
+          "type": "PathCache, CachedPath",
+          "access": "BuildingTransportManager.TryGetPath(destination, network) (gives the path) -> tile list (volatile)",
+          "member_kind": "method",
+          "id_strategy": "destination_slot",
+          "source": [
+            "RUNTIME"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "CAUTION",
+          "avoid": [
+            "AddPath/RemovePath/UpdatePaths"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "PathCache.cs:53-114",
+            "CachedPath.cs:86-129"
+          ],
+          "notes": "Paths are pooled and recomputed on worker threads; copy immediately or skip."
+        },
+        {
+          "id": "logistics.history",
+          "concept": "Logistics history",
+          "type": "ProductionStatsTracker, BuildingAnalysis, LogisticRequestExpensesTracker",
+          "access": "ProductionStatsTracker._distributionCostRecord (player, per product per month); BuildingAnalysis dispatch cost and dispatch count items (per building per month); LogisticRequest.expenses",
+          "member_kind": "method",
+          "id_strategy": "building / product",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_month",
+          "read_safety": "CAUTION",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ProductionStatsTracker.cs:39,555-641",
+            "VehicleDispatcher.cs:26-27,192-199",
+            "LogisticRequestExpensesTracker.cs"
+          ],
+          "notes": "Manual slots keep no per-slot history."
+        }
+      ]
+    },
+    {
+      "id": "graph",
+      "title": "Production graph",
+      "entries": [
+        {
+          "id": "graph.nodes",
+          "concept": "Graph nodes",
+          "type": "(derived)",
+          "access": "building keys (id_strategies.building) of player/AI production, warehouse, shop and State buildings",
+          "member_kind": "derived",
+          "id_strategy": "building",
+          "source": [
+            "DERIVED"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "DERIVED",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "notes/logistics.md §7"
+          ],
+          "notes": "Never key nodes by display name."
+        },
+        {
+          "id": "graph.edges_configured",
+          "concept": "Configured supply edges",
+          "type": "(derived) from ManualDestinationSlot",
+          "access": "edge(origin key -> destination key, product, max_send, min_keep, mode, paused, auto_wh_dormant)",
+          "member_kind": "derived",
+          "id_strategy": "destination_slot",
+          "source": [
+            "SAVE",
+            "DERIVED"
+          ],
+          "update_frequency": "on_user_action",
+          "read_safety": "DERIVED",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "notes/logistics.md §9"
+          ],
+          "notes": "Reverse index gives suppliers of a building."
+        },
+        {
+          "id": "graph.edges_warehouse",
+          "concept": "Auto-warehouse and warehouse request edges",
+          "type": "(derived)",
+          "access": "AUTO_WH buildings -> IWarehouseClient.warehouse; LogisticRequest endpoints <- providers (resolved per dispatch); observed edges from TransportRequest/vehicle jobs (origin, destination, product)",
+          "member_kind": "derived",
+          "id_strategy": "building",
+          "source": [
+            "RUNTIME",
+            "DERIVED"
+          ],
+          "update_frequency": "per_dispatch",
+          "read_safety": "DERIVED",
+          "avoid": [],
+          "confidence": "HIGH",
+          "evidence": [
+            "RecipeWarehouseClient.cs:62-85",
+            "LogisticRequest.cs"
+          ],
+          "notes": "Pull edges have no fixed provider; mark them 'observed' with a time window."
+        },
+        {
+          "id": "graph.recipe_graph",
+          "concept": "Static product/recipe graph",
+          "type": "RecipeDatabase",
+          "access": "RecipeDatabase.instance.GetRecipes(product), GetRecipesWhereProductIsUsed(product), GetOriginsOfRecipe(recipe), GetOriginsOfProduct(product)",
+          "member_kind": "method",
+          "id_strategy": "definition",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "RecipeDatabase.cs"
+          ],
+          "notes": "Excludes recipes flagged excludeInRecipeGraph."
+        }
+      ]
+    },
+    {
+      "id": "cities",
+      "title": "Cities and regions",
+      "entries": [
+        {
+          "id": "city.enumerate",
+          "concept": "All cities",
+          "type": "SettlementManager",
+          "access": "ManagerBehaviour<SettlementManager>.instance.settlements (List<SettlementBase>, copy)",
+          "member_kind": "field",
+          "id_strategy": "settlement",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "CAUTION",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "SettlementManager.cs:9-27"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "city.identity",
+          "concept": "City identity",
+          "type": "SettlementBase",
+          "access": "id, settlementName (same as the region name), region",
+          "member_kind": "property",
+          "id_strategy": "settlement",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "SettlementBase.cs:15-68",
+            "Settlement.cs:212-213"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "city.type_tier",
+          "concept": "City type and tier",
+          "type": "SettlementType, SettlementTier",
+          "access": "type.name / settlementTypeName; tier.name / tierName / tierId; tier.threshold, placedShopsCount, neededProducts",
+          "member_kind": "property",
+          "id_strategy": "definition",
+          "source": [
+            "SAVE",
+            "STATIC"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "SAFE",
+          "avoid": [
+            "tier setter"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "SettlementType.cs",
+            "SettlementTier.cs:10"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "city.population",
+          "concept": "Population",
+          "type": "SettlementBase, SettlementGrowth",
+          "access": "population; growth.populationLimit, populationLimitReached, GetPopulationCapacity()",
+          "member_kind": "property",
+          "id_strategy": "settlement",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_consumption_tick (default 15 game days)",
+          "read_safety": "SAFE",
+          "avoid": [
+            "GetTierForCurrentPopulation before world ready (RNG)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "SettlementGrowth.cs:18-131"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "city.growth_state",
+          "concept": "Prosperity / growth state",
+          "type": "(derived) mirrors SettlementUiViewModel",
+          "access": "first matching label, in this order: WaitingForSponsor (growth.IsWaitingForSponsor()), Bloated (populationLimitReached), Prospering (IsProspering()), Growing (IsGrowing()); otherwise Stagnating",
+          "member_kind": "derived",
+          "id_strategy": "settlement",
+          "source": [
+            "DERIVED"
+          ],
+          "update_frequency": "per_consumption_tick (default 15 game days)",
+          "read_safety": "DERIVED",
+          "avoid": [
+            "TryGrow/ChangePopulation/ForceGrowth"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "SettlementUiViewModel.cs:98-125",
+            "SettlementGrowth.cs:152-208"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "city.development",
+          "concept": "City advancement (tier-up contracts)",
+          "type": "SettlementAdvancement, AdvancementContract",
+          "access": "settlement.advancement: canAdvance, canAccept, isAdvancing, contracts (product, amount, delivered, payOutSum), selectedShop",
+          "member_kind": "property",
+          "id_strategy": "settlement",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "SAFE",
+          "avoid": [
+            "StartAdvancement/Accept/Cancel/SelectShop/PayOut"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "SettlementAdvancement.cs:10-470",
+            "AdvancementContract.cs"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "city.dead",
+          "concept": "Dead city",
+          "type": "SettlementBase",
+          "access": "isDead",
+          "member_kind": "property",
+          "id_strategy": "settlement",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "SAFE",
+          "avoid": [
+            "Kill"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "SettlementBase.cs:100,123-126"
+          ],
+          "notes": "Dead city demand multiplier = 0."
+        },
+        {
+          "id": "city.shops",
+          "concept": "Shops of a city",
+          "type": "SettlementBuildingCollection",
+          "access": "settlement.buildings.shops (List<Shop>, copy)",
+          "member_kind": "field",
+          "id_strategy": "shop",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "CAUTION",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "SettlementBuildingCollection.cs"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "city.contract",
+          "concept": "City delivery contract offer",
+          "type": "SettlementContractManager, DeliveryContract",
+          "access": "settlement.contracts.currentContract: product, amount, delivered, reserved, price, reward, penalty, remainingDays, acceptedActor",
+          "member_kind": "property",
+          "id_strategy": "settlement",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_game_day",
+          "read_safety": "SAFE",
+          "avoid": [
+            "Offer/Accept/Reject/CompleteContract"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "SettlementContractManager.cs:30-196",
+            "DeliveryContract.cs",
+            "Contract.cs"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "city.permits_local",
+          "concept": "Construction permit for the city's region",
+          "type": "(see region.permits)",
+          "access": "region.permits entry for settlement.region",
+          "member_kind": "derived",
+          "id_strategy": "region",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "DERIVED",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [],
+          "notes": ""
+        },
+        {
+          "id": "region.enumerate",
+          "concept": "All regions",
+          "type": "RegionManager",
+          "access": "ManagerBehaviour<RegionManager>.instance.regions; GetRegionById(Guid); GetRegionByTile(tile)",
+          "member_kind": "property",
+          "id_strategy": "region",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "RegionManager.cs:40-83"
+          ],
+          "notes": "Not World.REGION_SIZE / Tile.GetRegionForTile (render chunks)."
+        },
+        {
+          "id": "region.identity",
+          "concept": "Region identity",
+          "type": "Region",
+          "access": "id (Guid), regionName, center (tile), tiles.count, settlement (null if empty), regionalBuilding",
+          "member_kind": "property",
+          "id_strategy": "region",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [
+            "FindAvailableResources/Tick"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Region.cs:17-218"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "region.resources",
+          "concept": "Regional resources",
+          "type": "Region",
+          "access": "availableResources (Dictionary<ProductDefinition,int> tile counts, copy; int.MaxValue = water placeholder); resourceSites (product, center, radius, resourceAmount)",
+          "member_kind": "field",
+          "id_strategy": "region + product",
+          "source": [
+            "SAVE",
+            "RUNTIME"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "CAUTION",
+          "avoid": [
+            "FindAvailableResources"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Region.cs:59-61,121-188",
+            "ResourceSite.cs"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "region.permits",
+          "concept": "Ownership / controlled regions / permits",
+          "type": "PermitManager, Permit",
+          "access": "reflect PermitManager private _permits (Dictionary<Region, Dictionary<PermitType, Permit>>): TryGetValue(region) then TryGetValue(fullPermit) -> owner, amountPaid, type",
+          "member_kind": "reflection",
+          "id_strategy": "region",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "AVOID_USE_ALTERNATIVE",
+          "avoid": [
+            "GetPermitOwner/GetPermitCost/OwnsPermitForRegion/IsPermitTaken/TryGetPermit (GetSafe insert)",
+            "AuctionPermit/GrantPermitToActor/TransferPermit/RevokePermit"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "PermitManager.cs:34-53,139-217",
+            "Permit.cs",
+            "PermitType.cs:16-32"
+          ],
+          "notes": "When permitManagementEnabled is false, all regions are granted to the player."
+        },
+        {
+          "id": "region.permit_cost",
+          "concept": "Permit cost",
+          "type": "(derived) mirrors PermitManager.GetPermitCost",
+          "access": "round(region.tiles.count × fullPermit.topLevelParent.costPerTile × costModifier × (1 if the region has a settlement, otherwise 0.75))",
+          "member_kind": "derived",
+          "id_strategy": "region",
+          "source": [
+            "DERIVED"
+          ],
+          "update_frequency": "static",
+          "read_safety": "DERIVED",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "PermitManager.cs:201-215"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "region.cooldowns",
+          "concept": "Permit auction/purchase cooldowns",
+          "type": "Region",
+          "access": "permitAuctionCooldown, permitPurchaseCooldown (days)",
+          "member_kind": "field",
+          "id_strategy": "region",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_game_day",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Region.cs:208-218"
+          ],
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "shops",
+      "title": "Shops",
+      "entries": [
+        {
+          "id": "shop.type",
+          "concept": "Shop type",
+          "type": "Shop (component on a Building prefab)",
+          "access": "shop.building.prefab.name; buildingName (localized); soldTags",
+          "member_kind": "property",
+          "id_strategy": "shop",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Shop.cs:11-132"
+          ],
+          "notes": "One Shop class; store kinds differ by prefab data. Owned by the settlement actor."
+        },
+        {
+          "id": "shop.accepted",
+          "concept": "Accepted products",
+          "type": "Shop",
+          "access": "shop.sold (List<ProductDefinition>, copy immediately; re-sorted in place on price updates)",
+          "member_kind": "field",
+          "id_strategy": "definition",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "CAUTION",
+          "avoid": [
+            "GetValidProducts (allocates, shuffles)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Shop.cs:132,333-361,537",
+            "notes/static-dump.md §5"
+          ],
+          "notes": " Shop prefabs use maxProducts = 8."
+        },
+        {
+          "id": "shop.inventory",
+          "concept": "Current inventory",
+          "type": "Shop, IProductStorage",
+          "access": "shop.storage.Count(product); capacity: slots of shop.storage as a ProductSpecificProductStorage; per-actor delivered stock: reflect private _deliveredByActors TryGetValue(actor) then TryGetValue(product)",
+          "member_kind": "method",
+          "id_strategy": "shop + product",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_dispatch",
+          "read_safety": "AVOID_USE_ALTERNATIVE",
+          "avoid": [
+            "GetDeliveredByActorCount (GetSafe insert into a saved dictionary)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ShopProductViewModel.cs:15-21",
+            "Shop.cs:298,484-487"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "shop.demand",
+          "concept": "Demand",
+          "type": "Shop",
+          "access": "shop.GetDemand(product, null) raw; GetDemand(product, actor) with actor modifier",
+          "member_kind": "method",
+          "id_strategy": "shop + product",
+          "source": [
+            "RUNTIME"
+          ],
+          "update_frequency": "per_consumption_tick (default 15 game days)",
+          "read_safety": "SAFE",
+          "avoid": [
+            "UpdateDemand (mutates)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Shop.cs:83,234-246,363-396,671-674",
+            "notes/static-dump.md §2"
+          ],
+          "notes": "_demand is not saved; rebuilt on load. Units per consumption interval (HIGH). Asset formula Shop Demand: shopModifier + ceil(0.05 × ceil(population / 50000) × (30 / timeToProduce) × producedAmount × tierValue × difficulty)."
+        },
+        {
+          "id": "shop.demand_interval",
+          "concept": "Demand interval",
+          "type": "SettlementGrowthConfig",
+          "access": "settlement.config.growth.consumeProductsInterval (days)",
+          "member_kind": "field",
+          "id_strategy": "settlement",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "SettlementGrowthConfig.cs:64-71",
+            "Settlement.cs:59-82"
+          ],
+          "notes": "Code default 15; live value from data."
+        },
+        {
+          "id": "shop.price",
+          "concept": "Current price",
+          "type": "Shop",
+          "access": "shop.GetPrice(product, Player.humanPlayer); value is market price × (1 + market modifier + shop modifier + difficulty.prices) × actor price modifier",
+          "member_kind": "method",
+          "id_strategy": "shop + product",
+          "source": [
+            "RUNTIME"
+          ],
+          "update_frequency": "per_month",
+          "read_safety": "SAFE",
+          "avoid": [
+            "GetPrice(p, null) (NRE)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Shop.cs:188-201",
+            "ShopUIViewModel.cs:50-52"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "shop.price_multiplier",
+          "concept": "Price multiplier",
+          "type": "Shop",
+          "access": "UI %: (1 + GlobalMarket modifier + shop.GetShopModifier(product, actor)) × 100; shop _priceModifiers (saved)",
+          "member_kind": "method",
+          "id_strategy": "shop + product",
+          "source": [
+            "SAVE",
+            "RUNTIME"
+          ],
+          "update_frequency": "per_month",
+          "read_safety": "SAFE",
+          "avoid": [
+            "UpdatePriceModifiers (RNG)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Shop.cs:194-201,535-570",
+            "ProductPriceViewModel.cs:51"
+          ],
+          "notes": "Per-shop modifiers reassigned every 45-90 days by sales rank."
+        },
+        {
+          "id": "shop.history",
+          "concept": "Sales / demand / stock history",
+          "type": "Shop, ProductInfoCollection",
+          "access": "overall: shop.GetSoldCount(product, period|from,to); demand: GetDemandRanged(...) (ListPool); per actor: reflect _sales/_salesFigures/_storageFigures with TryGetValue",
+          "member_kind": "method",
+          "id_strategy": "shop + product",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_consumption_tick (default 15 game days)",
+          "read_safety": "CAUTION",
+          "avoid": [
+            "GetSoldCount(actor,...)/GetSalesFigures/GetSoldCountRanged/GetSalesFiguresRanged/GetStorageRanged (GetSafe insert)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Shop.cs:258-307,437-443,491-509"
+          ],
+          "notes": "Day-bucketed; ~1-2 years kept. Revenue amounts saved as ushort (wrap > 65535)."
+        },
+        {
+          "id": "shop.city_aggregate",
+          "concept": "City-level product statistics",
+          "type": "SettlementProductStatistics",
+          "access": "settlement.productStatistics: demand, sold, stored (avoid per-actor overloads)",
+          "member_kind": "method",
+          "id_strategy": "settlement + product",
+          "source": [
+            "RUNTIME"
+          ],
+          "update_frequency": "per_consumption_tick (default 15 game days)",
+          "read_safety": "CAUTION",
+          "avoid": [
+            "GetSoldCount(p, period, actor), GetSalesFigures(...)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "SettlementProductStatistics.cs"
+          ],
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "static",
+      "title": "Static economy data",
+      "entries": [
+        {
+          "id": "static.registry",
+          "concept": "Definition database",
+          "type": "GameData, GameDataManifest",
+          "access": "GameData.instance.GetAssetsRO(typeof(T)); GetAsset<T>(name); TryGetAsset<T>(name)",
+          "member_kind": "method",
+          "id_strategy": "definition",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "on_load",
+          "read_safety": "SAFE",
+          "avoid": [
+            "GameData.editorInstance (re-initializes)",
+            "GetAssets<T>() without returning the pooled list",
+            "GetAsset(int) (throws; session ids)",
+            "Register*/Enable*/Disable*/OnGameDataLoaded"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "GameData.cs:26-340",
+            "GameDataManifest.cs:14-449"
+          ],
+          "notes": "GetAssetsRO uses GetSafe on _typeMap for unknown types: only query known types."
+        },
+        {
+          "id": "static.products",
+          "concept": "Products",
+          "type": "ProductDefinition",
+          "access": "name (id), productName (localized), category / productCategory, groupName, tags, endGameProduct, disableContracts, demandModifier, price (Formula; .formula text)",
+          "member_kind": "field",
+          "id_strategy": "definition",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [
+            "AssetId (session-only)",
+            "SetIcon/SetVisualRepresentation/category setter"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ProductDefinition.cs:11-269"
+          ],
+          "notes": "151 products have market entries in the sample save."
+        },
+        {
+          "id": "static.product_categories",
+          "concept": "Product categories",
+          "type": "ProductCategory / DataCategory",
+          "access": "name, categoryName, parentCategory, priceMultiplier, growthMultiplier, uiOrder",
+          "member_kind": "field",
+          "id_strategy": "definition",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ProductCategory.cs",
+            "DataCategory.cs"
+          ],
+          "notes": "Product tier comes from the producing recipe (recipe.tier)."
+        },
+        {
+          "id": "static.recipes",
+          "concept": "Recipes",
+          "type": "Recipe",
+          "access": "name, Title (localized), ingredients, result, gameDays / gameDaysForPriceCalculation, requiredModules, tier, usedByWaterResourceHarvester",
+          "member_kind": "field",
+          "id_strategy": "definition",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [
+            "gameDays setter",
+            "Recipe.FindRecipe (uses editorInstance)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Recipe.cs:21-253",
+            "TechTreeRecipeUnlock.cs:23-31"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "static.compatible_buildings",
+          "concept": "Buildings that can run a recipe",
+          "type": "RecipeDatabase, RecipeUser",
+          "access": "RecipeDatabase.instance.GetOriginsOfRecipe(recipe); prefab.GetComponent<RecipeUser>().availableRecipes",
+          "member_kind": "method",
+          "id_strategy": "definition",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "RecipeDatabase.cs"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "static.building_types",
+          "concept": "Building definitions",
+          "type": "Building prefab",
+          "access": "GameData.instance.GetAssetsRO(typeof(Building)): name, buildingName, description, baseCost, tags, category, buildPermit/buyPermit, components (RecipeUser.availableRecipes/productionSpeed, ModuleOwner.maxModuleCount/radius/modulePrefab, ProductSpecificProductStorage.slots, Upkeep.buildingCostPercentage, BuildingEfficiency arrays, JITVehicleFleet.vehiclePrefab)",
+          "member_kind": "field",
+          "id_strategy": "definition",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Building.cs:32-175",
+            "notes/buildings-production.md §5.3"
+          ],
+          "notes": "Prefab GetComponent on assets is main-thread only."
+        },
+        {
+          "id": "static.base_prices",
+          "concept": "Average / base prices",
+          "type": "GlobalMarket, ProductPricingInfo",
+          "access": "GlobalMarket.instance.GetPricingInfo(product): value (formula value), price (value × category priceMultiplier)",
+          "member_kind": "method",
+          "id_strategy": "definition",
+          "source": [
+            "RUNTIME"
+          ],
+          "update_frequency": "on_load",
+          "read_safety": "SAFE",
+          "avoid": [
+            "GetPricingInfo for unknown products (logs error)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "GlobalMarket.cs:56-71,131-229"
+          ],
+          "notes": "Computed at world ready from recipes and formulas; not in saves."
+        },
+        {
+          "id": "static.english_names",
+          "concept": "English display names",
+          "type": "LanguageData, I18n",
+          "access": "GameData.instance.GetAssetsRO(typeof(LanguageData)), keeping those whose language.keycode is 'en-US', ordered by priority; lookup key is \"{ConcreteTypeName}.{asset.name}.{field}\" with spaces removed, lower-cased; or reflect I18n.instance._fallbackKeyValue",
+          "member_kind": "reflection",
+          "id_strategy": "definition",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [
+            "I18n.LoadLanguage"
+          ],
+          "confidence": "HIGH",
+          "evidence": [
+            "I18n.cs:145-170",
+            "GenericLocalizer.cs:13-31",
+            "LocalizationUtility.cs:20-23"
+          ],
+          "notes": "Display fields on definitions hold French text on this install."
+        },
+        {
+          "id": "static.formulas",
+          "concept": "Formulas (prices, dispatch cost, demand, research)",
+          "type": "Formula",
+          "access": "GameData.instance.GetAssetsRO(typeof(Formula)): name, formula (text)",
+          "member_kind": "field",
+          "id_strategy": "definition",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [
+            "Evaluate off main thread (static pool)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Formula.cs:11-39",
+            "notes/static-dump.md §2"
+          ],
+          "notes": "Jace expressions. All 30 formula texts dumped (e.g. ManualDestinationDispatchCost, Shop Demand, Factories price, Research Cost/Time)."
+        },
+        {
+          "id": "static.other_definitions",
+          "concept": "Settlement tiers/types, permit types, loan infos, money categories",
+          "type": "SettlementTier, SettlementType, PermitType, LoanInfo, MoneyBillCategory",
+          "access": "GameData.instance.GetAssetsRO(typeof(T))",
+          "member_kind": "method",
+          "id_strategy": "definition",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "notes/cities-shops-markets-world.md",
+            "notes/company-finance-time.md"
+          ],
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "technology",
+      "title": "Technology",
+      "entries": [
+        {
+          "id": "tech.manager",
+          "concept": "Tech tree enabled / config",
+          "type": "TechTreeManager, TechTreeManagerConfig",
+          "access": "TechTreeManager.instance.isEnabled, isInitialized, config (maxEnqueuedUnlocks, efficiencyValues, efficiencyUnlocks)",
+          "member_kind": "field",
+          "id_strategy": "-",
+          "source": [
+            "SAVE",
+            "STATIC"
+          ],
+          "update_frequency": "on_load",
+          "read_safety": "SAFE",
+          "avoid": [
+            "isEnabled setter, Register*/Deregister*"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "TechTreeManager.cs:8-185",
+            "TechTreeManagerConfig.cs"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "tech.tree",
+          "concept": "Complete technology tree",
+          "type": "TechTree, TechTreeCategory, TechTreeUnlock",
+          "access": "GetAssetsRO(typeof(TechTree)) -> unlocks, tierCount, category; GetAssetsRO(typeof(TechTreeUnlock)): name, unlockName, description, tier, requiredUnlocks, includedUnlocks, isTeaser, unlockedByDefault, trees[{tree, column}]",
+          "member_kind": "field",
+          "id_strategy": "definition",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [
+            "Unlock/OnGameDataLoaded"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "TechTreeUnlock.cs:10-121",
+            "TechTree.cs:8-43",
+            "TechTreeCategory.cs:10-61"
+          ],
+          "notes": "243 unlock states in the sample save."
+        },
+        {
+          "id": "tech.unlock_effects",
+          "concept": "Building / product / recipe unlocks",
+          "type": "TechTreeBuildingUnlock, TechTreeRecipeUnlock, TechTreeBuildingPriceUnlock, TechTreeGenericUnlock",
+          "access": "building/category; recipes[]; buildings[] + percentage; generic: effects on prefabs (TechTreeGenericUnlockEffect.actions), TechTreeLogistics",
+          "member_kind": "field",
+          "id_strategy": "definition",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [
+            "Execute/Revert*"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "TechTreeBuildingUnlock.cs:15-32",
+            "TechTreeRecipeUnlock.cs",
+            "TechTreeBuildingPriceUnlock.cs:19",
+            "TechTreeGenericUnlockEffectAction.cs:103-208"
+          ],
+          "notes": "Product unlock = product of an unlocked recipe (derived)."
+        },
+        {
+          "id": "tech.costs",
+          "concept": "Research cost and time",
+          "type": "TechTreeAgentResearchState",
+          "access": "research.GetResearchDailyCost(u), GetResearchTime(u) (days), GetResearchCost(u) (UI total)",
+          "member_kind": "method",
+          "id_strategy": "definition",
+          "source": [
+            "RUNTIME"
+          ],
+          "update_frequency": "on_user_action",
+          "read_safety": "CAUTION",
+          "avoid": [
+            "SetEfficiency"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "TechTreeAgentResearchState.cs:329-356",
+            "TechTreeUnlockFormulaArguments.cs:11-15",
+            "notes/static-dump.md §2"
+          ],
+          "notes": "Money per day x days; formula args are efficiency and tier. No research points. Asset formulas: Research Cost is 3333.333333 × efficiency per day; Research Time is (60 + tier³ × 60) / efficiency days; efficiencyValues [0, 1, 2.5, 10, 25, 50]; maxEnqueuedUnlocks 9."
+        },
+        {
+          "id": "tech.unlocked",
+          "concept": "Unlocked technologies",
+          "type": "TechTreeAgent",
+          "access": "Player.humanPlayer.techTree.IsUnlocked(u) for known unlocks; IsBuildingUnlocked(prefab); IsRecipeUnlocked(recipe)",
+          "member_kind": "method",
+          "id_strategy": "definition",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "SAFE",
+          "avoid": [
+            "GetUnlocked() without returning the pooled list",
+            "Unlock*/ForceUnlock*"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "TechTreeAgent.cs:24-358"
+          ],
+          "notes": "IsUnlocked logs an error for unknown unlocks."
+        },
+        {
+          "id": "tech.available",
+          "concept": "Available technologies",
+          "type": "(derived)",
+          "access": "not unlocked, not isTeaser, and all requiredUnlocks unlocked; also research.CanResearchUnlock(u) (true even with missing prereqs: they get auto-queued)",
+          "member_kind": "derived",
+          "id_strategy": "definition",
+          "source": [
+            "DERIVED"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "DERIVED",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "TechTreeUnlockUIViewModel.cs:43-133"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "tech.research_state",
+          "concept": "Research state",
+          "type": "TechTreeAgentResearchState",
+          "access": "research.queue (live List: copy), activeUnlock, researchProgress, GetResearchProgress(u), remainingTime, remainingCost, currentResearchCost, unlockPoints, efficiencyIndex, efficiency",
+          "member_kind": "property",
+          "id_strategy": "definition",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_game_day",
+          "read_safety": "CAUTION",
+          "avoid": [
+            "ResearchUnlock/CancelResearch/MoveInFrontOf/SpendUnlockPoints/Tick/queue mutation"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "TechTreeAgentResearchState.cs:36-421",
+            "ResearchQueue.cs:16-96"
+          ],
+          "notes": "Progress committed at onDayEnd; paid daily to State."
+        },
+        {
+          "id": "tech.competitors",
+          "concept": "Competitor technology",
+          "type": "TechTreeAgent, ActorStatisticsAgent",
+          "access": "ai.techTree.IsUnlocked(u); ai.Get<ActorStatisticsAgent>().mainTechTree",
+          "member_kind": "method",
+          "id_strategy": "actor",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "Actor.cs:81",
+            "ActorStatisticsAgent.cs"
+          ],
+          "notes": "Some actors may use FullyUnlockedTechTree (UNKNOWN which)."
+        }
+      ]
+    },
+    {
+      "id": "markets",
+      "title": "Markets",
+      "entries": [
+        {
+          "id": "market.global_prices",
+          "concept": "World market prices and trend",
+          "type": "GlobalMarket, ProductPricingInfo",
+          "access": "GlobalMarket.instance.GetPricingInfo(p): price, modifier, trend (STABLE/GOING_UP/GOING_DOWN); GetFinalPrice(p, actor)",
+          "member_kind": "method",
+          "id_strategy": "definition",
+          "source": [
+            "SAVE",
+            "RUNTIME"
+          ],
+          "update_frequency": "per_month",
+          "read_safety": "SAFE",
+          "avoid": [
+            "UpdatePrices/ComputePriceModifier (deterministic RNG)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "GlobalMarket.cs:22-71,257-332",
+            "ProductPricingInfo.cs",
+            "notes/static-dump.md §2, §6"
+          ],
+          "notes": "Modifier updated every 15 game days via a multi-frame coroutine (prices can be half-updated for a few frames). Scene value _updateIntervalInDays = 15 (code default 30). Modifier formula asset GlobalMarket: 2 × sign(net) × sqrt(abs(net))."
+        },
+        {
+          "id": "market.price_history",
+          "concept": "Historical market prices",
+          "type": "-",
+          "access": "Not stored by the game. The MCP must sample market.global_prices and persist history itself.",
+          "member_kind": "unavailable",
+          "id_strategy": "definition",
+          "source": [
+            "DERIVED"
+          ],
+          "update_frequency": "per_month",
+          "read_safety": "NOT_AVAILABLE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "GlobalMarket.cs (only _serializedPricingInfo{product, modifier, trend})"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "market.aggregates",
+          "concept": "Global demand / stock / sales",
+          "type": "GlobalMarket",
+          "access": "GetProductDemand(p, actor), GetStoredAmount(p), GetSoldAmount(p, period)",
+          "member_kind": "method",
+          "id_strategy": "definition",
+          "source": [
+            "RUNTIME"
+          ],
+          "update_frequency": "per_consumption_tick (default 15 game days)",
+          "read_safety": "CAUTION",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "GlobalMarket.cs:73-100"
+          ],
+          "notes": "O(cities x shops) each. Prefer summing per-shop values already captured."
+        },
+        {
+          "id": "market.state_sells",
+          "concept": "State: products available and prices",
+          "type": "State, StateTradingHandler, ProductSeller",
+          "access": "State.instance.tradingHandlers: sold products (raw resources category); sale price is GetFinalPrice(p, actor) × saleMarkup (1.25 default) × actor state-sold modifier",
+          "member_kind": "property",
+          "id_strategy": "building (state trading building) + product",
+          "source": [
+            "STATIC",
+            "RUNTIME"
+          ],
+          "update_frequency": "per_month",
+          "read_safety": "SAFE",
+          "avoid": [
+            "GetClosestStateTradingHandler (LINQ sort)",
+            "CreateBuilding/AddStateConnection"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "State.cs:9-138",
+            "StateTradingHandler.cs:22-57",
+            "ProductSeller.cs:23-26"
+          ],
+          "notes": "No quantity limits tracked."
+        },
+        {
+          "id": "market.state_buys",
+          "concept": "State: buying products (export)",
+          "type": "StateTradingHandler",
+          "access": "allowIncomingTrade; purchase price is base price (no market modifier) × actor state-bought modifier",
+          "member_kind": "field",
+          "id_strategy": "building",
+          "source": [
+            "STATIC"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "StateTradingHandler.cs (GetPurchasePrice, OnPut)"
+          ],
+          "notes": "Money only sent when the deliverer is the active human player."
+        },
+        {
+          "id": "market.state_history",
+          "concept": "State sales history",
+          "type": "State",
+          "access": "State.instance.GetSoldCount(p, period|from,to), GetSalesFigures(p, from, to)",
+          "member_kind": "method",
+          "id_strategy": "definition",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_dispatch",
+          "read_safety": "CAUTION",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "State.cs:79-92,133-138"
+          ],
+          "notes": "Pruned to ~2 months."
+        },
+        {
+          "id": "market.contracts",
+          "concept": "Contracts",
+          "type": "IContractsAgent, DeliveryContract",
+          "access": "actor.contracts.activeContracts, maxContracts, canAcceptContracts; per city: settlement.contracts.currentContract",
+          "member_kind": "property",
+          "id_strategy": "settlement + product",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_game_day",
+          "read_safety": "SAFE",
+          "avoid": [
+            "Apply/Reject/RegisterContract"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "IContractsAgent.cs",
+            "ContractsAgent.cs:17-21",
+            "ContractSpawner.cs:70-108"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "market.auctions",
+          "concept": "Auctions (permits, contracts, bankruptcy assets, PR events)",
+          "type": "AuctionsManager, Auction",
+          "access": "AuctionsManager.instance.currentAuction: title, definition.name, remainingDays, highestBid, bids (bidder, amount), nextBid, reward type; auctionQueue (live Queue: copy via ToArray)",
+          "member_kind": "property",
+          "id_strategy": "-",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_game_day",
+          "read_safety": "CAUTION",
+          "avoid": [
+            "MakeBid/TryStartNextAuction/EndCurrentAuction/EnqueueAuction",
+            "AuctionDefinition.GenerateAuction"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "AuctionsManager.cs:210-313",
+            "Auction.cs",
+            "ContractBidController.cs:10-45"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "market.wholesaler",
+          "concept": "Wholesalers (city-side buyers)",
+          "type": "Wholesaler",
+          "access": "requests (BuyRequest list), GetRequestedAmount(p), HasRequestForProduct(p); price is GetFinalPrice × 1.25",
+          "member_kind": "method",
+          "id_strategy": "building",
+          "source": [
+            "SAVE",
+            "RUNTIME"
+          ],
+          "update_frequency": "per_game_day",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "HIGH",
+          "evidence": [
+            "Wholesaler.cs:39",
+            "WholesalerTradeFinder.cs:66-118"
+          ],
+          "notes": "UI name UNKNOWN."
+        },
+        {
+          "id": "market.world_market_ui",
+          "concept": "'World Market' UI concept",
+          "type": "-",
+          "access": "No dedicated class. Map to market.global_prices plus market.state_sells.",
+          "member_kind": "unavailable",
+          "id_strategy": "-",
+          "source": [
+            "DERIVED"
+          ],
+          "update_frequency": "per_month",
+          "read_safety": "NOT_AVAILABLE",
+          "avoid": [],
+          "confidence": "INFERRED",
+          "evidence": [
+            "filename and grep search, notes/cities-shops-markets-world.md §4.5"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "market.import_export",
+          "concept": "Import / export / harbors / airports trade",
+          "type": "-",
+          "access": "Not found: water and air are transport networks only.",
+          "member_kind": "unavailable",
+          "id_strategy": "-",
+          "source": [],
+          "update_frequency": "static",
+          "read_safety": "NOT_AVAILABLE",
+          "avoid": [],
+          "confidence": "INFERRED",
+          "evidence": [
+            "Airfield.cs",
+            "WaterNetworkManager.cs"
+          ],
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "world",
+      "title": "World and map",
+      "entries": [
+        {
+          "id": "world.size",
+          "concept": "Map size and tile indexing",
+          "type": "World, Tile",
+          "access": "World.Size (static); tile index is x + y × World.Size; Tile.GetCoordinates",
+          "member_kind": "static",
+          "id_strategy": "tile",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_load",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "World.cs:20-24",
+            "Tile.cs:506,568-576"
+          ],
+          "notes": "Statics are not cleared on menu return; gate on scene state. 512 in the sample save."
+        },
+        {
+          "id": "world.terrain",
+          "concept": "Height / water / biome / blocked",
+          "type": "WorldHeight, WorldWater, WorldBiomes, WorldBlock",
+          "access": "World.Height.GetHeightTile(i); World.Water.IsWater(i); World.Biomes.GetBiome(i); World.Block.IsBlocked(i, reason)",
+          "member_kind": "method",
+          "id_strategy": "tile",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "WorldHeight.cs:43,64",
+            "WorldWater.cs:33-104",
+            "WorldBiomes.cs:9",
+            "WorldBlock.cs:13"
+          ],
+          "notes": "Expose only on demand (large)."
+        },
+        {
+          "id": "world.resources",
+          "concept": "Resource nodes on the map",
+          "type": "WorldResourceNodes, ResourceNode",
+          "access": "World.ResourceNodes.resourceNodes[tile]",
+          "member_kind": "field",
+          "id_strategy": "tile",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "per_game_day",
+          "read_safety": "SAFE",
+          "avoid": [
+            "resourceNodeQuadTree / ResourceNode.All (lazy allocation)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "WorldResourceNodes.cs:9-28",
+            "ResourceNode.cs"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "world.roads_rail",
+          "concept": "Roads and rail",
+          "type": "ConnectivityNetworks, ConnectivityNetworkLayer",
+          "access": "ConnectivityNetworks.Road.realityLayer.At(tile) / GetOwner(tile) / GetConnectivity(i); same for .Rail",
+          "member_kind": "method",
+          "id_strategy": "tile",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_user_action",
+          "read_safety": "SAFE",
+          "avoid": [
+            "ConnectivityNetworks.Rail before world exists (NRE)"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "ConnectivityNetworks.cs:15,27",
+            "ConnectivityNetworkLayer.cs:621,718"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "world.networks",
+          "concept": "Water / air logistics networks",
+          "type": "WorldNetworks, WaterNetworkManager, AirNetworkManager",
+          "access": "World.Networks.GetNetwork(name)",
+          "member_kind": "method",
+          "id_strategy": "network name",
+          "source": [
+            "RUNTIME"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "WorldNetworks.cs",
+            "WaterNetworkManager.cs:107"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "world.pollution",
+          "concept": "Pollution map",
+          "type": "PollutionManager",
+          "access": "PollutionManager.instance.GetPollution(tile) (0..1 from GPU readback; 0 if unavailable)",
+          "member_kind": "method",
+          "id_strategy": "tile",
+          "source": [
+            "SAVE",
+            "RUNTIME"
+          ],
+          "update_frequency": "per_game_day",
+          "read_safety": "SAFE",
+          "avoid": [
+            "AsTexture"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "PollutionManager.cs:88-101",
+            "ComputePollutionStrategy.cs:487-499"
+          ],
+          "notes": "Sample per building tile / region rather than exporting the full map."
+        },
+        {
+          "id": "world.urban",
+          "concept": "Urban areas",
+          "type": "SettlementManager",
+          "access": "SettlementManager.instance.IsUrbanArea(tile)",
+          "member_kind": "method",
+          "id_strategy": "tile",
+          "source": [
+            "RUNTIME"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "SettlementManager.cs:81-135"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "world.state_connections",
+          "concept": "Off-map connections",
+          "type": "State",
+          "access": "State.instance.stateConnections",
+          "member_kind": "field",
+          "id_strategy": "tile",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "static",
+          "read_safety": "SAFE",
+          "avoid": [
+            "Add/RemoveStateConnection"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "State.cs"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "world.building_at",
+          "concept": "Building at a tile",
+          "type": "BuildingManager",
+          "access": "BuildingManager.instance.TryGetBuilding(tile) (gives the building, if any)",
+          "member_kind": "method",
+          "id_strategy": "building",
+          "source": [
+            "SAVE"
+          ],
+          "update_frequency": "on_event",
+          "read_safety": "SAFE",
+          "avoid": [],
+          "confidence": "CONFIRMED",
+          "evidence": [
+            "BuildingManager.cs:145-160"
+          ],
+          "notes": ""
+        },
+        {
+          "id": "world.spatial",
+          "concept": "Spatial relationships (distances)",
+          "type": "(derived)",
+          "access": "Manhattan/Euclidean tile distance from coordinates; actual route distance only via logistics.distance (cached paths)",
+          "member_kind": "derived",
+          "id_strategy": "building",
+          "source": [
+            "DERIVED"
+          ],
+          "update_frequency": "static",
+          "read_safety": "DERIVED",
+          "avoid": [
+            "any pathfinding call"
+          ],
+          "confidence": "CONFIRMED",
+          "evidence": [],
+          "notes": "Label straight-line distances clearly as estimates."
+        }
+      ]
+    }
+  ],
+  "unsupported_or_unknown": [
+    {
+      "concept": "Exact UI label text for Max Send / Min Keep",
+      "status": "UNKNOWN",
+      "notes": "Prefab data. Member chain CONFIRMED."
+    },
+    {
+      "concept": "Wages / salaries / workers",
+      "status": "NOT_IN_GAME",
+      "notes": "Efficiency slider is the equivalent (building.efficiency)."
+    },
+    {
+      "concept": "Fertility",
+      "status": "NOT_IN_GAME",
+      "notes": "grep finds no fertility concept."
+    },
+    {
+      "concept": "Global market price history",
+      "status": "NOT_IN_GAME",
+      "notes": "MCP must sample."
+    },
+    {
+      "concept": "Per-route (slot) history",
+      "status": "NOT_IN_GAME",
+      "notes": ""
+    },
+    {
+      "concept": "Daily money ledger",
+      "status": "NOT_IN_GAME",
+      "notes": "Monthly aggregates only."
+    },
+    {
+      "concept": "Stable vehicle identity",
+      "status": "NOT_IN_GAME",
+      "notes": "Vehicle.id reassigned per trip."
+    },
+    {
+      "concept": "Ship transport / import-export trade",
+      "status": "INFERRED_ABSENT",
+      "notes": ""
+    },
+    {
+      "concept": "Company logo",
+      "status": "NOT_IN_GAME",
+      "notes": ""
+    },
+    {
+      "concept": "Currently loaded save name (runtime)",
+      "status": "UNKNOWN",
+      "notes": "U7"
+    },
+    {
+      "concept": "Many per-prefab numeric values not yet dumped (payment-handler formula per prefab, generic unlock effects)",
+      "status": "UNKNOWN_STATICALLY",
+      "notes": "Formula texts are now CONFIRMED from assets (notes/static-dump.md). Remaining values readable at runtime."
+    }
+  ]
+}

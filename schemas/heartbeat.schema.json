@@ -1,0 +1,983 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://roi-mcp.local/schemas/heartbeat.schema.json",
+  "title": "Rise of Industry MCP heartbeat.json",
+  "x-schema-version": "1.0.0",
+  "description": "Common envelope of heartbeat/static/state/history files (PRD 11.2).",
+  "type": "object",
+  "additionalProperties": false,
+  "x-envelope": true,
+  "properties": {
+    "schema": {
+      "const": "roi-mcp/heartbeat"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^1\\.[0-9]+\\.[0-9]+$"
+    },
+    "observer_version": {
+      "type": "string"
+    },
+    "compatibility": {
+      "type": "string",
+      "description": "static/state/history: always verified. heartbeat: pending until the version gate has run at the first READY of this process",
+      "enum": [
+        "verified",
+        "unsupported_build",
+        "pending"
+      ]
+    },
+    "game": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/GameInfoDto"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "detected game facts; heartbeat before the first READY: null"
+    },
+    "pid": {
+      "type": "integer"
+    },
+    "world_session": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "seq": {
+      "type": "integer"
+    },
+    "content_hash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "written_utc": {
+      "type": "string"
+    },
+    "captured": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CapturedDto"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "static_ref": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/StaticRefDto"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "sections": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "$ref": "#/$defs/SectionStatusDto"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/WarningDto"
+      }
+    },
+    "data": {
+      "$ref": "#/$defs/HeartbeatData"
+    }
+  },
+  "required": [
+    "schema",
+    "schema_version",
+    "observer_version",
+    "compatibility",
+    "game",
+    "pid",
+    "world_session",
+    "seq",
+    "content_hash",
+    "written_utc",
+    "captured",
+    "static_ref",
+    "sections",
+    "warnings",
+    "data"
+  ],
+  "$defs": {
+    "CaptureStatsDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-envelope": true,
+      "properties": {
+        "family": {
+          "type": "string",
+          "enum": [
+            "static",
+            "state",
+            "history"
+          ]
+        },
+        "utc": {
+          "type": "string"
+        },
+        "main_thread_ms": {
+          "type": "number"
+        },
+        "slices": {
+          "type": "integer"
+        },
+        "max_slice_ms": {
+          "type": "number"
+        },
+        "alloc_bytes_approx": {
+          "type": "integer"
+        },
+        "gc_count_delta": {
+          "type": "integer"
+        },
+        "size_bytes": {
+          "type": "integer"
+        },
+        "serialize_ms": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "family",
+        "utc",
+        "main_thread_ms",
+        "slices",
+        "max_slice_ms",
+        "alloc_bytes_approx",
+        "gc_count_delta",
+        "size_bytes",
+        "serialize_ms"
+      ]
+    },
+    "CapturedDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-envelope": true,
+      "properties": {
+        "utc_start": {
+          "type": "string"
+        },
+        "utc_end": {
+          "type": "string"
+        },
+        "game_day_start": {
+          "type": "integer"
+        },
+        "game_day_end": {
+          "type": "integer"
+        },
+        "game_date": {
+          "type": "string",
+          "description": "Y<year>-<MM>-<DD>, 30-day months"
+        },
+        "frames": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "description": "[first frame, last frame]"
+        },
+        "main_thread_ms": {
+          "type": "number"
+        },
+        "slices": {
+          "type": "integer"
+        },
+        "max_slice_ms": {
+          "type": "number"
+        },
+        "consistent": {
+          "type": "boolean",
+          "description": "true when every section was read on the same game day"
+        }
+      },
+      "required": [
+        "utc_start",
+        "utc_end",
+        "game_day_start",
+        "game_day_end",
+        "game_date",
+        "frames",
+        "main_thread_ms",
+        "slices",
+        "max_slice_ms",
+        "consistent"
+      ]
+    },
+    "DisabledSectionDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-envelope": true,
+      "properties": {
+        "section": {
+          "type": "string"
+        },
+        "error_signature": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "enum": [
+            "failed_repeatedly",
+            "reflection_missing",
+            "over_budget",
+            "optional_suppressed"
+          ]
+        }
+      },
+      "required": [
+        "section",
+        "error_signature",
+        "reason"
+      ]
+    },
+    "FamiliesDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-envelope": true,
+      "properties": {
+        "static": {
+          "$ref": "#/$defs/FamilyStatusDto"
+        },
+        "state": {
+          "$ref": "#/$defs/FamilyStatusDto"
+        },
+        "history": {
+          "$ref": "#/$defs/FamilyStatusDto"
+        }
+      },
+      "required": [
+        "static",
+        "state",
+        "history"
+      ]
+    },
+    "FamilyStatusDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-envelope": true,
+      "properties": {
+        "seq": {
+          "type": "integer"
+        },
+        "last_published_utc": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "last_verified_utc": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "size_bytes": {
+          "type": "integer"
+        },
+        "content_hash": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "world_session": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "seq",
+        "last_published_utc",
+        "last_verified_utc",
+        "size_bytes",
+        "content_hash",
+        "world_session"
+      ]
+    },
+    "FrameStatsDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-envelope": true,
+      "properties": {
+        "window_s": {
+          "type": "number"
+        },
+        "frames": {
+          "type": "integer"
+        },
+        "frame_ms_p50": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "frame_ms_p95": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "frame_ms_p99": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "frame_ms_avg": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "frames_over_50ms": {
+          "type": "integer"
+        },
+        "observer_ms_p99": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "observer_ms_max": {
+          "type": "number"
+        },
+        "observer_ms_max_without_gc": {
+          "type": "number",
+          "description": "Largest observer tick in the window that had no garbage collection running inside it"
+        },
+        "observer_ticks_with_gc": {
+          "type": "integer",
+          "description": "Observer ticks in the window during which a garbage collection ran (its stop-the-world pause is included in observer_ms_*, whichever thread triggered it)"
+        }
+      },
+      "required": [
+        "window_s",
+        "frames",
+        "frame_ms_p50",
+        "frame_ms_p95",
+        "frame_ms_p99",
+        "frame_ms_avg",
+        "frames_over_50ms",
+        "observer_ms_p99",
+        "observer_ms_max",
+        "observer_ms_max_without_gc",
+        "observer_ticks_with_gc"
+      ]
+    },
+    "GameInfoDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Game build facts. In envelopes these are the detected values of the running game.",
+      "x-envelope": true,
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "major.minor.revision"
+        },
+        "build": {
+          "type": "string",
+          "description": "build + suffix, e.g. 0507b"
+        },
+        "commit": {
+          "type": "string"
+        },
+        "savegame_version": {
+          "type": "integer"
+        },
+        "assembly_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "SHA-256 (upper-case hex) of the loaded Assembly-CSharp.dll; null until computed"
+        },
+        "release": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "version",
+        "build",
+        "commit",
+        "savegame_version",
+        "assembly_sha256",
+        "release"
+      ]
+    },
+    "HeartbeatData": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "heartbeat.json data (PRD 11.5). Lifecycle and diagnostics only, no world data.",
+      "x-envelope": true,
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "starting",
+            "menu",
+            "loading",
+            "ready",
+            "unsupported_build",
+            "disabled",
+            "faulted"
+          ]
+        },
+        "state_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "paused": {
+          "type": "boolean"
+        },
+        "speed_level": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "time_scale": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "game_date": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "game_day": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "main_thread_last_tick_utc": {
+          "type": "string"
+        },
+        "frame_count": {
+          "type": "integer"
+        },
+        "scene": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "world_session": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "module_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "module_name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "language": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "compatibility": {
+          "type": "string",
+          "enum": [
+            "verified",
+            "unsupported_build",
+            "pending"
+          ]
+        },
+        "detected_game": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GameInfoDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expected_game": {
+          "$ref": "#/$defs/GameInfoDto"
+        },
+        "reflection_self_check": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ReflectionSelfCheckDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "families": {
+          "$ref": "#/$defs/FamiliesDto"
+        },
+        "last_capture": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CaptureStatsDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "effective_interval_s": {
+          "type": "number"
+        },
+        "degraded": {
+          "type": "boolean"
+        },
+        "optional_sections_suppressed": {
+          "type": "boolean"
+        },
+        "disabled_sections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DisabledSectionDto"
+          }
+        },
+        "id_collisions": {
+          "type": "integer"
+        },
+        "frame_stats": {
+          "$ref": "#/$defs/FrameStatsDto"
+        },
+        "refresh_seen": {
+          "$ref": "#/$defs/RefreshNoncesDto"
+        },
+        "refresh_served": {
+          "$ref": "#/$defs/RefreshNoncesDto"
+        },
+        "publish_failures": {
+          "type": "integer"
+        },
+        "errors_last_hour": {
+          "type": "integer"
+        },
+        "log_dropped": {
+          "type": "integer"
+        },
+        "observer_version": {
+          "type": "string"
+        },
+        "exchange_dir": {
+          "type": "string"
+        },
+        "cwd": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "kill_switch": {
+          "type": "boolean"
+        },
+        "config_enabled": {
+          "type": "boolean"
+        },
+        "config_warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "active_actor_differs": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "save_name": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SaveNameDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "runtime_constants": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RuntimeConstantsDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "written_utc": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "state",
+        "state_reason",
+        "paused",
+        "speed_level",
+        "time_scale",
+        "game_date",
+        "game_day",
+        "main_thread_last_tick_utc",
+        "frame_count",
+        "scene",
+        "world_session",
+        "module_id",
+        "module_name",
+        "language",
+        "compatibility",
+        "detected_game",
+        "expected_game",
+        "reflection_self_check",
+        "families",
+        "last_capture",
+        "effective_interval_s",
+        "degraded",
+        "optional_sections_suppressed",
+        "disabled_sections",
+        "id_collisions",
+        "frame_stats",
+        "refresh_seen",
+        "refresh_served",
+        "publish_failures",
+        "errors_last_hour",
+        "log_dropped",
+        "observer_version",
+        "exchange_dir",
+        "cwd",
+        "kill_switch",
+        "config_enabled",
+        "config_warnings",
+        "active_actor_differs",
+        "save_name",
+        "runtime_constants",
+        "written_utc"
+      ]
+    },
+    "ReflectionEntryDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-envelope": true,
+      "properties": {
+        "entry": {
+          "type": "string"
+        },
+        "problem": {
+          "type": "string",
+          "enum": [
+            "missing",
+            "type_mismatch"
+          ]
+        },
+        "actual_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "dependent_sections": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "entry",
+        "problem",
+        "actual_type",
+        "dependent_sections"
+      ]
+    },
+    "ReflectionSelfCheckDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-envelope": true,
+      "properties": {
+        "total": {
+          "type": "integer"
+        },
+        "resolved": {
+          "type": "integer"
+        },
+        "type_mismatch": {
+          "type": "integer"
+        },
+        "missing": {
+          "type": "integer"
+        },
+        "problems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ReflectionEntryDto"
+          }
+        }
+      },
+      "required": [
+        "total",
+        "resolved",
+        "type_mismatch",
+        "missing",
+        "problems"
+      ]
+    },
+    "RefreshNoncesDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-envelope": true,
+      "properties": {
+        "state": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "history": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "static": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "state",
+        "history",
+        "static"
+      ]
+    },
+    "RuntimeConstantsDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Runtime constants recorded for validation gate E1.",
+      "x-envelope": true,
+      "properties": {
+        "seconds_per_day": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "speed_levels": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "number"
+          }
+        },
+        "disable_with_mods": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "is_debug_build": {
+          "type": "boolean"
+        },
+        "application_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "max_days_delta_per_frame": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "network_names": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "world_size": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "game_version_string": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "seconds_per_day",
+        "speed_levels",
+        "disable_with_mods",
+        "is_debug_build",
+        "application_version",
+        "max_days_delta_per_frame",
+        "network_names",
+        "world_size",
+        "game_version_string"
+      ]
+    },
+    "SaveNameDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-envelope": true,
+      "properties": {
+        "value": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "value",
+        "reason"
+      ]
+    },
+    "SectionStatusDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-envelope": true,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "disabled",
+            "failed",
+            "skipped",
+            "over_budget"
+          ]
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "game_day": {
+          "type": "integer"
+        },
+        "frame_start": {
+          "type": "integer"
+        },
+        "frame_end": {
+          "type": "integer"
+        },
+        "items": {
+          "type": "integer"
+        },
+        "items_vanished": {
+          "type": "integer"
+        },
+        "main_thread_ms": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "status",
+        "reason",
+        "game_day",
+        "frame_start",
+        "frame_end",
+        "items",
+        "items_vanished",
+        "main_thread_ms"
+      ]
+    },
+    "StaticRefDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-envelope": true,
+      "properties": {
+        "seq": {
+          "type": "integer"
+        },
+        "content_hash": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "seq",
+        "content_hash"
+      ]
+    },
+    "WarningDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-envelope": true,
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "code",
+        "detail"
+      ]
+    }
+  }
+}

@@ -1,0 +1,1566 @@
+{
+ "applies_to": {
+  "game": "Rise of Industry (Steam App 671440)",
+  "build": "2.3.3 : 0507b (Steam build 9064059)"
+ },
+ "curated_from": "repository evidence only (research/, PRD.md, docs/)",
+ "mechanics": [
+  {
+   "id": "max-send",
+   "title": "Max Send: destination-side, shared stock cap",
+   "aliases": [
+    "max send",
+    "max_send",
+    "maximum send",
+    "max accepted",
+    "maxAcceptedAtDestination",
+    "headroom",
+    "infinity max send"
+   ],
+   "summary": "Max Send is stored on the destination building per product and shared by every origin shipping that product there. It caps the destination's stock including incoming reservations (in-flight and queued deliveries). It is not a per-trip amount and not a per-route quota. 0 (shown as infinity in the UI) means unlimited.",
+   "formula": "headroom = max(max_send - (stored + incoming_reserved), 0); max_send = 0 => unlimited",
+   "evidence": [
+    {
+     "file": "research/notes/logistics.md",
+     "location": "section 0 table; section 1.3",
+     "note": "cap on the destination's stock, stored on the destination, shared, 0 = unlimited"
+    },
+    {
+     "file": "PRD.md",
+     "location": "section 12.3.1",
+     "note": "stored on the destination building, per product, shared by every origin; caps stock including incoming put reservations"
+    },
+    {
+     "file": "docs/VALIDATION-REPORT.md",
+     "location": "Session D, gate E2",
+     "note": "Max Send shared (B and C changed with A); the UI's infinity is value 0, unlimited true"
+    }
+   ],
+   "verification": "CONFIRMED_IN_GAME",
+   "confidence": "high",
+   "caveats": "The headroom formula is a replica of ManualDestinationManager.cs:595-626 (source-confirmed).",
+   "related": [
+    "min-keep",
+    "dispatch-amount",
+    "max-send-auto"
+   ],
+   "title_fr": "Max Send : plafond de stock côté destination, partagé"
+  },
+  {
+   "id": "max-send-ui-range",
+   "title": "Max Send range and UI stepping",
+   "aliases": [
+    "max send range",
+    "max send wrap",
+    "set max accepted"
+   ],
+   "summary": "Setting Max Send writes the destination's storage cap, clamped to the destination's per-product slot count. Stepping with the UI arrows wraps: below 0 jumps to the slot count, above the slot count wraps to 0 (unlimited).",
+   "formula": "value = (v < 0) ? slots : (v <= slots ? v : 0)",
+   "evidence": [
+    {
+     "file": "research/notes/logistics.md",
+     "location": "section 1.1; section 1.2",
+     "note": "setters write the destination storage; SetMaxAccepted clamps to slots; wraps to 0 = infinity"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "Per-product slots are 40 or 100 for most prefabs (static dump section 5).",
+   "related": [
+    "max-send",
+    "storage-per-product"
+   ],
+   "title_fr": "Max Send : plage de valeurs et pas de l'interface"
+  },
+  {
+   "id": "max-send-auto",
+   "title": "Auto Max Send (shop demand mode)",
+   "aliases": [
+    "auto max send",
+    "auto shop demand",
+    "autoMaxAccepted",
+    "auto_shop_demand"
+   ],
+   "summary": "When a route's auto flag is set and the destination is a shop, Max Send equals the shop's current demand for that product for the origin's owner. Changing a route's destination resets the auto flag.",
+   "formula": "max_send = shop demand(product, origin owner)",
+   "evidence": [
+    {
+     "file": "research/notes/logistics.md",
+     "location": "section 1.1; section 1.2",
+     "note": "when auto is on, Max equals the shop's current demand"
+    },
+    {
+     "file": "PRD.md",
+     "location": "section 12.3.1",
+     "note": "Shop.GetDemand(product, origin.owner) when slot.autoMaxAccepted is set"
+    },
+    {
+     "file": "docs/VALIDATION-REPORT.md",
+     "location": "Session D, gate E2",
+     "note": "the UI offered no auto option on the shop route tested"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "Not exercised in the game: no auto control appeared on the shop route tested in gate E2.",
+   "related": [
+    "max-send",
+    "shop-demand"
+   ],
+   "title_fr": "Max Send automatique (demande du magasin)"
+  },
+  {
+   "id": "max-send-state-destination",
+   "title": "No Max Send control for State destinations",
+   "aliases": [
+    "state route max send",
+    "infinite storage",
+    "trading post max send"
+   ],
+   "summary": "Max Send cannot be set when auto is on or when the destination uses infinite storage, such as State trading buildings. In the game, a route to the State showed no Max Send control and its value reads as 0 (unlimited).",
+   "formula": "can_set_max_send = not auto and destination storage is not InfiniteStorage",
+   "evidence": [
+    {
+     "file": "research/notes/logistics.md",
+     "location": "section 1.1",
+     "note": "canSetMaxAccepted: !autoMaxAmount && !(destination.storage is InfiniteStorage)"
+    },
+    {
+     "file": "docs/VALIDATION-REPORT.md",
+     "location": "Session D, gate E2 table",
+     "note": "copper mine -> State: no Max Send control; max_send 0, unlimited true"
+    }
+   ],
+   "verification": "CONFIRMED_IN_GAME",
+   "confidence": "high",
+   "caveats": null,
+   "related": [
+    "max-send",
+    "state-trading"
+   ],
+   "title_fr": "Pas de réglage Max Send vers l'État"
+  },
+  {
+   "id": "min-keep",
+   "title": "Min Keep: per-route floor on origin stock",
+   "aliases": [
+    "min keep",
+    "min_keep",
+    "minimum keep",
+    "keep all",
+    "minStoredAtSource"
+   ],
+   "summary": "Min Keep is stored on each route (destination slot). The route does not dispatch below this origin stock. The UI range is 0..99; stepping past 99 or below 0 gives 'keep all' (int.MaxValue), and the route then never dispatches.",
+   "formula": "available = max(origin_stock - min_keep, 0); keep_all => route never dispatches",
+   "evidence": [
+    {
+     "file": "research/notes/logistics.md",
+     "location": "section 0; section 1.1; section 1.2",
+     "note": "0..99, int.MaxValue means keep all"
+    },
+    {
+     "file": "PRD.md",
+     "location": "section 12.3.2",
+     "note": "per slot (per route) floor of origin stock"
+    },
+    {
+     "file": "docs/VALIDATION-REPORT.md",
+     "location": "Session D, gate E2",
+     "note": "Min Keep is per route (B kept 4)"
+    }
+   ],
+   "verification": "CONFIRMED_IN_GAME",
+   "confidence": "high",
+   "caveats": "The keep-all case was not set during gate E2; it is source-confirmed only.",
+   "related": [
+    "max-send",
+    "dispatch-amount"
+   ],
+   "title_fr": "Min Keep : stock minimal conservé à l'origine, par route"
+  },
+  {
+   "id": "dispatch-amount",
+   "title": "Per-trip dispatch amount",
+   "aliases": [
+    "dispatch amount",
+    "dispatch_amount_now",
+    "per trip amount",
+    "requested amount",
+    "GetRequestedAmount",
+    "how much does a truck carry"
+   ],
+   "summary": "The amount a route requests per dispatch is computed, never stored: the minimum of vehicle capacity, origin stock above Min Keep, and destination free space under the Max Send headroom, with extra caps from active contracts and world events. With 'fill vehicles' set, nothing is sent until a full load is possible.",
+   "formula": "amount = min(cap, max(origin_stock - min_keep, 0), min(free_space, max_send_headroom)); wait_for_full and amount < cap => 0",
+   "evidence": [
+    {
+     "file": "research/notes/logistics.md",
+     "location": "section 1.3",
+     "note": "computed in ManualDestinationManager.GetRequestedAmount (cs:595-626)"
+    },
+    {
+     "file": "PRD.md",
+     "location": "section 12.3.3",
+     "note": "what the next dispatch on this route would request now; not a throughput guarantee"
+    },
+    {
+     "file": "docs/v1.1/LIVE-VALIDATION-RESULTS.md",
+     "location": "section 2, check 1",
+     "note": "replica equals the observer on all 65 routes; Max Send 8 -> 10 and Min Keep 4 -> 3 predicted 1/1 and 1 units, observed; a 3-day run shipped exactly the opened room"
+    }
+   ],
+   "verification": "CONFIRMED_IN_GAME",
+   "confidence": "high",
+   "caveats": "Actual throughput also depends on the scheduler, vehicle availability and transport priorities. World-event caps are unreviewed: such routes report complete=false.",
+   "related": [
+    "max-send",
+    "min-keep",
+    "vehicle-capacity",
+    "fill-vehicles"
+   ],
+   "title_fr": "Quantité par envoi"
+  },
+  {
+   "id": "fill-vehicles",
+   "title": "Fill vehicles (wait till vehicle full)",
+   "aliases": [
+    "fill vehicles",
+    "wait for full vehicle",
+    "waitTillVehicleFull",
+    "full truck"
+   ],
+   "summary": "With 'wait till vehicle full' set on a route, no dispatch happens unless the computed amount reaches full vehicle capacity. Routes can also be paused individually.",
+   "formula": "wait_for_full and amount < capacity => amount = 0",
+   "evidence": [
+    {
+     "file": "research/notes/logistics.md",
+     "location": "section 1.3; section 2.2",
+     "note": "_waitTillVehicleFull ('fill vehicles')"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "The on-screen label text is not recorded in the repository.",
+   "related": [
+    "dispatch-amount"
+   ],
+   "title_fr": "Remplir les véhicules (attendre un véhicule plein)"
+  },
+  {
+   "id": "dispatch-cost",
+   "title": "Dispatch cost (per vehicle dispatch)",
+   "aliases": [
+    "dispatch cost",
+    "transport cost",
+    "shipping cost",
+    "ManualDestinationDispatchCost",
+    "truck cost",
+    "route cost"
+   ],
+   "summary": "Each vehicle dispatch costs a formula of route distance, the difficulty dispatch parameter and an actor modifier. Manual routes with own trucks use ManualDestinationDispatchCost; depots and terminals use their own, more expensive formulas. The cost is paid once per vehicle at dispatch, so a half-empty vehicle costs as much as a full one.",
+   "formula": "ManualDestinationDispatchCost = (250 + distance * 10) * difficulty * actor; TruckDepot = (350 + distance * 15) * difficulty * actor; TrainTerminal = (2250 + distance * 25) * difficulty * actor",
+   "evidence": [
+    {
+     "file": "research/notes/static-dump.md",
+     "location": "section 2",
+     "note": "ManualDestinationDispatchCost | (250 + distance * 10) * difficulty * actor"
+    },
+    {
+     "file": "research/notes/logistics.md",
+     "location": "errata; section 2.4",
+     "note": "cost is per vehicle dispatch, not per unit"
+    },
+    {
+     "file": "PRD.md",
+     "location": "section 12.3",
+     "note": "the game's predicted cost per vehicle dispatch; depots use their own formulas"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "Which formula each prefab uses is HIGH confidence only (PRD U-PAY). Cost per unit at capacity = dispatch cost / vehicle capacity.",
+   "related": [
+    "route-distance",
+    "vehicle-capacity"
+   ],
+   "title_fr": "Coût d'envoi (par véhicule)"
+  },
+  {
+   "id": "vehicle-capacity",
+   "title": "Vehicle capacity per route",
+   "aliases": [
+    "vehicle capacity",
+    "truck capacity",
+    "capacity"
+   ],
+   "summary": "Per-trip capacity comes from the fleet for the route's network and product: a technology override if one exists, otherwise the vehicle prefab's storage slots.",
+   "formula": "capacity = tech override ?? vehicle prefab slots(product)",
+   "evidence": [
+    {
+     "file": "research/notes/logistics.md",
+     "location": "section 1.3; section 4.1",
+     "note": "fleet.GetVehicleCapacity -> tech override or vehiclePrefab.productStorage.GetSlots"
+    },
+    {
+     "file": "research/notes/tech-static-content.md",
+     "location": "section 1.4",
+     "note": "TechTreeLogistics: vehicle capacity overrides"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "Numeric capacities per vehicle prefab are not recorded in the repository.",
+   "related": [
+    "dispatch-amount",
+    "dispatch-cost"
+   ],
+   "title_fr": "Capacité des véhicules par route"
+  },
+  {
+   "id": "route-distance",
+   "title": "Route distance",
+   "aliases": [
+    "distance",
+    "distance_tiles",
+    "path length",
+    "no path"
+   ],
+   "summary": "Route distance is the tile count of the game's cached path for road and rail, and the straight-line tile distance for air. A game value of 0 means 'no cached path', not zero distance.",
+   "formula": "road/rail: path tile count; air: straight-line tiles",
+   "evidence": [
+    {
+     "file": "research/notes/logistics.md",
+     "location": "section 2.4; section 5.1",
+     "note": "Road and Rail return path.Count; 0 if the path is not cached or not found"
+    },
+    {
+     "file": "PRD.md",
+     "location": "section 12.3",
+     "note": "game value 0 means no cached path -> null with path_status unavailable"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": null,
+   "related": [
+    "dispatch-cost"
+   ],
+   "title_fr": "Distance d'une route"
+  },
+  {
+   "id": "transport-networks",
+   "title": "Transport networks",
+   "aliases": [
+    "network",
+    "transport mode",
+    "rail",
+    "road",
+    "air",
+    "water",
+    "train",
+    "zeppelin"
+   ],
+   "summary": "Routes run on named networks; the live game reported Water, Air, Rail and Road. A route uses its own building's trucks or a depot module source (train station, airfield) whose matching module must exist at the destination.",
+   "formula": null,
+   "evidence": [
+    {
+     "file": "docs/VALIDATION-REPORT.md",
+     "location": "Session B, gate E1 table",
+     "note": "network names: Water, Air, Rail, Road"
+    },
+    {
+     "file": "research/notes/logistics.md",
+     "location": "section 2.3",
+     "note": "returns null if the destination has no matching module"
+    }
+   ],
+   "verification": "CONFIRMED_IN_GAME",
+   "confidence": "high",
+   "caveats": "Whether ships are usable is unresolved: code analysis inferred none, assets contain shipping prefabs.",
+   "related": [
+    "dispatch-cost"
+   ],
+   "title_fr": "Réseaux de transport"
+  },
+  {
+   "id": "route-scheduling",
+   "title": "Route scheduling and slot count",
+   "aliases": [
+    "route slots",
+    "destination slots",
+    "round robin",
+    "transport priority"
+   ],
+   "summary": "Each building round-robins over its destination slots and products, skipping paused slots, slots without a destination and products it has none of. Manual transport can be pre-empted by higher-priority modes. Prefabs have 3 slots (9 for two prefabs).",
+   "formula": null,
+   "evidence": [
+    {
+     "file": "research/notes/logistics.md",
+     "location": "section 2.5; section 2.1",
+     "note": "round-robins across slots and per product; default priority AWH_LN_MAN"
+    },
+    {
+     "file": "research/notes/static-dump.md",
+     "location": "section 5",
+     "note": "ManualDestinationManager._slotCount: 3 (45 prefabs), 9 (2)"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "Duplicate slots with the same product and destination are possible.",
+   "related": [
+    "dispatch-amount"
+   ],
+   "title_fr": "Ordonnancement des routes et nombre d'emplacements"
+  },
+  {
+   "id": "auto-warehouse",
+   "title": "AUTO_WH makes manual routes dormant",
+   "aliases": [
+    "auto warehouse",
+    "auto_wh",
+    "dormant route",
+    "AUTO_WH"
+   ],
+   "summary": "When a building's logistics option AUTO_WH is set, its manual routes are inactive and the building pushes its output to its warehouse (the chosen one or the closest).",
+   "formula": null,
+   "evidence": [
+    {
+     "file": "research/notes/logistics.md",
+     "location": "section 2.6",
+     "note": "manual slots are inactive; check logistics.options & AUTO_WH"
+    },
+    {
+     "file": "PRD.md",
+     "location": "section 12.3",
+     "note": "dormant_auto_warehouse = origin logistics.options & AUTO_WH"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": null,
+   "related": [
+    "warehouse-requests"
+   ],
+   "title_fr": "AUTO_WH rend les routes manuelles inactives"
+  },
+  {
+   "id": "warehouse-requests",
+   "title": "Warehouse pull requests",
+   "aliases": [
+    "warehouse request",
+    "pull request",
+    "logistic request",
+    "fill to capacity"
+   ],
+   "summary": "Warehouse-type buildings place pull requests (product, amount, priority, active, full vehicles, allowed depots). The company's logistic network resolves providers dynamically. A requested amount of int.MaxValue means 'fill to capacity'.",
+   "formula": null,
+   "evidence": [
+    {
+     "file": "research/notes/logistics.md",
+     "location": "section 3",
+     "note": "pull requests resolved by the actor's logistic network agent; int.MaxValue = fill"
+    },
+    {
+     "file": "PRD.md",
+     "location": "section 12.3.4",
+     "note": "requested amount (int.MaxValue -> fill), remaining, moving, priority, expenses"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "Panel label texts are not recorded.",
+   "related": [
+    "auto-warehouse"
+   ],
+   "title_fr": "Demandes d'entrepôt (pull)"
+  },
+  {
+   "id": "vehicles-pooled",
+   "title": "Vehicles are pooled; no stable identity",
+   "aliases": [
+    "vehicle id",
+    "vehicle identity",
+    "trip counter"
+   ],
+   "summary": "Vehicles are pooled objects; their game id is reassigned on every trip and wraps at 65535. Per-vehicle ids are valid within one world session only, so vehicles are best read in aggregate.",
+   "formula": null,
+   "evidence": [
+    {
+     "file": "research/notes/logistics.md",
+     "location": "section 4.3; section 4.4",
+     "note": "assigned from a counter on every pool pull"
+    },
+    {
+     "file": "docs/KNOWN-LIMITATIONS.md",
+     "location": "Scope",
+     "note": "the game reassigns Vehicle.id on every trip"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": null,
+   "related": [],
+   "title_fr": "Véhicules mutualisés, sans identité stable"
+  },
+  {
+   "id": "building-efficiency",
+   "title": "Building efficiency slider (the wage equivalent)",
+   "aliases": [
+    "efficiency",
+    "efficiency slider",
+    "wages",
+    "salary",
+    "output multiplier",
+    "upkeep multiplier",
+    "efficiency index"
+   ],
+   "summary": "Each building has a 7-level efficiency slider. In the shipped assets the output and upkeep multipliers are identical {0.25, 0.5, 0.75, 1, 1.25, 1.5, 2}, so upkeep scales with output. New buildings start at index 3 (100 %). Higher levels are gated by technology. Rise of Industry has no wages; this slider is the equivalent.",
+   "formula": "production speed = productionSpeed * actor recipe-time modifier * efficiency; efficiency = output_multiplier[index] * actor modifier; upkeep modifier = upkeep_multiplier[index]",
+   "evidence": [
+    {
+     "file": "research/notes/static-dump.md",
+     "location": "section 5",
+     "note": "upkeep and output multipliers {0.25..2.0}; initialEfficiencyIndex 3 (= 100 %)"
+    },
+    {
+     "file": "research/notes/buildings-production.md",
+     "location": "errata; section 2.5",
+     "note": "higher indices are gated by unlocks"
+    },
+    {
+     "file": "PRD.md",
+     "location": "section 27.1 C1, C10",
+     "note": "asset values are authoritative; RoI has no wages, the efficiency slider is the equivalent"
+    },
+    {
+     "file": "docs/v1.1/LIVE-VALIDATION-RESULTS.md",
+     "location": "section 2, check 3",
+     "note": "USINE PETROCHIMIQUE 2 index 3 -> 4: 0.75 -> 0.9375, cycle 40 -> 32 d, upkeep 16 500 -> 20 625 as predicted; cycle progress kept"
+    }
+   ],
+   "verification": "CONFIRMED_IN_GAME",
+   "confidence": "high",
+   "caveats": "Code defaults ({0,0.4,0.6,0.8,1,1.5,2}, index 4) are overridden by the assets. Some buildings use the settlement tier efficiency instead (upkeep multiplier 1). The UI percentage is the effective multiplier including company modifiers (94 % for 0.9375), not the array value.",
+   "related": [
+    "building-upkeep",
+    "production-cycle"
+   ],
+   "title_fr": "Curseur d'efficacité des bâtiments (équivalent des salaires)"
+  },
+  {
+   "id": "building-upkeep",
+   "title": "Building upkeep (monthly)",
+   "aliases": [
+    "upkeep",
+    "rent",
+    "renting",
+    "monthly upkeep",
+    "maintenance",
+    "running cost"
+   ],
+   "summary": "Monthly upkeep is about 2.5 % of the building's base cost (each module adds its own base cost times its percentage), times difficulty upkeep, actor modifiers and the efficiency upkeep multiplier, with a floor of 25 % of the base upkeep. Disabled or non-working buildings pay that minimum. Upkeep accrues daily (1/30) and is charged at month end (bill category 'Renting').",
+   "formula": "monthly = max((base_cost * 0.025 + modules) * difficulty.upkeep * actor * efficiency_upkeep, base_cost * 0.025 * 0.25)",
+   "evidence": [
+    {
+     "file": "research/notes/static-dump.md",
+     "location": "section 2; section 5",
+     "note": "Upkeep.buildingCostPercentage 0.025 (52 prefabs); minUpkeep 0.25"
+    },
+    {
+     "file": "research/notes/buildings-production.md",
+     "location": "errata; section 2.5",
+     "note": "base = baseCost * buildingCostPercentage plus modules; daily accrual, paid at month end"
+    },
+    {
+     "file": "research/notes/company-finance-time.md",
+     "location": "section 3.4",
+     "note": "disabled or not-working buildings pay the minimum upkeep; charged once at month end"
+    },
+    {
+     "file": "docs/v1.1/LIVE-VALIDATION-RESULTS.md",
+     "location": "section 2, check 4",
+     "note": "observed upkeep = formula on every player building type once the building's efficiency is divided out; module upkeep uses the owner's 2.5 %; oil types carry a company upkeep modifier x1.2"
+    }
+   ],
+   "verification": "CONFIRMED_IN_GAME",
+   "confidence": "high",
+   "caveats": "Notes quoting 0.25 refer to the code default. Two prefabs have 0.0. Module upkeep percentages are not exported (the owner's percentage fits every module-owner type live). Company modifiers are not exported; the advisor measures them on the player's buildings of the same type.",
+   "related": [
+    "building-efficiency",
+    "build-cost"
+   ],
+   "title_fr": "Entretien mensuel des bâtiments"
+  },
+  {
+   "id": "build-cost",
+   "title": "Build cost, price unlocks and demolish refund",
+   "aliases": [
+    "build cost",
+    "construction cost",
+    "refund",
+    "demolish",
+    "price unlock",
+    "discount"
+   ],
+   "summary": "A company's build cost is the prefab base cost adjusted by its technology and modifiers; price-unlock research lowers it by a percentage. Demolishing refunds 75 % of what was actually paid.",
+   "formula": "refund = 0.75 * paid_to_build; price unlock: cost = base_cost - base_cost * percentage",
+   "evidence": [
+    {
+     "file": "research/notes/buildings-production.md",
+     "location": "section 2.5",
+     "note": "GetCostForActor applies the tech tree and modifiers; refund is 75 % of paidToBuild"
+    },
+    {
+     "file": "research/notes/tech-static-content.md",
+     "location": "section 1.1",
+     "note": "SetBuildingPriceOverride(b, baseCost - baseCost*percentage)"
+    },
+    {
+     "file": "docs/KNOWN-LIMITATIONS.md",
+     "location": "Scope",
+     "note": "regional cost modifiers applied at placement are not included in current_player_cost"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "The MCP's current player cost excludes regional modifiers.",
+   "related": [
+    "building-upkeep"
+   ],
+   "title_fr": "Coût de construction, remises de recherche et remboursement"
+  },
+  {
+   "id": "production-cycle",
+   "title": "Production cycle time",
+   "aliases": [
+    "cycle time",
+    "production time",
+    "game days",
+    "GetFinalProductionTime",
+    "recipe time",
+    "production speed"
+   ],
+   "summary": "Effective cycle time in game days = recipe game days / final production speed, where final speed = prefab production speed (1.0 for all factories) * the company's recipe-time modifier * building efficiency. Theoretical output per 30 days = amount * 30 / cycle days.",
+   "formula": "cycle_days = game_days / (production_speed * actor_modifier * efficiency); output_per_30d = amount * 30 / cycle_days",
+   "evidence": [
+    {
+     "file": "research/notes/buildings-production.md",
+     "location": "section 3.1; section 3.2",
+     "note": "GetFinalProductionTime = currentRecipe.gameDays / GetFinalProductionSpeed()"
+    },
+    {
+     "file": "research/notes/static-dump.md",
+     "location": "section 5",
+     "note": "Factory.productionSpeed 1.0 (all 21)"
+    },
+    {
+     "file": "PRD.md",
+     "location": "section 15 D-RATE-1",
+     "note": "amount * 30 / cycle_days_effective"
+    },
+    {
+     "file": "docs/v1.1/LIVE-VALIDATION-RESULTS.md",
+     "location": "section 2, check 2",
+     "note": "cycle completions predicted for 4 buildings over 3 and 16 days, all observed; oil types run at company modifier x0.75 (cycles 4/3 longer)"
+    }
+   ],
+   "verification": "CONFIRMED_IN_GAME",
+   "confidence": "high",
+   "caveats": "One game day is 8 s at 1x speed.",
+   "related": [
+    "building-efficiency",
+    "easy-chains",
+    "gatherer-modules"
+   ],
+   "title_fr": "Durée d'un cycle de production"
+  },
+  {
+   "id": "easy-chains",
+   "title": "Easy chains option",
+   "aliases": [
+    "easy chains",
+    "easyChains"
+   ],
+   "summary": "With the easy-chains difficulty option, a recipe's game days are rounded to a multiple of 15 (minimum 15). The raw value is kept for price calculation.",
+   "formula": "game_days = max(15, round_to_15(raw)) when easyChains",
+   "evidence": [
+    {
+     "file": "research/notes/buildings-production.md",
+     "location": "section 3.4",
+     "note": "easy-chains value (rounded to 15, min 15)"
+    },
+    {
+     "file": "research/notes/tech-static-content.md",
+     "location": "section 5.2",
+     "note": "easyChains: Recipe.gameDays rounded to multiples of 15"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": null,
+   "related": [
+    "production-cycle"
+   ],
+   "title_fr": "Option « chaînes faciles »"
+  },
+  {
+   "id": "storage-per-product",
+   "title": "Building storage: one store, per-product cap",
+   "aliases": [
+    "storage",
+    "slots",
+    "inventory",
+    "output full",
+    "storage full"
+   ],
+   "summary": "A factory has one storage with no separate input and output stores; each product is capped at the prefab's slot value (40 or 100 for most prefabs). Production stalls when there is not enough room for a cycle's output. Changing the recipe keeps only products of the new recipe.",
+   "formula": "output full when slots - count(result) < result amount",
+   "evidence": [
+    {
+     "file": "research/notes/buildings-production.md",
+     "location": "section 4.2",
+     "note": "no separate input/output storage; each product capped at slots"
+    },
+    {
+     "file": "research/notes/static-dump.md",
+     "location": "section 5",
+     "note": "ProductSpecificProductStorage.slots 40 (33 prefabs), 100 (21)"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "Changing a recipe clears non-recipe stock.",
+   "related": [
+    "production-blockers"
+   ],
+   "title_fr": "Stockage : un seul stock, plafond par produit"
+  },
+  {
+   "id": "gatherer-modules",
+   "title": "Gatherers, farms and module speed",
+   "aliases": [
+    "gatherer",
+    "harvester",
+    "module",
+    "farm",
+    "field",
+    "well",
+    "mine",
+    "module speed"
+   ],
+   "summary": "Gatherers and farms are hubs with modules (harvesters or fields): up to 3 by default, more after research. The hub runs one production line per module. A harvester's speed depends on the share of its resource nodes that still hold resources (depleted nodes count 0.25) times its pollution efficiency, clamped between a guaranteed minimum and 1. A field's speed is its pollution efficiency.",
+   "formula": "module_speed = clamp(sum(node has amount ? 1 : 0.25) / max_resources * efficiency, min_guaranteed, 1); output_per_30d = sum over modules of amount * 30 / cycle_days * module_speed",
+   "evidence": [
+    {
+     "file": "research/notes/buildings-production.md",
+     "location": "section 3.3; section 1.2",
+     "note": "harvester GetProductionSpeed clamp; Field speed = _efficiency"
+    },
+    {
+     "file": "research/notes/static-dump.md",
+     "location": "section 5",
+     "note": "max 3 harvesters/fields per hub"
+    },
+    {
+     "file": "docs/v1.1/LIVE-VALIDATION-RESULTS.md",
+     "location": "section 2, check 2",
+     "note": "every gatherer/farm hub reported modules.max = 5 while the catalogue max_module_count is 3"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "Code default of 5 modules is overridden by the assets (3); research raises the limit again — every hub of the live validation world reported modules.max = 5. Use the building's observed modules.max.",
+   "related": [
+    "depleted-deposits",
+    "production-cycle"
+   ],
+   "title_fr": "Collecteurs, fermes et vitesse des modules"
+  },
+  {
+   "id": "depleted-deposits",
+   "title": "Resource deposits and depletion",
+   "aliases": [
+    "deposit",
+    "depleted",
+    "resources in range",
+    "resource node"
+   ],
+   "summary": "Harvesters mine finite resource nodes. A depleted node can still be harvested at 25 % speed when allowed. A harvester with no resources in range fails its requirement and the building is blocked.",
+   "formula": "depleted node contribution = 0.25",
+   "evidence": [
+    {
+     "file": "research/notes/buildings-production.md",
+     "location": "section 3.3; section 3.5",
+     "note": "productionSpeedModifierIfDepleted 0.25; HarvesterRequirementResourcesInRange"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "0.25 is the code value; per-node asset overrides are not recorded.",
+   "related": [
+    "gatherer-modules"
+   ],
+   "title_fr": "Gisements et épuisement"
+  },
+  {
+   "id": "production-blockers",
+   "title": "What stops production",
+   "aliases": [
+    "blocked",
+    "not working",
+    "idle",
+    "missing input",
+    "requirements",
+    "notifications",
+    "why is my factory not producing"
+   ],
+   "summary": "A building works only when it is enabled and its requirements are met (re-checked every 3-5 s): recipe selected, inputs present, output space, modules present, resources in range, road connection, not polluted, network reachable. Notifications are raised for player buildings after 5 failed checks.",
+   "formula": null,
+   "evidence": [
+    {
+     "file": "research/notes/buildings-production.md",
+     "location": "section 3.5; section 2.3",
+     "note": "requirements re-checked every 3-5 s; notifications after 5 failed checks"
+    },
+    {
+     "file": "PRD.md",
+     "location": "section 15.6 D-STATUS-1",
+     "note": "MCP status order: disabled, no_recipe, no_modules, blocked, missing input, output full, polluted, depleted"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "The status order is an MCP derivation, not a game enum.",
+   "related": [
+    "storage-per-product",
+    "gatherer-modules"
+   ],
+   "title_fr": "Ce qui arrête la production"
+  },
+  {
+   "id": "shop-demand",
+   "title": "Shop demand",
+   "aliases": [
+    "demand",
+    "shop demand",
+    "demand formula"
+   ],
+   "summary": "Each shop's demand per product is recomputed at every city consumption tick from city population, the producing recipe's time and output, a tier value and the shop's demand modifier, then multiplied by the product's demand modifier and capped. The demand a company sees is multiplied by its actor demand modifier (0 if the city is dead).",
+   "formula": "demand = min(max(1, f * product.demand_modifier), cap); f = shop_modifier + ceil(0.05 * ceil(population / 50000) * (30 / time_to_produce) * produced_amount * tier_value)",
+   "evidence": [
+    {
+     "file": "research/notes/static-dump.md",
+     "location": "section 2",
+     "note": "Shop Demand formula text"
+    },
+    {
+     "file": "research/notes/cities-shops-markets-world.md",
+     "location": "section 2.4; section 1.6",
+     "note": "max(1, f * product.demandModifier), capped by GetProductDemandCap"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "A shop accepts up to 8 products in the assets.",
+   "related": [
+    "shop-demand-unit",
+    "city-consumption"
+   ],
+   "title_fr": "Demande des magasins"
+  },
+  {
+   "id": "shop-demand-unit",
+   "title": "Demand unit: per consumption interval",
+   "aliases": [
+    "demand unit",
+    "per consumption interval",
+    "demand per month",
+    "consumption interval"
+   ],
+   "summary": "Shop demand is the number of units consumed per city consumption tick (every consumption_interval_days days), not per month. Multiply by 30 / interval for a 30-day figure.",
+   "formula": "demand_per_30d = demand * 30 / consumption_interval_days",
+   "evidence": [
+    {
+     "file": "research/notes/cities-shops-markets-world.md",
+     "location": "section 2.4",
+     "note": "units consumed per consumption tick (UI shows consumeInterval next to demand)"
+    },
+    {
+     "file": "docs/KNOWN-LIMITATIONS.md",
+     "location": "Behavioural notes",
+     "note": "units per consumption interval (usually 15 days), not per month"
+    },
+    {
+     "file": "PRD.md",
+     "location": "section 15 D-SHOP-1",
+     "note": "per 30 days = x 30 / consumption_interval_days"
+    }
+   ],
+   "verification": "HIGH_CONFIDENCE",
+   "confidence": "medium",
+   "caveats": null,
+   "related": [
+    "shop-demand",
+    "city-consumption"
+   ],
+   "title_fr": "Unité de la demande : par intervalle de consommation"
+  },
+  {
+   "id": "city-consumption",
+   "title": "City consumption tick",
+   "aliases": [
+    "consumption tick",
+    "city consumes",
+    "consumeProductsInterval"
+   ],
+   "summary": "A city consumes products from its shops on days divisible by its consumption interval (code default 15). After consuming it tries to grow and recomputes demand on all shops.",
+   "formula": "consume when day_count % consumption_interval == 0",
+   "evidence": [
+    {
+     "file": "research/notes/cities-shops-markets-world.md",
+     "location": "section 1.3",
+     "note": "consume products in all shops -> TryGrow -> UpdateDemand"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "15 is a code default; the MCP reports each city's consumption_interval_days.",
+   "related": [
+    "shop-demand-unit",
+    "city-growth"
+   ],
+   "title_fr": "Cycle de consommation des villes"
+  },
+  {
+   "id": "shop-sales",
+   "title": "Who sells first at a shop, and who pays",
+   "aliases": [
+    "shop sales",
+    "permit owner sells first",
+    "shop revenue",
+    "who pays"
+   ],
+   "summary": "At each consumption tick, the company owning the permit of the shop's region sells first, up to its own demand; others follow. Only stock a company delivered counts. Revenue = units * the shop's price for that company, paid by the State.",
+   "formula": "revenue = units * price_for_actor",
+   "evidence": [
+    {
+     "file": "research/notes/cities-shops-markets-world.md",
+     "location": "section 2.6",
+     "note": "permit owner of the shop's region sells first; money flows State -> actor"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": null,
+   "related": [
+    "shop-price",
+    "permits"
+   ],
+   "title_fr": "Qui vend en premier dans un magasin, et qui paie"
+  },
+  {
+   "id": "shop-price",
+   "title": "Shop sell price",
+   "aliases": [
+    "shop price",
+    "sell price",
+    "price modifier",
+    "price for player"
+   ],
+   "summary": "A shop pays the global market price adjusted additively by the market modifier, the shop's own per-product modifier and the difficulty price offset, then multiplied by the company's price modifier.",
+   "formula": "price = market_price * (1 + market_modifier + shop_modifier + difficulty.prices) * actor_price_modifier",
+   "evidence": [
+    {
+     "file": "research/notes/cities-shops-markets-world.md",
+     "location": "section 2.5",
+     "note": "p.price * (1 + p.modifier + GetShopModifier(product, actor)) * actor modifier"
+    },
+    {
+     "file": "research/notes/tech-static-content.md",
+     "location": "section 5.2",
+     "note": "prices: additive offset in GetShopModifier"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": null,
+   "related": [
+    "shop-price-reshuffle",
+    "market-modifier"
+   ],
+   "title_fr": "Prix de vente en magasin"
+  },
+  {
+   "id": "shop-price-reshuffle",
+   "title": "Shop price modifiers reshuffle periodically",
+   "aliases": [
+    "price reshuffle",
+    "price update",
+    "days to next price update"
+   ],
+   "summary": "Every 45-90 days (code defaults) a shop reassigns its per-product price modifiers by monthly sales rank: the least-sold products get the first bucket. A countdown to the next update is kept per shop.",
+   "formula": null,
+   "evidence": [
+    {
+     "file": "research/notes/cities-shops-markets-world.md",
+     "location": "section 2.5",
+     "note": "reassigned every 45-90 days; least-sold products get the first bucket"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "Bucket values are game data and not recorded.",
+   "related": [
+    "shop-price"
+   ],
+   "title_fr": "Remaniement périodique des modificateurs de prix des magasins"
+  },
+  {
+   "id": "market-base-price",
+   "title": "Global market base price",
+   "aliases": [
+    "base price",
+    "market value",
+    "product value",
+    "price formula"
+   ],
+   "summary": "Each product's base value is computed once at world load from its recipe chain with a price formula per category, then multiplied by the category's price multiplier.",
+   "formula": "Factories: (ingredients_value + upkeep / 30 * recipe_days) / recipe_output; price = value * category.price_multiplier",
+   "evidence": [
+    {
+     "file": "research/notes/static-dump.md",
+     "location": "section 2",
+     "note": "Factories (product price) formula"
+    },
+    {
+     "file": "research/notes/cities-shops-markets-world.md",
+     "location": "section 4.1",
+     "note": "base price computed once at world ready; price = value * priceMultiplier"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "Base prices are runtime-only (not saved).",
+   "related": [
+    "market-modifier"
+   ],
+   "title_fr": "Prix de base du marché mondial"
+  },
+  {
+   "id": "market-modifier",
+   "title": "Market price modifier and trend",
+   "aliases": [
+    "market update",
+    "price trend",
+    "market modifier",
+    "going up",
+    "going down"
+   ],
+   "summary": "Every 15 game days (asset value) the market recomputes each product's price modifier from net demand over all cities plus State sales, with negative values doubled and a small random jitter. A trend (stable, going up, going down) is stored.",
+   "formula": "net = demand - sold - stored; f = 2 * sign(net) * sqrt(|net|); f < 0 => f * 2; modifier = f * 0.01 (+/- 1 % jitter, 50 % chance)",
+   "evidence": [
+    {
+     "file": "research/notes/static-dump.md",
+     "location": "section 2; section 6",
+     "note": "GlobalMarket._updateIntervalInDays 15 (code default 30)"
+    },
+    {
+     "file": "research/notes/cities-shops-markets-world.md",
+     "location": "errata; section 4.1",
+     "note": "doubles negative values, +/-1 % jitter with 50 % chance, *0.01"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "Section 4.1 of the cities note still says 30 days; the errata (15) wins.",
+   "related": [
+    "no-price-history",
+    "shop-price"
+   ],
+   "title_fr": "Modificateur et tendance des prix du marché"
+  },
+  {
+   "id": "no-price-history",
+   "title": "No market price history",
+   "aliases": [
+    "price history",
+    "historical prices"
+   ],
+   "summary": "The game keeps only each product's current price modifier and last trend. No price history exists in the game, and the MCP does not synthesize one.",
+   "formula": null,
+   "evidence": [
+    {
+     "file": "research/notes/cities-shops-markets-world.md",
+     "location": "section 4.1",
+     "note": "only current modifier and last trend are stored"
+    },
+    {
+     "file": "PRD.md",
+     "location": "section 12.4",
+     "note": "price_history: available false, reason not_retained_by_game"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": null,
+   "related": [
+    "market-modifier"
+   ],
+   "title_fr": "Aucun historique des prix du marché"
+  },
+  {
+   "id": "state-trading",
+   "title": "The State: raw-resource seller and buyer of last resort",
+   "aliases": [
+    "state",
+    "sell to state",
+    "buy from state",
+    "trading post",
+    "state market"
+   ],
+   "summary": "The State sells raw resources to companies at the final market price times a sale markup. If incoming trade is allowed it buys delivered goods at the base price without the market modifier. The State also pays for every shop sale.",
+   "formula": "buy from State = final_price * markup * actor modifier; sell to State = base_price * actor modifier",
+   "evidence": [
+    {
+     "file": "research/notes/cities-shops-markets-world.md",
+     "location": "section 4.2",
+     "note": "pays the base price without the market modifier"
+    },
+    {
+     "file": "research/notes/company-finance-time.md",
+     "location": "section 3.4",
+     "note": "AI selling to the State gets no money (quirk)"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "Markups are code defaults; live values are unknown.",
+   "related": [
+    "shop-sales"
+   ],
+   "title_fr": "L'État : vendeur de ressources brutes et acheteur de dernier recours"
+  },
+  {
+   "id": "city-growth",
+   "title": "City growth states",
+   "aliases": [
+    "growth",
+    "prospering",
+    "stagnating",
+    "bloated",
+    "waiting for sponsor",
+    "growing"
+   ],
+   "summary": "The growth label is chosen in this order: Waiting For Sponsor, Bloated (population limit reached), Prospering, Growing, Stagnating. Growth is driven by how many distinct products the city consumed in the last consumption tick.",
+   "formula": "Growing: consumed_products >= growth_threshold; Prospering: >= prosperity_threshold",
+   "evidence": [
+    {
+     "file": "research/notes/cities-shops-markets-world.md",
+     "location": "section 1.3",
+     "note": "Waiting For Sponsor, Bloated, Prospering, Growing, Stagnating"
+    },
+    {
+     "file": "PRD.md",
+     "location": "section 15 D-GROW-1",
+     "note": "WaitingForSponsor -> Bloated -> Prospering -> Growing -> Stagnating"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "Thresholds are code defaults; live values are unknown. Labels may be localized.",
+   "related": [
+    "city-tiers",
+    "city-consumption"
+   ],
+   "title_fr": "États de croissance des villes"
+  },
+  {
+   "id": "city-tiers",
+   "title": "City tiers and advancement contracts",
+   "aliases": [
+    "tier",
+    "city tier",
+    "advancement",
+    "sponsor",
+    "tier up"
+   ],
+   "summary": "Each city has a tier with a population threshold. When growth stalls at the population limit, a next tier exists and the region permit is owned, advancement starts: sponsor contracts to deliver products, paid at a markup of the market price.",
+   "formula": "payout = payout_markup * amount * market price",
+   "evidence": [
+    {
+     "file": "research/notes/cities-shops-markets-world.md",
+     "location": "section 1.2; section 1.4",
+     "note": "advancement starts automatically when the limit is reached and the permit is owned"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "Tier names and thresholds are not recorded in the research notes.",
+   "related": [
+    "city-growth",
+    "permits"
+   ],
+   "title_fr": "Paliers des villes et contrats d'avancement"
+  },
+  {
+   "id": "permits",
+   "title": "Region permits and ownership",
+   "aliases": [
+    "permit",
+    "region permit",
+    "region ownership",
+    "permit cost",
+    "auction permit"
+   ],
+   "summary": "Owning a region means holding its full permit. Permit cost scales with the region's tile count, at 75 % for regions without a city. Permits come from auctions or purchase offers. The permit owner sells first at that region's shops.",
+   "formula": "permit_cost = round(tiles * cost_per_tile * cost_modifier * (has_city ? 1 : 0.75))",
+   "evidence": [
+    {
+     "file": "research/notes/cities-shops-markets-world.md",
+     "location": "section 3.4",
+     "note": "empty region cost modifier 0.75; auctions; cooldown 360 days"
+    },
+    {
+     "file": "PRD.md",
+     "location": "section 15 D-PERMIT-1",
+     "note": "round(tiles x costPerTile x costModifier x (city ? 1 : 0.75))"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": null,
+   "related": [
+    "shop-sales",
+    "company-value"
+   ],
+   "title_fr": "Permis de région et propriété"
+  },
+  {
+   "id": "loans",
+   "title": "Loans",
+   "aliases": [
+    "loan",
+    "loans",
+    "interest",
+    "apr",
+    "repay",
+    "grace",
+    "bank loan",
+    "starter loan"
+   ],
+   "summary": "Loan instalments are flat interest (not amortized), paid on day 1 of each month after any grace months. Early repayment costs only the remaining principal share. At most 3 loans by default.",
+   "formula": "monthly = amount * (1 + apr) / duration * modifier; early_repay = remaining_payments / duration * amount",
+   "evidence": [
+    {
+     "file": "research/notes/company-finance-time.md",
+     "location": "section 4",
+     "note": "flat interest; early-repay amount is principal only"
+    },
+    {
+     "file": "research/notes/static-dump.md",
+     "location": "section 4",
+     "note": "loan infos (starter, settlement, bankruptcy)"
+    },
+    {
+     "file": "PRD.md",
+     "location": "section 15 D-LOAN-1",
+     "note": "amount x (1 + apr) / duration x modifier"
+    },
+    {
+     "file": "docs/v1.1/LIVE-VALIDATION-RESULTS.md",
+     "location": "section 2, check 10",
+     "note": "penalty loan 750 000 / 5 months: ledger 'Loan Payments' 150 000 in Y95-09, 10 and 11; early repay 450 000 = 3 x 150 000, then 300 000 after the 1 November payment"
+    }
+   ],
+   "verification": "CONFIRMED_IN_GAME",
+   "confidence": "high",
+   "caveats": "The starter loan principal comes from difficulty.loan x 1,000,000 in code.",
+   "related": [
+    "bankruptcy"
+   ],
+   "title_fr": "Prêts"
+  },
+  {
+   "id": "bankruptcy",
+   "title": "Bankruptcy check and cashflow label",
+   "aliases": [
+    "bankruptcy",
+    "negative balance",
+    "cashflow",
+    "bleeding",
+    "losing",
+    "gaining"
+   ],
+   "summary": "At each month end a company with a negative balance goes bankrupt; the player may take one bankruptcy loan or give up. The cashflow label (Bleeding, Losing, Gaining, Prospering) is recomputed each month from last month's recurring net and the balance.",
+   "formula": "net < 0 and balance < 0 => BLEEDING; net < 0 and balance > 0 => LOSING; net > threshold => PROSPERING; else GAINING",
+   "evidence": [
+    {
+     "file": "research/notes/company-finance-time.md",
+     "location": "section 2.3; section 5.3",
+     "note": "GetBalance < 0 at month end; cashflow from previous-month recurring income minus expenses"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "Whether upkeep is charged before the bankruptcy check on the same month end is inferred.",
+   "related": [
+    "loans",
+    "money-ledger"
+   ],
+   "title_fr": "Contrôle de faillite et indicateur de trésorerie"
+  },
+  {
+   "id": "company-value",
+   "title": "Company value and shares",
+   "aliases": [
+    "company value",
+    "shares",
+    "share bundle",
+    "takeover",
+    "hostile takeover"
+   ],
+   "summary": "Company value = value of the regions it fully owns (permit cost + what it paid to build there), raised 10 % per share bundle owned by competitors. Cash is not included. Buying a bundle costs 10 % of company value; all 10 bundles in one competitor's hands is a hostile takeover.",
+   "formula": "value = sum(permit_cost + paid_to_build) * max(1, 1 + 0.1 * bundles_owned_by_competitors); bundle = min(round(0.1 * value), 999000000)",
+   "evidence": [
+    {
+     "file": "research/notes/company-finance-time.md",
+     "location": "section 5.2; section 5.3",
+     "note": "competitors owning your shares raise your buy-in price; cash not part of value"
+    },
+    {
+     "file": "PRD.md",
+     "location": "section 15 D-VAL-1",
+     "note": "bundle price = min(round(0.1 x value), 999000000)"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": null,
+   "related": [
+    "permits"
+   ],
+   "title_fr": "Valeur de l'entreprise et actions"
+  },
+  {
+   "id": "research",
+   "title": "Research: cost, time, queue",
+   "aliases": [
+    "research",
+    "technology",
+    "tech tree",
+    "research cost",
+    "research time",
+    "unlock points",
+    "research efficiency"
+   ],
+   "summary": "Research costs money per day plus time; there are no research points. The research efficiency slider takes values [0, 1, 2.5, 10, 25, 50]. Clicking a node queues missing prerequisites (queue max 9). Cancelling refunds nothing. A few free unlock points allow instant low-tier unlocks.",
+   "formula": "cost_per_day = 3333.333333 * efficiency; days = (60 + tier^3 * 60) / efficiency",
+   "evidence": [
+    {
+     "file": "research/notes/static-dump.md",
+     "location": "section 2",
+     "note": "Research Cost and Research Time formula texts"
+    },
+    {
+     "file": "research/notes/tech-static-content.md",
+     "location": "errata; section 2.3",
+     "note": "efficiencyValues [0, 1, 2.5, 10, 25, 50]; prerequisites auto-queued; no refund"
+    },
+    {
+     "file": "docs/v1.1/LIVE-VALIDATION-RESULTS.md",
+     "location": "section 2, check 6",
+     "note": "Adhesif $1,8M / 22 jours (game 1 800 000 / 21.6 d); Interface $5,6M / 68 jours (formula 5 600 000 / 67.2 d; the UI rounds days up)"
+    }
+   ],
+   "verification": "CONFIRMED_IN_GAME",
+   "confidence": "high",
+   "caveats": "Total cost = cost/day x days is independent of efficiency (ignoring speed modifiers): efficiency buys speed, not savings.",
+   "related": [],
+   "title_fr": "Recherche : coût, durée, file d'attente"
+  },
+  {
+   "id": "ai-infinite-money",
+   "title": "AI companies have infinite money",
+   "aliases": [
+    "ai cash",
+    "competitor money",
+    "ai money",
+    "infinite money"
+   ],
+   "summary": "AI companies and the State have infinite money, so AI cash is not meaningful. The MCP reports it as infinite.",
+   "formula": null,
+   "evidence": [
+    {
+     "file": "research/notes/static-dump.md",
+     "location": "section 5",
+     "note": "AiPlayer _infiniteMoney 1"
+    },
+    {
+     "file": "docs/KNOWN-LIMITATIONS.md",
+     "location": "Data the game does not provide",
+     "note": "AI companies and the State have infinite money"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": null,
+   "related": [],
+   "title_fr": "Les entreprises IA ont un argent infini"
+  },
+  {
+   "id": "money-ledger",
+   "title": "Money ledger: monthly totals only",
+   "aliases": [
+    "ledger",
+    "finances",
+    "income",
+    "expenses",
+    "monthly",
+    "bills"
+   ],
+   "summary": "Bills are aggregated per category and month; there is no daily ledger. At each year end data older than two years before the current one is pruned. Upkeep bills are dated day 30 of the closing month; loan instalments day 1 of the new month.",
+   "formula": null,
+   "evidence": [
+    {
+     "file": "research/notes/company-finance-time.md",
+     "location": "section 3.2; section 6.1",
+     "note": "only monthly resolution; kept years Y-2..Y"
+    },
+    {
+     "file": "docs/KNOWN-LIMITATIONS.md",
+     "location": "Data the game does not provide",
+     "note": "the game aggregates bills per month"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": null,
+   "related": [
+    "calendar"
+   ],
+   "title_fr": "Grand livre : totaux mensuels uniquement"
+  },
+  {
+   "id": "calendar",
+   "title": "Calendar and game speed",
+   "aliases": [
+    "calendar",
+    "month",
+    "year",
+    "game speed",
+    "speed levels",
+    "seconds per day"
+   ],
+   "summary": "The calendar has 30-day months and 360-day years. One game day lasts 8 s at 1x; speed levels are 1x, 3x, 6x and 10x, so a month lasts 240 s at 1x and 24 s at 10x.",
+   "formula": "real_seconds_per_day = 8 / speed_level",
+   "evidence": [
+    {
+     "file": "docs/VALIDATION-REPORT.md",
+     "location": "Session B, gate E1 table",
+     "note": "secondsPerDay 8.0, speedLevels [1,3,6,10]"
+    },
+    {
+     "file": "research/notes/static-dump.md",
+     "location": "section 6",
+     "note": "a 30-day month = 240 s at 1x, 24 s at 10x"
+    }
+   ],
+   "verification": "CONFIRMED_IN_GAME",
+   "confidence": "high",
+   "caveats": null,
+   "related": [
+    "money-ledger"
+   ],
+   "title_fr": "Calendrier et vitesse du jeu"
+  },
+  {
+   "id": "pollution",
+   "title": "Pollution",
+   "aliases": [
+    "pollution",
+    "polluted"
+   ],
+   "summary": "Polluting buildings emit pollution scaled by an efficiency formula; above 100 % efficiency the term grows quadratically. Pollution lowers harvester and field efficiency, can disable buildings past a threshold, and limits city growth.",
+   "formula": "pollution = rate * efficiency_formula(efficiency) * factor * difficulty",
+   "evidence": [
+    {
+     "file": "research/notes/buildings-production.md",
+     "location": "section 2.5",
+     "note": "PolluterBuilding.pollutionAmount formula; BuildingRequirementNotPolluted"
+    },
+    {
+     "file": "research/notes/static-dump.md",
+     "location": "section 2",
+     "note": "Pollution Rate Efficiency formula text"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "Which prefab uses which formula is not dumped; no pollution grid is exported.",
+   "related": [
+    "gatherer-modules",
+    "building-efficiency"
+   ],
+   "title_fr": "Pollution"
+  },
+  {
+   "id": "contracts",
+   "title": "City delivery contracts",
+   "aliases": [
+    "contract",
+    "delivery contract",
+    "contract offer",
+    "contract auction"
+   ],
+   "summary": "Each city offers at most one delivery contract at a time; offers go to a contract auction where companies bid a percentage of market value. An active contract caps per-trip dispatch to the remaining contract amount. Failing costs a penalty (0.5 of the reward).",
+   "formula": "reward = final_price * bid_percent * amount; penalty = reward * 0.5",
+   "evidence": [
+    {
+     "file": "research/notes/cities-shops-markets-world.md",
+     "location": "section 4.3; section 4.4",
+     "note": "contract auctions bid on percentage of market value; penalty 0.5"
+    },
+    {
+     "file": "research/notes/logistics.md",
+     "location": "section 1.3",
+     "note": "contract caps free space to amount - (delivered + reserved)"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "Generator values are code defaults.",
+   "related": [
+    "dispatch-amount"
+   ],
+   "title_fr": "Contrats de livraison des villes"
+  },
+  {
+   "id": "difficulty",
+   "title": "Difficulty parameters",
+   "aliases": [
+    "difficulty",
+    "difficulty prices",
+    "difficulty upkeep",
+    "difficulty dispatch"
+   ],
+   "summary": "Difficulty 'prices' is an additive price offset; 'upkeep' multiplies building upkeep; 'dispatch' is the difficulty argument of dispatch-cost formulas; 'loan' sets the starter loan. The 'demand' and 'balance' fields are not read anywhere in code.",
+   "formula": null,
+   "evidence": [
+    {
+     "file": "research/notes/tech-static-content.md",
+     "location": "section 5.2",
+     "note": "demand and balance: no reads found in Assembly-CSharp"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "confidence": "high",
+   "caveats": "AI difficulty presets override only dispatch, prices and upkeep.",
+   "related": [
+    "building-upkeep",
+    "dispatch-cost",
+    "shop-price"
+   ],
+   "title_fr": "Paramètres de difficulté"
+  }
+ ]
+}

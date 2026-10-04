@@ -1,0 +1,3871 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://roi-mcp.local/schemas/state.schema.json",
+  "title": "Rise of Industry MCP state.json",
+  "x-schema-version": "1.0.0",
+  "description": "Common envelope of heartbeat/static/state/history files (PRD 11.2).",
+  "type": "object",
+  "additionalProperties": false,
+  "x-envelope": true,
+  "properties": {
+    "schema": {
+      "const": "roi-mcp/state"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^1\\.[0-9]+\\.[0-9]+$"
+    },
+    "observer_version": {
+      "type": "string"
+    },
+    "compatibility": {
+      "const": "verified"
+    },
+    "game": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/GameInfoDto"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "detected game facts; heartbeat before the first READY: null"
+    },
+    "pid": {
+      "type": "integer"
+    },
+    "world_session": {
+      "type": "string"
+    },
+    "seq": {
+      "type": "integer"
+    },
+    "content_hash": {
+      "type": "string"
+    },
+    "written_utc": {
+      "type": "string"
+    },
+    "captured": {
+      "$ref": "#/$defs/CapturedDto"
+    },
+    "static_ref": {
+      "$ref": "#/$defs/StaticRefDto"
+    },
+    "sections": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/SectionStatusDto"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/WarningDto"
+      }
+    },
+    "data": {
+      "$ref": "#/$defs/StateData"
+    }
+  },
+  "required": [
+    "schema",
+    "schema_version",
+    "observer_version",
+    "compatibility",
+    "game",
+    "pid",
+    "world_session",
+    "seq",
+    "content_hash",
+    "written_utc",
+    "captured",
+    "static_ref",
+    "sections",
+    "warnings",
+    "data"
+  ],
+  "$defs": {
+    "AdvancementContractDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "city.development",
+      "x-source": "SAVE",
+      "properties": {
+        "product": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "amount": {
+          "type": "integer"
+        },
+        "delivered": {
+          "type": "integer"
+        },
+        "payout": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "product",
+        "amount",
+        "delivered",
+        "payout"
+      ]
+    },
+    "AdvancementDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "city.development",
+      "x-source": "SAVE",
+      "properties": {
+        "can_advance": {
+          "type": "boolean"
+        },
+        "can_accept": {
+          "type": "boolean"
+        },
+        "is_advancing": {
+          "type": "boolean"
+        },
+        "contracts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AdvancementContractDto"
+          }
+        }
+      },
+      "required": [
+        "can_advance",
+        "can_accept",
+        "is_advancing",
+        "contracts"
+      ]
+    },
+    "AiResearchDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "tech.competitors",
+      "x-source": "SAVE",
+      "properties": {
+        "actor_id": {
+          "type": "integer"
+        },
+        "unlocked_count": {
+          "type": "integer"
+        },
+        "unlocked": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "actor_id",
+        "unlocked_count",
+        "unlocked"
+      ]
+    },
+    "AiStateDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "company.ai_state",
+      "x-source": "SAVE",
+      "properties": {
+        "personality": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "owned_regions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "has_initiative": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "personality",
+        "owned_regions",
+        "has_initiative"
+      ]
+    },
+    "AuctionDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "market.auctions",
+      "x-source": "SAVE",
+      "properties": {
+        "definition": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reward_kind": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "remaining_days": {
+          "type": "integer"
+        },
+        "duration_days": {
+          "type": "integer"
+        },
+        "start_bid": {
+          "type": "number"
+        },
+        "highest_bid": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "highest_bidder_actor_id": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "next_bid": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "bid_count": {
+          "type": "integer"
+        },
+        "region_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "contract_product": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "definition",
+        "title",
+        "reward_kind",
+        "remaining_days",
+        "duration_days",
+        "start_bid",
+        "highest_bid",
+        "highest_bidder_actor_id",
+        "next_bid",
+        "bid_count",
+        "region_id",
+        "contract_product"
+      ]
+    },
+    "AuctionsDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "market.auctions",
+      "x-source": "SAVE",
+      "properties": {
+        "current": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AuctionDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "queue": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AuctionDto"
+          }
+        }
+      },
+      "required": [
+        "current",
+        "queue"
+      ]
+    },
+    "BuildingCompactDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Compact AI building row.",
+      "x-data-map-id": "building.enumerate",
+      "x-source": "SAVE",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "prefab": {
+          "type": "string"
+        },
+        "display_name": {
+          "type": "string"
+        },
+        "owner_actor_id": {
+          "type": "integer"
+        },
+        "x": {
+          "type": "integer"
+        },
+        "y": {
+          "type": "integer"
+        },
+        "region_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "city_id": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "kind": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "flags": {
+          "$ref": "#/$defs/BuildingFlagsDto"
+        },
+        "recipe": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "produced_last_month": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "cycle_days_effective": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "module_count": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "is_module": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "key",
+        "prefab",
+        "display_name",
+        "owner_actor_id",
+        "x",
+        "y",
+        "region_id",
+        "city_id",
+        "kind",
+        "tags",
+        "flags",
+        "recipe",
+        "produced_last_month",
+        "cycle_days_effective",
+        "module_count",
+        "is_module"
+      ]
+    },
+    "BuildingCostDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "building.cost",
+      "x-source": "RUNTIME",
+      "properties": {
+        "building_type": {
+          "type": "string",
+          "description": "Building type asset name"
+        },
+        "cost": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "building_type",
+        "cost"
+      ]
+    },
+    "BuildingDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Full building detail (player buildings, and AI buildings when buildings_ai_detail is enabled).",
+      "x-data-map-id": "building.id",
+      "x-source": "SAVE",
+      "properties": {
+        "key": {
+          "type": "string",
+          "description": "<prefab>@<x>,<y>[#suffix]"
+        },
+        "save_guid": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "prefab": {
+          "type": "string",
+          "x-data-map-id": "building.type"
+        },
+        "display_name": {
+          "type": "string",
+          "x-data-map-id": "building.name"
+        },
+        "owner_actor_id": {
+          "type": "integer",
+          "x-data-map-id": "building.owner"
+        },
+        "x": {
+          "type": "integer",
+          "x-data-map-id": "building.position"
+        },
+        "y": {
+          "type": "integer",
+          "x-data-map-id": "building.position"
+        },
+        "rotation": {
+          "type": "integer",
+          "x-data-map-id": "building.position"
+        },
+        "region_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "x-data-map-id": "building.region"
+        },
+        "city_id": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "x-data-map-id": "building.region"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-data-map-id": "building.type"
+        },
+        "kind": {
+          "type": "string",
+          "x-data-map-id": "building.type",
+          "enum": [
+            "factory",
+            "gatherer",
+            "farm",
+            "harvester",
+            "field",
+            "warehouse",
+            "depot",
+            "shop",
+            "hq",
+            "other"
+          ]
+        },
+        "flags": {
+          "$ref": "#/$defs/BuildingFlagsDto",
+          "x-data-map-id": "building.active"
+        },
+        "paid_to_build": {
+          "type": "number",
+          "x-data-map-id": "building.cost"
+        },
+        "efficiency": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EfficiencyDto"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-data-map-id": "building.efficiency"
+        },
+        "upkeep": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/UpkeepDto"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-data-map-id": "building.upkeep"
+        },
+        "recipe": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "x-data-map-id": "production.recipe"
+        },
+        "cycle_days_effective": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "GetFinalProductionTime(), game days",
+          "x-data-map-id": "production.cycle"
+        },
+        "production": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ProductionDto"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-data-map-id": "production.counters"
+        },
+        "modules": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ModulesDto"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-data-map-id": "gatherer.hub"
+        },
+        "inventory": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/InventoryDto"
+          },
+          "x-data-map-id": "production.inventory"
+        },
+        "logistics": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/LogisticsConfigDto"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-data-map-id": "building.config_logistics"
+        },
+        "notifications": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-data-map-id": "building.blocking"
+        },
+        "pollution_at_tile": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "x-data-map-id": "building.pollution"
+        },
+        "is_polluted": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "x-data-map-id": "building.pollution"
+        },
+        "fleet": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FleetDto"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-data-map-id": "logistics.fleet"
+        },
+        "is_module": {
+          "type": "boolean"
+        },
+        "module_owner": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "is_shop": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "x-data-map-id": "shop.type"
+        }
+      },
+      "required": [
+        "key",
+        "save_guid",
+        "prefab",
+        "display_name",
+        "owner_actor_id",
+        "x",
+        "y",
+        "rotation",
+        "region_id",
+        "city_id",
+        "tags",
+        "kind",
+        "flags",
+        "paid_to_build",
+        "efficiency",
+        "upkeep",
+        "recipe",
+        "cycle_days_effective",
+        "production",
+        "modules",
+        "inventory",
+        "logistics",
+        "notifications",
+        "pollution_at_tile",
+        "is_polluted",
+        "fleet",
+        "is_module",
+        "module_owner",
+        "is_shop"
+      ]
+    },
+    "BuildingFlagsDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "building.active",
+      "x-source": "SAVE",
+      "properties": {
+        "user_enabled": {
+          "type": "boolean"
+        },
+        "requirements_met": {
+          "type": "boolean"
+        },
+        "is_working": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "user_enabled",
+        "requirements_met",
+        "is_working"
+      ]
+    },
+    "CapturedDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-envelope": true,
+      "properties": {
+        "utc_start": {
+          "type": "string"
+        },
+        "utc_end": {
+          "type": "string"
+        },
+        "game_day_start": {
+          "type": "integer"
+        },
+        "game_day_end": {
+          "type": "integer"
+        },
+        "game_date": {
+          "type": "string",
+          "description": "Y<year>-<MM>-<DD>, 30-day months"
+        },
+        "frames": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "description": "[first frame, last frame]"
+        },
+        "main_thread_ms": {
+          "type": "number"
+        },
+        "slices": {
+          "type": "integer"
+        },
+        "max_slice_ms": {
+          "type": "number"
+        },
+        "consistent": {
+          "type": "boolean",
+          "description": "true when every section was read on the same game day"
+        }
+      },
+      "required": [
+        "utc_start",
+        "utc_end",
+        "game_day_start",
+        "game_day_end",
+        "game_date",
+        "frames",
+        "main_thread_ms",
+        "slices",
+        "max_slice_ms",
+        "consistent"
+      ]
+    },
+    "CashDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "company.cash",
+      "x-source": "SAVE",
+      "properties": {
+        "value": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "infinite": {
+          "type": "boolean"
+        },
+        "registered": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "value",
+        "infinite",
+        "registered"
+      ]
+    },
+    "CityDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "city.identity",
+      "x-source": "SAVE",
+      "properties": {
+        "city_id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "region_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "type": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "x-data-map-id": "city.type_tier"
+        },
+        "tier": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "x-data-map-id": "city.type_tier"
+        },
+        "tier_id": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "x-data-map-id": "city.type_tier"
+        },
+        "next_tier": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "x-data-map-id": "city.type_tier"
+        },
+        "population": {
+          "type": "integer",
+          "x-data-map-id": "city.population"
+        },
+        "population_limit": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "x-data-map-id": "city.population"
+        },
+        "population_limit_reached": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "x-data-map-id": "city.population"
+        },
+        "growth": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CityGrowthDto"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-data-map-id": "city.growth_state"
+        },
+        "dead": {
+          "type": "boolean",
+          "x-data-map-id": "city.dead"
+        },
+        "advancement": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AdvancementDto"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-data-map-id": "city.development"
+        },
+        "contract_offer": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ContractDto"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-data-map-id": "city.contract"
+        },
+        "consumption_interval_days": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "x-data-map-id": "shop.demand_interval"
+        },
+        "house_count": {
+          "type": "integer"
+        },
+        "shops": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "center_x": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "center_y": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "city_id",
+        "name",
+        "region_id",
+        "type",
+        "tier",
+        "tier_id",
+        "next_tier",
+        "population",
+        "population_limit",
+        "population_limit_reached",
+        "growth",
+        "dead",
+        "advancement",
+        "contract_offer",
+        "consumption_interval_days",
+        "house_count",
+        "shops",
+        "center_x",
+        "center_y"
+      ]
+    },
+    "CityGrowthDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "city.growth_state",
+      "x-source": "RUNTIME",
+      "properties": {
+        "waiting_for_sponsor": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "prospering": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "growing": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "consumed_products": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "growth_threshold": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "prosperity_threshold": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "state": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "WaitingForSponsor",
+            "Bloated",
+            "Prospering",
+            "Growing",
+            "Stagnating",
+            null
+          ]
+        }
+      },
+      "required": [
+        "waiting_for_sponsor",
+        "prospering",
+        "growing",
+        "consumed_products",
+        "growth_threshold",
+        "prosperity_threshold",
+        "state"
+      ]
+    },
+    "CompanyDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "company.identity",
+      "x-source": "SAVE",
+      "properties": {
+        "actor_id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "human",
+            "ai"
+          ]
+        },
+        "is_player": {
+          "type": "boolean"
+        },
+        "color": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "#RRGGBB"
+        },
+        "hq_building": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "hq_city_id": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "cash": {
+          "$ref": "#/$defs/CashDto",
+          "x-data-map-id": "company.cash"
+        },
+        "loans": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/LoanDto"
+          },
+          "x-data-map-id": "company.loans"
+        },
+        "max_loans": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "x-data-map-id": "company.loans"
+        },
+        "shares": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SharesDto"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-data-map-id": "company.shares"
+        },
+        "stats": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CompanyStatsDto"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-data-map-id": "company.cashflow_label"
+        },
+        "building_counts_by_tag": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "x-data-map-id": "company.buildings"
+        },
+        "building_counts_by_type": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "x-data-map-id": "company.buildings"
+        },
+        "building_count": {
+          "type": "integer",
+          "x-data-map-id": "company.buildings"
+        },
+        "paid_to_build_total": {
+          "type": "number",
+          "description": "sum of paid_to_build over the company's buildings",
+          "x-data-map-id": "company.total_assets"
+        },
+        "value_inputs": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/RegionValueInputDto"
+          },
+          "x-data-map-id": "company.value"
+        },
+        "ai": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AiStateDto"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-data-map-id": "company.ai_state"
+        },
+        "contracts": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ContractsAgentDto"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-data-map-id": "market.contracts"
+        }
+      },
+      "required": [
+        "actor_id",
+        "name",
+        "kind",
+        "is_player",
+        "color",
+        "hq_building",
+        "hq_city_id",
+        "cash",
+        "loans",
+        "max_loans",
+        "shares",
+        "stats",
+        "building_counts_by_tag",
+        "building_counts_by_type",
+        "building_count",
+        "paid_to_build_total",
+        "value_inputs",
+        "ai",
+        "contracts"
+      ]
+    },
+    "CompanyStatsDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "company.cashflow_label",
+      "x-source": "SAVE",
+      "properties": {
+        "cashflow": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "top_production": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ProductAmountFloatDto"
+          }
+        },
+        "top_sales": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ProductAmountFloatDto"
+          }
+        },
+        "owned_permits": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "main_tech_tree": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "cashflow",
+        "top_production",
+        "top_sales",
+        "owned_permits",
+        "main_tech_tree"
+      ]
+    },
+    "ContractDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "market.contracts",
+      "x-source": "SAVE",
+      "properties": {
+        "product": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "amount": {
+          "type": "integer"
+        },
+        "delivered": {
+          "type": "integer"
+        },
+        "reserved": {
+          "type": "integer"
+        },
+        "issuer_actor_id": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "issuer_name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "target_building": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "accepted_actor_id": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "completed": {
+          "type": "boolean"
+        },
+        "price": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "reward": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "penalty": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "remaining_days": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "duration_days": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "fulfilled": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "failed": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "product",
+        "amount",
+        "delivered",
+        "reserved",
+        "issuer_actor_id",
+        "issuer_name",
+        "target_building",
+        "accepted_actor_id",
+        "active",
+        "completed",
+        "price",
+        "reward",
+        "penalty",
+        "remaining_days",
+        "duration_days",
+        "fulfilled",
+        "failed"
+      ]
+    },
+    "ContractsAgentDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "market.contracts",
+      "x-source": "SAVE",
+      "properties": {
+        "max_contracts": {
+          "type": "integer"
+        },
+        "can_accept": {
+          "type": "boolean"
+        },
+        "active": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ContractDto"
+          }
+        }
+      },
+      "required": [
+        "max_contracts",
+        "can_accept",
+        "active"
+      ]
+    },
+    "DifficultyDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "game.difficulty",
+      "x-source": "SAVE",
+      "properties": {
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "prices": {
+          "type": "number"
+        },
+        "upkeep": {
+          "type": "number"
+        },
+        "dispatch": {
+          "type": "number"
+        },
+        "loan": {
+          "type": "number"
+        },
+        "score_modifier": {
+          "type": "number"
+        },
+        "easy_chains": {
+          "type": "boolean"
+        },
+        "infinite_money": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "prices",
+        "upkeep",
+        "dispatch",
+        "loan",
+        "score_modifier",
+        "easy_chains",
+        "infinite_money"
+      ]
+    },
+    "DispatchAmountDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "logistics.per_trip_amount",
+      "x-source": "DERIVED",
+      "properties": {
+        "value": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "complete": {
+          "type": "boolean"
+        },
+        "limited_by": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "inputs": {
+          "$ref": "#/$defs/DispatchInputsDto"
+        },
+        "method": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "value",
+        "complete",
+        "limited_by",
+        "inputs",
+        "method"
+      ]
+    },
+    "DispatchInputsDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "logistics.per_trip_amount",
+      "x-source": "DERIVED",
+      "properties": {
+        "vehicle_capacity": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "origin_stock": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "min_keep": {
+          "type": "integer"
+        },
+        "available": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "free_space": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "max_send": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "destination_slots": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "max_send_room": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "contract_room": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "world_event_targets_destination": {
+          "type": "boolean"
+        },
+        "wait_for_full_vehicle": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "vehicle_capacity",
+        "origin_stock",
+        "min_keep",
+        "available",
+        "free_space",
+        "max_send",
+        "destination_slots",
+        "max_send_room",
+        "contract_room",
+        "world_event_targets_destination",
+        "wait_for_full_vehicle"
+      ]
+    },
+    "EfficiencyDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "building.efficiency",
+      "x-source": "SAVE",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "building",
+            "settlement"
+          ]
+        },
+        "index": {
+          "type": "integer"
+        },
+        "output_multiplier": {
+          "type": "number"
+        },
+        "upkeep_multiplier": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "kind",
+        "index",
+        "output_multiplier",
+        "upkeep_multiplier"
+      ]
+    },
+    "FleetDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "logistics.fleet",
+      "x-source": "RUNTIME",
+      "properties": {
+        "vehicle_prefab": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "active": {
+          "type": "integer"
+        },
+        "inactive": {
+          "type": "integer"
+        },
+        "max": {
+          "type": "integer"
+        },
+        "infinite": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "vehicle_prefab",
+        "active",
+        "inactive",
+        "max",
+        "infinite"
+      ]
+    },
+    "FleetRowDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "logistics.fleet",
+      "x-source": "RUNTIME",
+      "properties": {
+        "building": {
+          "type": "string"
+        },
+        "vehicle_prefab": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "transport_mode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "active": {
+          "type": "integer"
+        },
+        "inactive": {
+          "type": "integer"
+        },
+        "max": {
+          "type": "integer"
+        },
+        "infinite": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "building",
+        "vehicle_prefab",
+        "transport_mode",
+        "active",
+        "inactive",
+        "max",
+        "infinite"
+      ]
+    },
+    "GameInfoDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Game build facts. In envelopes these are the detected values of the running game.",
+      "x-envelope": true,
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "major.minor.revision"
+        },
+        "build": {
+          "type": "string",
+          "description": "build + suffix, e.g. 0507b"
+        },
+        "commit": {
+          "type": "string"
+        },
+        "savegame_version": {
+          "type": "integer"
+        },
+        "assembly_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "SHA-256 (upper-case hex) of the loaded Assembly-CSharp.dll; null until computed"
+        },
+        "release": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "version",
+        "build",
+        "commit",
+        "savegame_version",
+        "assembly_sha256",
+        "release"
+      ]
+    },
+    "InFlightDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "logistics.in_flight",
+      "x-source": "SAVE",
+      "properties": {
+        "requests_total": {
+          "type": "integer"
+        },
+        "requests_new": {
+          "type": "integer"
+        },
+        "requests_started": {
+          "type": "integer"
+        },
+        "requests_other": {
+          "type": "integer"
+        },
+        "units_requested": {
+          "type": "integer"
+        },
+        "units_started": {
+          "type": "integer"
+        },
+        "invalid_handles": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "requests_total",
+        "requests_new",
+        "requests_started",
+        "requests_other",
+        "units_requested",
+        "units_started",
+        "invalid_handles"
+      ]
+    },
+    "InventoryDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "production.inventory",
+      "x-source": "SAVE",
+      "properties": {
+        "product": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "input",
+            "output",
+            "accepted",
+            "other"
+          ]
+        },
+        "count": {
+          "type": "integer",
+          "description": "stored minus pull reservations (IProductStorage.Count)"
+        },
+        "slots": {
+          "type": "integer",
+          "x-data-map-id": "production.capacity"
+        },
+        "stored": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "incoming_reserved": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "outgoing_reserved": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "inbound_cap": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "Max Send stored on this building for this product; 0 = unlimited",
+          "x-data-map-id": "production.inbound_cap"
+        }
+      },
+      "required": [
+        "product",
+        "role",
+        "count",
+        "slots",
+        "stored",
+        "incoming_reserved",
+        "outgoing_reserved",
+        "inbound_cap"
+      ]
+    },
+    "LoanDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "company.loans",
+      "x-source": "SAVE",
+      "properties": {
+        "type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lender_actor_id": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "lender_name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "principal": {
+          "type": "number"
+        },
+        "apr": {
+          "type": "number"
+        },
+        "duration_months": {
+          "type": "integer"
+        },
+        "remaining_payments": {
+          "type": "integer"
+        },
+        "amount_with_apr": {
+          "type": "number"
+        },
+        "early_repay_amount": {
+          "type": "number"
+        },
+        "grace_months_left": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "settlement_loan": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "title",
+        "lender_actor_id",
+        "lender_name",
+        "principal",
+        "apr",
+        "duration_months",
+        "remaining_payments",
+        "amount_with_apr",
+        "early_repay_amount",
+        "grace_months_left",
+        "settlement_loan"
+      ]
+    },
+    "LogisticsConfigDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "building.config_logistics",
+      "x-source": "SAVE",
+      "properties": {
+        "options": {
+          "type": "integer"
+        },
+        "auto_wh": {
+          "type": "boolean",
+          "x-data-map-id": "logistics.auto_warehouse"
+        },
+        "warehouse": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "x-data-map-id": "logistics.auto_warehouse"
+        },
+        "accepted": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "outgoing": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "manual_slot_count": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "options",
+        "auto_wh",
+        "warehouse",
+        "accepted",
+        "outgoing",
+        "manual_slot_count"
+      ]
+    },
+    "MarketDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "market.global_prices",
+      "x-source": "RUNTIME",
+      "properties": {
+        "prices": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MarketPriceDto"
+          }
+        },
+        "state": {
+          "$ref": "#/$defs/StateMarketDto",
+          "x-data-map-id": "market.state_sells"
+        },
+        "city_contract_offers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ContractDto"
+          },
+          "x-data-map-id": "market.contracts"
+        },
+        "auctions": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AuctionsDto"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-data-map-id": "market.auctions"
+        }
+      },
+      "required": [
+        "prices",
+        "state",
+        "city_contract_offers",
+        "auctions"
+      ]
+    },
+    "MarketPriceDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "market.global_prices",
+      "x-source": "RUNTIME",
+      "properties": {
+        "product": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        },
+        "price": {
+          "type": "number"
+        },
+        "modifier": {
+          "type": "number"
+        },
+        "trend": {
+          "type": "string",
+          "enum": [
+            "STABLE",
+            "GOING_UP",
+            "GOING_DOWN",
+            "OTHER"
+          ]
+        },
+        "final_price_for_player": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "product",
+        "value",
+        "price",
+        "modifier",
+        "trend",
+        "final_price_for_player"
+      ]
+    },
+    "MaxSendDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "logistics.max_send",
+      "x-source": "SAVE",
+      "properties": {
+        "value": {
+          "type": "integer"
+        },
+        "unlimited": {
+          "type": "boolean"
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "manual",
+            "auto_shop_demand"
+          ]
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "destination_product_shared"
+          ]
+        },
+        "headroom_now": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "description": "R: max(value - (stock + incoming_reserved), 0); null when unlimited"
+        },
+        "ui_label_validated": {
+          "type": "boolean"
+        },
+        "storage_kind": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "product_specific",
+            "single_product",
+            "infinite",
+            "module_shared",
+            "unknown",
+            null
+          ]
+        }
+      },
+      "required": [
+        "value",
+        "unlimited",
+        "mode",
+        "scope",
+        "headroom_now",
+        "ui_label_validated",
+        "storage_kind"
+      ]
+    },
+    "MinKeepDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "logistics.min_keep",
+      "x-source": "SAVE",
+      "properties": {
+        "value": {
+          "type": "integer"
+        },
+        "keep_all": {
+          "type": "boolean"
+        },
+        "ui_label_validated": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "value",
+        "keep_all",
+        "ui_label_validated"
+      ]
+    },
+    "ModDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "game.mods",
+      "x-source": "RUNTIME",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "integer"
+        },
+        "version_string": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "version",
+        "version_string"
+      ]
+    },
+    "ModuleDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "game.module",
+      "x-source": "RUNTIME",
+      "properties": {
+        "id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    "ModuleDto2": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "gatherer.rate",
+      "x-source": "SAVE",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "prefab": {
+          "type": "string"
+        },
+        "progress": {
+          "type": "number"
+        },
+        "efficiency": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "min_guaranteed_speed": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "max_resources": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "speed_replica": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "resource": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "x-data-map-id": "gatherer.deposits"
+        },
+        "nodes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "x-data-map-id": "gatherer.deposits"
+        },
+        "nodes_depleted": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "x-data-map-id": "gatherer.deposits"
+        },
+        "deposit_remaining": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "x-data-map-id": "gatherer.deposits"
+        },
+        "user_enabled": {
+          "type": "boolean"
+        },
+        "requirements_met": {
+          "type": "boolean"
+        },
+        "is_working": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "key",
+        "prefab",
+        "progress",
+        "efficiency",
+        "min_guaranteed_speed",
+        "max_resources",
+        "speed_replica",
+        "resource",
+        "nodes",
+        "nodes_depleted",
+        "deposit_remaining",
+        "user_enabled",
+        "requirements_met",
+        "is_working"
+      ]
+    },
+    "ModulesDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "gatherer.hub",
+      "x-source": "SAVE",
+      "properties": {
+        "count": {
+          "type": "integer"
+        },
+        "max": {
+          "type": "integer"
+        },
+        "module_prefab": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "delivered_to_hub": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ModuleDto2"
+          }
+        }
+      },
+      "required": [
+        "count",
+        "max",
+        "module_prefab",
+        "delivered_to_hub",
+        "items"
+      ]
+    },
+    "PermitDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "region.permits",
+      "x-source": "SAVE",
+      "properties": {
+        "owner_actor_id": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "amount_paid": {
+          "type": "number"
+        },
+        "type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "owner_actor_id",
+        "amount_paid",
+        "type"
+      ]
+    },
+    "PlayerResearchDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "tech.research_state",
+      "x-source": "SAVE",
+      "properties": {
+        "active": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "queue": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "active_progress": {
+          "type": "number"
+        },
+        "progress": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/UnlockProgressDto"
+          }
+        },
+        "remaining_days": {
+          "type": "number"
+        },
+        "remaining_cost": {
+          "type": "number"
+        },
+        "current_cost": {
+          "type": "number"
+        },
+        "efficiency_index": {
+          "type": "integer"
+        },
+        "efficiency": {
+          "type": "number"
+        },
+        "unlock_points": {
+          "type": "integer"
+        },
+        "unlocked": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-data-map-id": "tech.unlocked"
+        },
+        "costs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/UnlockCostDto"
+          },
+          "x-data-map-id": "tech.costs"
+        },
+        "building_costs": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/BuildingCostDto"
+          },
+          "description": "Current build price per building type from the player's tech tree (the value TechTreeAgent.GetBuildingCost returns, before regional modifiers); null when the price table could not be read",
+          "x-data-map-id": "building.cost"
+        }
+      },
+      "required": [
+        "active",
+        "queue",
+        "active_progress",
+        "progress",
+        "remaining_days",
+        "remaining_cost",
+        "current_cost",
+        "efficiency_index",
+        "efficiency",
+        "unlock_points",
+        "unlocked",
+        "costs",
+        "building_costs"
+      ]
+    },
+    "ProductAmountFloatDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "company.cashflow_label",
+      "x-source": "SAVE",
+      "properties": {
+        "product": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "product",
+        "amount"
+      ]
+    },
+    "ProductionDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "production.counters",
+      "x-source": "SAVE",
+      "properties": {
+        "progress": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "x-data-map-id": "production.progress"
+        },
+        "produced_this_month": {
+          "type": "integer"
+        },
+        "produced_last_month": {
+          "type": "integer"
+        },
+        "total_produced": {
+          "type": "integer"
+        },
+        "average_10_months": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "production_frames": {
+          "type": "integer",
+          "x-data-map-id": "building.production_efficiency"
+        },
+        "frames_spent_producing": {
+          "type": "integer",
+          "x-data-map-id": "building.production_efficiency"
+        },
+        "final_speed": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "x-data-map-id": "building.production_efficiency"
+        }
+      },
+      "required": [
+        "progress",
+        "produced_this_month",
+        "produced_last_month",
+        "total_produced",
+        "average_10_months",
+        "production_frames",
+        "frames_spent_producing",
+        "final_speed"
+      ]
+    },
+    "RegionDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "region.identity",
+      "x-source": "SAVE",
+      "properties": {
+        "region_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "center_x": {
+          "type": "integer"
+        },
+        "center_y": {
+          "type": "integer"
+        },
+        "tile_count": {
+          "type": "integer"
+        },
+        "city_id": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RegionResourceDto"
+          },
+          "x-data-map-id": "region.resources"
+        },
+        "resource_sites": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ResourceSiteDto"
+          },
+          "x-data-map-id": "region.resources"
+        },
+        "permit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PermitDto"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-data-map-id": "region.permits"
+        },
+        "permit_cost": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "x-data-map-id": "region.permit_cost",
+          "x-source": "DERIVED"
+        },
+        "permit_auction_cooldown": {
+          "type": "integer",
+          "x-data-map-id": "region.cooldowns"
+        },
+        "permit_purchase_cooldown": {
+          "type": "integer",
+          "x-data-map-id": "region.cooldowns"
+        }
+      },
+      "required": [
+        "region_id",
+        "name",
+        "center_x",
+        "center_y",
+        "tile_count",
+        "city_id",
+        "resources",
+        "resource_sites",
+        "permit",
+        "permit_cost",
+        "permit_auction_cooldown",
+        "permit_purchase_cooldown"
+      ]
+    },
+    "RegionResourceDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "region.resources",
+      "x-source": "SAVE",
+      "properties": {
+        "product": {
+          "type": "string"
+        },
+        "tiles": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "water_unlimited": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "product",
+        "tiles",
+        "water_unlimited"
+      ]
+    },
+    "RegionValueInputDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Inputs for the company value replica D-VAL-1, per region whose full permit the company owns.",
+      "x-data-map-id": "company.value",
+      "x-source": "DERIVED",
+      "properties": {
+        "region_id": {
+          "type": "string"
+        },
+        "permit_cost": {
+          "type": "integer"
+        },
+        "paid_to_build_in_region": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "region_id",
+        "permit_cost",
+        "paid_to_build_in_region"
+      ]
+    },
+    "ResearchDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "tech.research_state",
+      "x-source": "SAVE",
+      "properties": {
+        "player": {
+          "$ref": "#/$defs/PlayerResearchDto"
+        },
+        "ai": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AiResearchDto"
+          }
+        }
+      },
+      "required": [
+        "player",
+        "ai"
+      ]
+    },
+    "ResourceSiteDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "region.resources",
+      "x-source": "SAVE",
+      "properties": {
+        "product": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "center_x": {
+          "type": "integer"
+        },
+        "center_y": {
+          "type": "integer"
+        },
+        "radius": {
+          "type": "number"
+        },
+        "amount": {
+          "type": "integer"
+        },
+        "nodes": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "product",
+        "center_x",
+        "center_y",
+        "radius",
+        "amount",
+        "nodes"
+      ]
+    },
+    "RouteDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "One configured manual destination slot (PRD 12.3).",
+      "x-data-map-id": "logistics.slots",
+      "x-source": "SAVE",
+      "properties": {
+        "route_key": {
+          "type": "string",
+          "description": "origin|product|destination|source|n (route id without the route: prefix)"
+        },
+        "origin": {
+          "type": "string",
+          "x-data-map-id": "logistics.source_building"
+        },
+        "destination": {
+          "type": "string",
+          "x-data-map-id": "logistics.destination"
+        },
+        "endpoint": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "x-data-map-id": "logistics.destination"
+        },
+        "destination_kind": {
+          "type": "string",
+          "x-data-map-id": "logistics.destination",
+          "enum": [
+            "shop",
+            "warehouse",
+            "factory",
+            "gatherer",
+            "farm",
+            "state_trading",
+            "wholesaler",
+            "contract_target",
+            "other"
+          ]
+        },
+        "destination_owner_actor_id": {
+          "type": "integer",
+          "x-data-map-id": "logistics.destination"
+        },
+        "destination_city_id": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "x-data-map-id": "logistics.destination"
+        },
+        "product": {
+          "type": "string",
+          "x-data-map-id": "logistics.product"
+        },
+        "source": {
+          "type": "string",
+          "x-data-map-id": "logistics.transport_mode"
+        },
+        "transport_mode": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "x-data-map-id": "logistics.transport_mode"
+        },
+        "slot_index": {
+          "type": "integer"
+        },
+        "occurrence": {
+          "type": "integer"
+        },
+        "paused": {
+          "type": "boolean",
+          "x-data-map-id": "logistics.slot_flags"
+        },
+        "wait_for_full_vehicle": {
+          "type": "boolean",
+          "x-data-map-id": "logistics.slot_flags"
+        },
+        "dormant_auto_warehouse": {
+          "type": "boolean",
+          "x-data-map-id": "logistics.auto_warehouse"
+        },
+        "max_send": {
+          "$ref": "#/$defs/MaxSendDto",
+          "x-data-map-id": "logistics.max_send"
+        },
+        "min_keep": {
+          "$ref": "#/$defs/MinKeepDto",
+          "x-data-map-id": "logistics.min_keep"
+        },
+        "distance_tiles": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "x-data-map-id": "logistics.distance"
+        },
+        "path_status": {
+          "type": "string",
+          "x-data-map-id": "logistics.distance",
+          "enum": [
+            "cached",
+            "unavailable"
+          ]
+        },
+        "dispatch_cost": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "x-data-map-id": "logistics.dispatch_cost"
+        },
+        "dispatch_formula": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "x-data-map-id": "logistics.dispatch_cost"
+        },
+        "vehicle_capacity": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "x-data-map-id": "logistics.fleet"
+        },
+        "dispatch_amount_now": {
+          "$ref": "#/$defs/DispatchAmountDto",
+          "x-data-map-id": "logistics.per_trip_amount"
+        },
+        "in_flight": {
+          "$ref": "#/$defs/InFlightDto",
+          "x-data-map-id": "logistics.in_flight"
+        },
+        "destination_stock": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "x-data-map-id": "production.inventory"
+        },
+        "destination_incoming_reserved": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "x-data-map-id": "production.inventory"
+        },
+        "destination_free_space": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "x-data-map-id": "production.inventory"
+        },
+        "destination_slots": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "x-data-map-id": "production.capacity"
+        },
+        "origin_stock": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "x-data-map-id": "production.inventory"
+        },
+        "validation_error": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "x-data-map-id": "logistics.slot_flags"
+        },
+        "has_error": {
+          "type": "boolean",
+          "x-data-map-id": "logistics.slot_flags"
+        },
+        "destination_accepts_product": {
+          "type": "boolean",
+          "x-data-map-id": "logistics.slot_flags"
+        },
+        "destination_dead_city": {
+          "type": "boolean",
+          "x-data-map-id": "city.dead"
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "route_key",
+        "origin",
+        "destination",
+        "endpoint",
+        "destination_kind",
+        "destination_owner_actor_id",
+        "destination_city_id",
+        "product",
+        "source",
+        "transport_mode",
+        "slot_index",
+        "occurrence",
+        "paused",
+        "wait_for_full_vehicle",
+        "dormant_auto_warehouse",
+        "max_send",
+        "min_keep",
+        "distance_tiles",
+        "path_status",
+        "dispatch_cost",
+        "dispatch_formula",
+        "vehicle_capacity",
+        "dispatch_amount_now",
+        "in_flight",
+        "destination_stock",
+        "destination_incoming_reserved",
+        "destination_free_space",
+        "destination_slots",
+        "origin_stock",
+        "validation_error",
+        "has_error",
+        "destination_accepts_product",
+        "destination_dead_city",
+        "errors"
+      ]
+    },
+    "RoutePathDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "logistics.routes",
+      "x-source": "RUNTIME",
+      "properties": {
+        "route_key": {
+          "type": "string"
+        },
+        "original_points": {
+          "type": "integer"
+        },
+        "points": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "description": "[[x,y],...] decimated to turning points, max 256"
+        }
+      },
+      "required": [
+        "route_key",
+        "original_points",
+        "points"
+      ]
+    },
+    "SectionStatusDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-envelope": true,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "disabled",
+            "failed",
+            "skipped",
+            "over_budget"
+          ]
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "game_day": {
+          "type": "integer"
+        },
+        "frame_start": {
+          "type": "integer"
+        },
+        "frame_end": {
+          "type": "integer"
+        },
+        "items": {
+          "type": "integer"
+        },
+        "items_vanished": {
+          "type": "integer"
+        },
+        "main_thread_ms": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "status",
+        "reason",
+        "game_day",
+        "frame_start",
+        "frame_end",
+        "items",
+        "items_vanished",
+        "main_thread_ms"
+      ]
+    },
+    "SessionDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "game.date",
+      "x-source": "RUNTIME",
+      "properties": {
+        "game_date": {
+          "type": "string"
+        },
+        "game_day": {
+          "type": "integer"
+        },
+        "year": {
+          "type": "integer"
+        },
+        "month": {
+          "type": "integer"
+        },
+        "day": {
+          "type": "integer"
+        },
+        "speed_level": {
+          "type": "integer",
+          "x-data-map-id": "game.speed"
+        },
+        "time_scale": {
+          "type": "number",
+          "x-data-map-id": "game.speed"
+        },
+        "paused": {
+          "type": "boolean",
+          "x-data-map-id": "game.speed"
+        },
+        "speed_levels": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "x-data-map-id": "game.speed"
+        },
+        "seconds_per_day": {
+          "type": "number",
+          "x-data-map-id": "game.seconds_per_day"
+        },
+        "difficulty": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DifficultyDto"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-data-map-id": "game.difficulty"
+        },
+        "world": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/WorldParamsDto"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "x-data-map-id": "game.difficulty"
+        },
+        "module": {
+          "$ref": "#/$defs/ModuleDto",
+          "x-data-map-id": "game.module"
+        },
+        "language": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "x-data-map-id": "game.language"
+        },
+        "mods": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ModDto"
+          },
+          "x-data-map-id": "game.mods"
+        },
+        "player_actor_id": {
+          "type": "integer",
+          "x-data-map-id": "company.player"
+        },
+        "active_actor_differs": {
+          "type": "boolean",
+          "x-data-map-id": "company.player"
+        },
+        "used_cheats": {
+          "type": "boolean",
+          "x-data-map-id": "game.cheats_achievements"
+        },
+        "achievements_enabled": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "x-data-map-id": "game.cheats_achievements"
+        },
+        "logistic_requests_enabled": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "x-data-map-id": "logistics.logistic_requests"
+        },
+        "tech_tree_enabled": {
+          "type": "boolean",
+          "x-data-map-id": "tech.manager"
+        },
+        "permit_management_enabled": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "x-data-map-id": "region.permits"
+        },
+        "market_update_interval_days": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "x-data-map-id": "market.global_prices"
+        },
+        "market_days_since_update": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "x-data-map-id": "market.global_prices"
+        }
+      },
+      "required": [
+        "game_date",
+        "game_day",
+        "year",
+        "month",
+        "day",
+        "speed_level",
+        "time_scale",
+        "paused",
+        "speed_levels",
+        "seconds_per_day",
+        "difficulty",
+        "world",
+        "module",
+        "language",
+        "mods",
+        "player_actor_id",
+        "active_actor_differs",
+        "used_cheats",
+        "achievements_enabled",
+        "logistic_requests_enabled",
+        "tech_tree_enabled",
+        "permit_management_enabled",
+        "market_update_interval_days",
+        "market_days_since_update"
+      ]
+    },
+    "SharesDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "company.shares",
+      "x-source": "SAVE",
+      "properties": {
+        "bundle_count": {
+          "type": "integer"
+        },
+        "bundle_size": {
+          "type": "number"
+        },
+        "bundle_owners": {
+          "type": "array",
+          "items": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        },
+        "owned_by_competitors": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "bundle_count",
+        "bundle_size",
+        "bundle_owners",
+        "owned_by_competitors"
+      ]
+    },
+    "ShopDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "shop.type",
+      "x-source": "SAVE",
+      "properties": {
+        "building": {
+          "type": "string"
+        },
+        "display_name": {
+          "type": "string"
+        },
+        "prefab": {
+          "type": "string"
+        },
+        "city_id": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "owner_actor_id": {
+          "type": "integer"
+        },
+        "is_dead": {
+          "type": "boolean"
+        },
+        "days_to_next_price_update": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "products": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ShopProductDto"
+          }
+        }
+      },
+      "required": [
+        "building",
+        "display_name",
+        "prefab",
+        "city_id",
+        "owner_actor_id",
+        "is_dead",
+        "days_to_next_price_update",
+        "products"
+      ]
+    },
+    "ShopProductDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "shop.accepted",
+      "x-source": "SAVE",
+      "properties": {
+        "product": {
+          "type": "string"
+        },
+        "stock": {
+          "type": "integer",
+          "x-data-map-id": "shop.inventory"
+        },
+        "slots": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "x-data-map-id": "shop.inventory"
+        },
+        "player_delivered_stock": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "x-data-map-id": "shop.inventory"
+        },
+        "demand_raw": {
+          "type": "integer",
+          "x-data-map-id": "shop.demand",
+          "x-source": "RUNTIME"
+        },
+        "demand_for_player": {
+          "type": "integer",
+          "x-data-map-id": "shop.demand",
+          "x-source": "RUNTIME"
+        },
+        "price_for_player": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "x-data-map-id": "shop.price"
+        },
+        "shop_modifier": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "x-data-map-id": "shop.price_multiplier"
+        },
+        "market_modifier": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "x-data-map-id": "shop.price_multiplier"
+        },
+        "price_modifier_pct": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "x-data-map-id": "shop.price_multiplier"
+        },
+        "sold_last_30d": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "x-data-map-id": "shop.history"
+        }
+      },
+      "required": [
+        "product",
+        "stock",
+        "slots",
+        "player_delivered_stock",
+        "demand_raw",
+        "demand_for_player",
+        "price_for_player",
+        "shop_modifier",
+        "market_modifier",
+        "price_modifier_pct",
+        "sold_last_30d"
+      ]
+    },
+    "StateData": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "state.json data (PRD 12.2). Each section is null when its envelope section status is not ok.",
+      "x-data-map-id": "game.scene_state",
+      "x-source": "RUNTIME",
+      "properties": {
+        "session": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SessionDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "companies": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/CompanyDto"
+          }
+        },
+        "buildings_player": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/BuildingDto"
+          }
+        },
+        "routes_player": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/RouteDto"
+          }
+        },
+        "requests_player": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/WarehouseRequestDto"
+          }
+        },
+        "buildings_ai": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/BuildingCompactDto"
+          }
+        },
+        "buildings_ai_detail": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/BuildingDto"
+          }
+        },
+        "routes_ai": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/RouteDto"
+          }
+        },
+        "shops": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/ShopDto"
+          }
+        },
+        "cities": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/CityDto"
+          }
+        },
+        "regions": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/RegionDto"
+          }
+        },
+        "market": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MarketDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "research": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ResearchDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "vehicles": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VehiclesDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "route_paths": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/RoutePathDto"
+          }
+        }
+      },
+      "required": [
+        "session",
+        "companies",
+        "buildings_player",
+        "routes_player",
+        "requests_player",
+        "buildings_ai",
+        "buildings_ai_detail",
+        "routes_ai",
+        "shops",
+        "cities",
+        "regions",
+        "market",
+        "research",
+        "vehicles",
+        "route_paths"
+      ]
+    },
+    "StateMarketDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "market.state_sells",
+      "x-source": "RUNTIME",
+      "properties": {
+        "sold": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/StateSoldDto"
+          }
+        },
+        "incoming_trade_allowed": {
+          "type": "boolean",
+          "x-data-map-id": "market.state_buys"
+        },
+        "sale_markup": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "trading_handlers": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "sold",
+        "incoming_trade_allowed",
+        "sale_markup",
+        "trading_handlers"
+      ]
+    },
+    "StateSoldDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "market.state_sells",
+      "x-source": "RUNTIME",
+      "properties": {
+        "product": {
+          "type": "string"
+        },
+        "price_for_player": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "product",
+        "price_for_player"
+      ]
+    },
+    "StaticRefDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-envelope": true,
+      "properties": {
+        "seq": {
+          "type": "integer"
+        },
+        "content_hash": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "seq",
+        "content_hash"
+      ]
+    },
+    "UnlockCostDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "tech.costs",
+      "x-source": "RUNTIME",
+      "properties": {
+        "unlock": {
+          "type": "string"
+        },
+        "daily_cost": {
+          "type": "number"
+        },
+        "days": {
+          "type": "number"
+        },
+        "total_cost_at_efficiency_1": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "unlock",
+        "daily_cost",
+        "days",
+        "total_cost_at_efficiency_1"
+      ]
+    },
+    "UnlockProgressDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "tech.research_state",
+      "x-source": "SAVE",
+      "properties": {
+        "unlock": {
+          "type": "string"
+        },
+        "progress": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "unlock",
+        "progress"
+      ]
+    },
+    "UpkeepDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "building.upkeep",
+      "x-source": "SAVE",
+      "properties": {
+        "monthly_full": {
+          "type": "number"
+        },
+        "monthly_active": {
+          "type": "number"
+        },
+        "accrued_this_month": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "days_up": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "monthly_full",
+        "monthly_active",
+        "accrued_this_month",
+        "days_up"
+      ]
+    },
+    "VehicleGroupDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "logistics.vehicles",
+      "x-source": "RUNTIME",
+      "properties": {
+        "owner_actor_id": {
+          "type": "integer"
+        },
+        "transport_mode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "product": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "vehicles": {
+          "type": "integer"
+        },
+        "units_in_transit": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "owner_actor_id",
+        "transport_mode",
+        "product",
+        "vehicles",
+        "units_in_transit"
+      ]
+    },
+    "VehicleRowDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "logistics.vehicles",
+      "x-source": "RUNTIME",
+      "properties": {
+        "instance_id": {
+          "type": "integer",
+          "description": "GetInstanceID of the pooled vehicle object (world-session scoped)"
+        },
+        "trip_counter_id": {
+          "type": "integer",
+          "description": "Vehicle.id: reassigned per trip, wraps at 65535; not an identity"
+        },
+        "prefab": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "transport_mode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "fleet_building": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "product": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "amount": {
+          "type": "integer"
+        },
+        "job_origin": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "job_destination": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "job_product": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "job_amount": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "going_home": {
+          "type": "boolean"
+        },
+        "position_x": {
+          "type": "number"
+        },
+        "position_z": {
+          "type": "number"
+        },
+        "tile_x": {
+          "type": "integer"
+        },
+        "tile_y": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "instance_id",
+        "trip_counter_id",
+        "prefab",
+        "transport_mode",
+        "fleet_building",
+        "product",
+        "amount",
+        "job_origin",
+        "job_destination",
+        "job_product",
+        "job_amount",
+        "going_home",
+        "position_x",
+        "position_z",
+        "tile_x",
+        "tile_y"
+      ]
+    },
+    "VehiclesDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "logistics.vehicles",
+      "x-source": "RUNTIME",
+      "properties": {
+        "groups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/VehicleGroupDto"
+          }
+        },
+        "fleets_player": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FleetRowDto"
+          }
+        },
+        "vehicles_player": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/VehicleRowDto"
+          }
+        },
+        "total_active": {
+          "type": "integer"
+        },
+        "identity": {
+          "type": "string",
+          "description": "session_pooled_object: vehicle ids are only valid in this world session"
+        }
+      },
+      "required": [
+        "groups",
+        "fleets_player",
+        "vehicles_player",
+        "total_active",
+        "identity"
+      ]
+    },
+    "WarehouseRequestDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "logistics.logistic_requests",
+      "x-source": "SAVE",
+      "properties": {
+        "request_key": {
+          "type": "string"
+        },
+        "endpoint": {
+          "type": "string"
+        },
+        "product": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "occurrence": {
+          "type": "integer"
+        },
+        "requested_amount": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "fill": {
+          "type": "boolean"
+        },
+        "remaining": {
+          "type": "integer"
+        },
+        "amount_being_moved": {
+          "type": "integer"
+        },
+        "priority": {
+          "type": "integer"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "use_full_vehicles": {
+          "type": "boolean"
+        },
+        "fulfilled": {
+          "type": "boolean"
+        },
+        "allowed_graphs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "expenses_this_month": {
+          "type": "number"
+        },
+        "expenses_last_month": {
+          "type": "number"
+        },
+        "endpoint_pull_disabled": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "request_key",
+        "endpoint",
+        "product",
+        "occurrence",
+        "requested_amount",
+        "fill",
+        "remaining",
+        "amount_being_moved",
+        "priority",
+        "active",
+        "use_full_vehicles",
+        "fulfilled",
+        "allowed_graphs",
+        "expenses_this_month",
+        "expenses_last_month",
+        "endpoint_pull_disabled"
+      ]
+    },
+    "WarningDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-envelope": true,
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "code",
+        "detail"
+      ]
+    },
+    "WorldParamsDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "game.difficulty",
+      "x-source": "SAVE",
+      "properties": {
+        "size": {
+          "type": "integer"
+        },
+        "ai_count": {
+          "type": "integer"
+        },
+        "tech_tree": {
+          "type": "boolean"
+        },
+        "seed": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "size",
+        "ai_count",
+        "tech_tree",
+        "seed"
+      ]
+    }
+  }
+}

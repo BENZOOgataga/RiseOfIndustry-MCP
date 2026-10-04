@@ -1,0 +1,250 @@
+{
+ "applies_to": {
+  "game": "Rise of Industry (Steam App 671440)",
+  "build": "2.3.3 : 0507b (Steam build 9064059)"
+ },
+ "curated_from": "repository evidence only (research/, PRD.md, docs/)",
+ "terms": [
+  {
+   "en": "Max Send",
+   "fr": null,
+   "internal": "maxAcceptedAtDestination (destination storage _maxAcceptedMap)",
+   "mcp_field": "max_send",
+   "definition": "Destination-side, shared stock cap per product; 0 = unlimited.",
+   "evidence": [
+    {
+     "file": "docs/VALIDATION-REPORT.md",
+     "location": "Session D, gate E2",
+     "note": "English UI label confirmed in the game"
+    }
+   ],
+   "verification": "CONFIRMED_IN_GAME",
+   "note": "No French UI label is recorded in the repository.",
+   "confidence": "high"
+  },
+  {
+   "en": "Min Keep",
+   "fr": null,
+   "internal": "minStoredAtSource",
+   "mcp_field": "min_keep",
+   "definition": "Per-route floor of origin stock; keep all = never dispatch.",
+   "evidence": [
+    {
+     "file": "docs/VALIDATION-REPORT.md",
+     "location": "Session D, gate E2",
+     "note": "English UI label confirmed in the game"
+    }
+   ],
+   "verification": "CONFIRMED_IN_GAME",
+   "note": "No French UI label is recorded in the repository.",
+   "confidence": "high"
+  },
+  {
+   "en": "Petrochemical Plant",
+   "fr": "Usine pétrochimique",
+   "internal": "PetrochemicalFactory",
+   "mcp_field": "building_type:PetrochemicalFactory",
+   "definition": "Factory type for gas/oil chemistry (Chemicals, Plastic, Paints, Refined Oil, Buttons and more); its recipe list, amounts and cycle times come from the live catalogue (get_recipes), not from this entry.",
+   "evidence": [
+    {
+     "file": "PRD.md",
+     "location": "section 7.1",
+     "note": "display names are French on the reference install, e.g. 'USINE PÉTROCHIMIQUE 5'"
+    },
+    {
+     "file": "PRD.md",
+     "location": "section 25 A1",
+     "note": "key building:PetrochemicalFactory@x,y"
+    },
+    {
+     "file": "docs/v1.1/LIVE-VALIDATION-RESULTS.md",
+     "location": "section 2, check 8",
+     "note": "catalogue tech display_name 'Usine pétrochimique' (exact), building type 'USINE PÉTROCHIMIQUE'; UI tooltip text"
+    }
+   ],
+   "verification": "CONFIRMED_IN_GAME",
+   "note": "Live catalogue (fr-FR): technology 'Usine pétrochimique', building type 'USINE PÉTROCHIMIQUE' (upper case); the game's research tooltip reads 'Peut se produire à l'usine pétrochimique'. Instance names are upper-cased and numbered ('USINE PÉTROCHIMIQUE 2'). Exact match, no fuzzy matching.",
+   "confidence": "high"
+  },
+  {
+   "en": "Renting (upkeep)",
+   "fr": null,
+   "internal": "bill category Upkeep",
+   "mcp_field": "bill_category:Upkeep",
+   "definition": "Monthly building upkeep bills.",
+   "evidence": [
+    {
+     "file": "research/notes/static-dump.md",
+     "location": "section 3",
+     "note": "Upkeep (categoryName 'Renting')"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "note": null,
+   "confidence": "high"
+  },
+  {
+   "en": "Product trade",
+   "fr": null,
+   "internal": "bill category ProductTrade",
+   "mcp_field": "bill_category:ProductTrade",
+   "definition": "Income and expenses from selling and buying products (shop sales are paid by the State).",
+   "evidence": [
+    {
+     "file": "research/notes/static-dump.md",
+     "location": "section 3",
+     "note": "ProductTrade -> 'Product trade'"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "note": null,
+   "confidence": "high"
+  },
+  {
+   "en": "R&D Expenses",
+   "fr": null,
+   "internal": "bill category ResearchCosts",
+   "mcp_field": "bill_category:ResearchCosts",
+   "definition": "Daily research cost bills, aggregated per month.",
+   "evidence": [
+    {
+     "file": "research/notes/static-dump.md",
+     "location": "section 3",
+     "note": "ResearchCosts -> 'R&D Expenses'"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "note": null,
+   "confidence": "high"
+  },
+  {
+   "en": "Route Vehicle Upkeep",
+   "fr": null,
+   "internal": "bill category RouteVehicleUpkeep",
+   "mcp_field": "bill_category:RouteVehicleUpkeep",
+   "definition": "Bill category name for route vehicle costs.",
+   "evidence": [
+    {
+     "file": "research/notes/static-dump.md",
+     "location": "section 3",
+     "note": "RouteVehicleUpkeep -> 'Route Vehicle Upkeep'"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "note": "Which category dispatch fees post to is unresolved (PRD U-PAY).",
+   "confidence": "high"
+  },
+  {
+   "en": "Efficiency (slider)",
+   "fr": null,
+   "internal": "BuildingEfficiency.efficiencyIndex",
+   "mcp_field": "efficiency.index",
+   "definition": "The wage-equivalent slider: output and upkeep multipliers per level.",
+   "evidence": [
+    {
+     "file": "research/notes/buildings-production.md",
+     "location": "section 2.5",
+     "note": "the game's wage/salary setting"
+    },
+    {
+     "file": "PRD.md",
+     "location": "section 27.1 C10",
+     "note": "RoI has no wages"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "note": null,
+   "confidence": "high"
+  },
+  {
+   "en": "Waiting For Sponsor / Bloated / Prospering / Growing / Stagnating",
+   "fr": null,
+   "internal": "SettlementUiViewModel growth labels",
+   "mcp_field": "growth_state",
+   "definition": "City growth labels in UI order.",
+   "evidence": [
+    {
+     "file": "research/notes/cities-shops-markets-world.md",
+     "location": "section 1.3",
+     "note": "English default labels"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "note": "Labels may be localized in the French UI; the French texts are not recorded.",
+   "confidence": "high"
+  },
+  {
+   "en": "Bleeding / Losing / Gaining / Prospering",
+   "fr": null,
+   "internal": "ActorCashflow",
+   "mcp_field": "cashflow_label",
+   "definition": "Company cashflow label recomputed monthly.",
+   "evidence": [
+    {
+     "file": "research/notes/company-finance-time.md",
+     "location": "section 5.3",
+     "note": "BLEEDING / LOSING / GAINING / PROSPERING"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "note": null,
+   "confidence": "high"
+  },
+  {
+   "en": "State",
+   "fr": null,
+   "internal": "State actor",
+   "mcp_field": "owner.kind = state",
+   "definition": "The game's State: sells raw resources, may buy goods, pays shop sales, lends money.",
+   "evidence": [
+    {
+     "file": "research/notes/cities-shops-markets-world.md",
+     "location": "section 4.2",
+     "note": "State trading"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "note": null,
+   "confidence": "high"
+  },
+  {
+   "en": "Headquarters (HQ)",
+   "fr": null,
+   "internal": "Headquarters",
+   "mcp_field": "building kind hq",
+   "definition": "Company headquarters; research ticks only after it is built.",
+   "evidence": [
+    {
+     "file": "research/notes/tech-static-content.md",
+     "location": "section 2.3",
+     "note": "research ticks only after the HQ is built"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "note": null,
+   "confidence": "high"
+  },
+  {
+   "en": "(game names in the current language)",
+   "fr": "(noms affichés dans la langue du jeu)",
+   "internal": "display_name / english_name",
+   "mcp_field": "display_name, english_name",
+   "definition": "For products, recipes, building types and technologies, the live catalogue gives both the display name in the game's language (French on a French install) and the English name; explain_mechanic and search use them.",
+   "evidence": [
+    {
+     "file": "docs/VALIDATION-REPORT.md",
+     "location": "Session B, gate E1",
+     "note": "English-name lookup resolved live (e.g. AppleSmoothie -> 'Apple Smoothie')"
+    },
+    {
+     "file": "PRD.md",
+     "location": "section 12.1",
+     "note": "English names from en-US LanguageData"
+    }
+   ],
+   "verification": "CONFIRMED_IN_GAME",
+   "note": "Use the live catalogue for names; this glossary does not invent translations.",
+   "confidence": "high"
+  }
+ ]
+}

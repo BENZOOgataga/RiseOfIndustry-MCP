@@ -1,0 +1,3608 @@
+{
+ "schema": "roi-mcp/state",
+ "schema_version": "1.0.0",
+ "observer_version": "1.0.0",
+ "compatibility": "verified",
+ "game": {
+  "version": "2.3.3",
+  "build": "0507b",
+  "commit": "76359e59644ebf55cafacf9a50b3d19800df22d7",
+  "savegame_version": 2304,
+  "assembly_sha256": "D62599EFD0CFCB9F343E7FF74AAC19533F572062B9CECA82E1D3911507D04803",
+  "release": "Steam - Public"
+ },
+ "pid": 4242,
+ "world_session": "5e5510a0-0000-4000-8000-000000000001",
+ "seq": 10,
+ "content_hash": "081d980685ff5d6af7581b29959c96aa70fb2efb8b6b8e9e4f3aad5b531d0c3d",
+ "written_utc": "2026-01-01T11:59:58.050Z",
+ "captured": {
+  "utc_start": "2026-01-01T11:59:57.700Z",
+  "utc_end": "2026-01-01T11:59:58.000Z",
+  "game_day_start": 1512,
+  "game_day_end": 1512,
+  "game_date": "Y5-03-12",
+  "frames": [
+   1000,
+   1010
+  ],
+  "main_thread_ms": 12.5,
+  "slices": 8,
+  "max_slice_ms": 1.9,
+  "consistent": true
+ },
+ "static_ref": {
+  "seq": 1,
+  "content_hash": "e48430ed609dfe363ab3f25ba8fc4d409a858512ac12ab1376eaa7bf57b4fe9e"
+ },
+ "sections": {
+  "session": {
+   "status": "ok",
+   "reason": null,
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 1,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  },
+  "companies": {
+   "status": "ok",
+   "reason": null,
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 3,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  },
+  "buildings_player": {
+   "status": "ok",
+   "reason": null,
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 13,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  },
+  "routes_player": {
+   "status": "ok",
+   "reason": null,
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 13,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  },
+  "requests_player": {
+   "status": "ok",
+   "reason": null,
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 2,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  },
+  "buildings_ai": {
+   "status": "ok",
+   "reason": null,
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 8,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  },
+  "buildings_ai_detail": {
+   "status": "skipped",
+   "reason": "optional_off",
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 0,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  },
+  "routes_ai": {
+   "status": "skipped",
+   "reason": "optional_off",
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 0,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  },
+  "shops": {
+   "status": "ok",
+   "reason": null,
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 4,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  },
+  "cities": {
+   "status": "ok",
+   "reason": null,
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 3,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  },
+  "regions": {
+   "status": "ok",
+   "reason": null,
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 5,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  },
+  "market": {
+   "status": "ok",
+   "reason": null,
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 1,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  },
+  "research": {
+   "status": "ok",
+   "reason": null,
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 1,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  },
+  "vehicles": {
+   "status": "ok",
+   "reason": null,
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 1,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  },
+  "route_paths": {
+   "status": "skipped",
+   "reason": "optional_off",
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 0,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  }
+ },
+ "warnings": [],
+ "data": {
+  "session": {
+   "game_date": "Y5-03-12",
+   "game_day": 1512,
+   "year": 5,
+   "month": 3,
+   "day": 12,
+   "speed_level": 1,
+   "time_scale": 1.0,
+   "paused": false,
+   "speed_levels": [
+    1.0,
+    3.0,
+    6.0,
+    10.0
+   ],
+   "seconds_per_day": 8.0,
+   "difficulty": {
+    "name": "Normal",
+    "prices": 1.0,
+    "upkeep": 1.0,
+    "dispatch": 1.25,
+    "loan": 1.0,
+    "score_modifier": 1.0,
+    "easy_chains": false,
+    "infinite_money": false
+   },
+   "world": {
+    "size": 512,
+    "ai_count": 2,
+    "tech_tree": true,
+    "seed": 12345
+   },
+   "module": {
+    "id": "base",
+    "name": "Base Game"
+   },
+   "language": "French",
+   "mods": [],
+   "player_actor_id": 1,
+   "active_actor_differs": false,
+   "used_cheats": false,
+   "achievements_enabled": true,
+   "logistic_requests_enabled": true,
+   "tech_tree_enabled": true,
+   "permit_management_enabled": true,
+   "market_update_interval_days": 15,
+   "market_days_since_update": 6
+  },
+  "companies": [
+   {
+    "actor_id": 1,
+    "name": "Acme Industries",
+    "kind": "human",
+    "is_player": true,
+    "color": "#3366CC",
+    "hq_building": "Headquarters@50,50",
+    "hq_city_id": 10,
+    "cash": {
+     "value": 2500000.0,
+     "infinite": false,
+     "registered": true
+    },
+    "loans": [
+     {
+      "type": "STARTER",
+      "title": "Starter Loan",
+      "lender_actor_id": 5,
+      "lender_name": "State",
+      "principal": 7500000.0,
+      "apr": 0.0,
+      "duration_months": 120,
+      "remaining_payments": 100,
+      "amount_with_apr": 7500000.0,
+      "early_repay_amount": 6250000.0,
+      "grace_months_left": 0,
+      "settlement_loan": false
+     },
+     {
+      "type": "BANK",
+      "title": "Bank Loan",
+      "lender_actor_id": 5,
+      "lender_name": "State",
+      "principal": 1000000.0,
+      "apr": 0.08,
+      "duration_months": 60,
+      "remaining_payments": 50,
+      "amount_with_apr": 1080000.0,
+      "early_repay_amount": 900000.0,
+      "grace_months_left": null,
+      "settlement_loan": false
+     }
+    ],
+    "max_loans": 3,
+    "shares": {
+     "bundle_count": 10,
+     "bundle_size": 0.1,
+     "bundle_owners": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2
+     ],
+     "owned_by_competitors": 1
+    },
+    "stats": {
+     "cashflow": "Positive",
+     "top_production": [
+      {
+       "product": "Gas",
+       "amount": 246.0
+      },
+      {
+       "product": "Paint",
+       "amount": 2.0
+      }
+     ],
+     "top_sales": [
+      {
+       "product": "Paint",
+       "amount": 22.0
+      }
+     ],
+     "owned_permits": [
+      "a1000000-0000-4000-8000-000000000001",
+      "a1000000-0000-4000-8000-000000000004"
+     ],
+     "main_tech_tree": "Chemistry"
+    },
+    "building_counts_by_tag": {
+     "gatherer": 4,
+     "factory": 5,
+     "farm": 1,
+     "warehouse": 1,
+     "depot": 1,
+     "hq": 1
+    },
+    "building_counts_by_type": {
+     "GasWell": 3,
+     "PetrochemicalFactory": 2,
+     "FlowerFarm": 1,
+     "WaterSiphon": 1,
+     "ChemicalPlant": 1,
+     "PaintFactory": 2,
+     "Warehouse": 1,
+     "TruckDepot": 1,
+     "Headquarters": 1
+    },
+    "building_count": 13,
+    "paid_to_build_total": 3045000.0,
+    "value_inputs": [
+     {
+      "region_id": "a1000000-0000-4000-8000-000000000001",
+      "permit_cost": 1500000,
+      "paid_to_build_in_region": 1150000.0
+     },
+     {
+      "region_id": "a1000000-0000-4000-8000-000000000004",
+      "permit_cost": 1200000,
+      "paid_to_build_in_region": 1365000.0
+     }
+    ],
+    "ai": null,
+    "contracts": {
+     "max_contracts": 3,
+     "can_accept": true,
+     "active": [
+      {
+       "product": "Paint",
+       "amount": 100,
+       "delivered": 40,
+       "reserved": 5,
+       "issuer_actor_id": 10,
+       "issuer_name": "Valmont",
+       "target_building": "HardwareStore@100,100",
+       "accepted_actor_id": 1,
+       "active": true,
+       "completed": false,
+       "price": 1550.0,
+       "reward": 30000.0,
+       "penalty": 8000.0,
+       "remaining_days": 45,
+       "duration_days": 90,
+       "fulfilled": false,
+       "failed": false
+      }
+     ]
+    }
+   },
+   {
+    "actor_id": 2,
+    "name": "Borealis Corp",
+    "kind": "ai",
+    "is_player": false,
+    "color": "#CC3333",
+    "hq_building": "Headquarters@140,110",
+    "hq_city_id": 11,
+    "cash": {
+     "value": null,
+     "infinite": true,
+     "registered": true
+    },
+    "loans": null,
+    "max_loans": null,
+    "shares": {
+     "bundle_count": 10,
+     "bundle_size": 0.1,
+     "bundle_owners": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+     ],
+     "owned_by_competitors": 0
+    },
+    "stats": {
+     "cashflow": "Neutral",
+     "top_production": [
+      {
+       "product": "Paint",
+       "amount": 4.0
+      }
+     ],
+     "top_sales": [],
+     "owned_permits": [
+      "a1000000-0000-4000-8000-000000000002"
+     ],
+     "main_tech_tree": "Chemistry"
+    },
+    "building_counts_by_tag": {
+     "factory": 2,
+     "hq": 1
+    },
+    "building_counts_by_type": {
+     "PaintFactory": 1,
+     "Headquarters": 1
+    },
+    "building_count": 4,
+    "paid_to_build_total": 900000.0,
+    "value_inputs": null,
+    "ai": {
+     "personality": "Aggressive",
+     "owned_regions": [
+      "a1000000-0000-4000-8000-000000000002"
+     ],
+     "has_initiative": true
+    },
+    "contracts": null
+   },
+   {
+    "actor_id": 3,
+    "name": "Cobalt Works",
+    "kind": "ai",
+    "is_player": false,
+    "color": "#33AA55",
+    "hq_building": "Headquarters@240,50",
+    "hq_city_id": 12,
+    "cash": {
+     "value": null,
+     "infinite": true,
+     "registered": true
+    },
+    "loans": null,
+    "max_loans": null,
+    "shares": {
+     "bundle_count": 10,
+     "bundle_size": 0.1,
+     "bundle_owners": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+     ],
+     "owned_by_competitors": 0
+    },
+    "stats": {
+     "cashflow": "Neutral",
+     "top_production": [
+      {
+       "product": "Paint",
+       "amount": 4.0
+      }
+     ],
+     "top_sales": [],
+     "owned_permits": [
+      "a1000000-0000-4000-8000-000000000003"
+     ],
+     "main_tech_tree": "Chemistry"
+    },
+    "building_counts_by_tag": {
+     "factory": 2,
+     "hq": 1
+    },
+    "building_counts_by_type": {
+     "PaintFactory": 1,
+     "Headquarters": 1
+    },
+    "building_count": 4,
+    "paid_to_build_total": 900000.0,
+    "value_inputs": null,
+    "ai": {
+     "personality": "Balanced",
+     "owned_regions": [
+      "a1000000-0000-4000-8000-000000000003"
+     ],
+     "has_initiative": true
+    },
+    "contracts": null
+   }
+  ],
+  "buildings_player": [
+   {
+    "key": "Headquarters@50,50",
+    "save_guid": "guid-3b58036c",
+    "prefab": "Headquarters",
+    "display_name": "SIEGE ACME",
+    "owner_actor_id": 1,
+    "x": 50,
+    "y": 50,
+    "rotation": 0,
+    "region_id": "a1000000-0000-4000-8000-000000000001",
+    "city_id": 10,
+    "tags": [
+     "hq"
+    ],
+    "kind": "hq",
+    "flags": {
+     "user_enabled": true,
+     "requirements_met": true,
+     "is_working": true
+    },
+    "paid_to_build": 0.0,
+    "efficiency": {
+     "kind": "building",
+     "index": 3,
+     "output_multiplier": 1.0,
+     "upkeep_multiplier": 1.0
+    },
+    "upkeep": {
+     "monthly_full": 0.0,
+     "monthly_active": 0.0,
+     "accrued_this_month": 0.0,
+     "days_up": 12
+    },
+    "recipe": null,
+    "cycle_days_effective": null,
+    "production": null,
+    "modules": null,
+    "inventory": [],
+    "logistics": null,
+    "notifications": [],
+    "pollution_at_tile": 0.0,
+    "is_polluted": false,
+    "fleet": null,
+    "is_module": false,
+    "module_owner": null,
+    "is_shop": false
+   },
+   {
+    "key": "GasWell@20,30",
+    "save_guid": "guid-079afd57",
+    "prefab": "GasWell",
+    "display_name": "PUITS DE GAZ 1",
+    "owner_actor_id": 1,
+    "x": 20,
+    "y": 30,
+    "rotation": 0,
+    "region_id": "a1000000-0000-4000-8000-000000000004",
+    "city_id": null,
+    "tags": [
+     "gatherer"
+    ],
+    "kind": "gatherer",
+    "flags": {
+     "user_enabled": true,
+     "requirements_met": true,
+     "is_working": true
+    },
+    "paid_to_build": 180000.0,
+    "efficiency": {
+     "kind": "building",
+     "index": 3,
+     "output_multiplier": 1.0,
+     "upkeep_multiplier": 1.0
+    },
+    "upkeep": {
+     "monthly_full": 4500.0,
+     "monthly_active": 4500.0,
+     "accrued_this_month": 1800.0,
+     "days_up": 12
+    },
+    "recipe": "Gas",
+    "cycle_days_effective": 10.0,
+    "production": {
+     "progress": 0.5,
+     "produced_this_month": 10,
+     "produced_last_month": 96,
+     "total_produced": 500,
+     "average_10_months": 38.5,
+     "production_frames": 1000,
+     "frames_spent_producing": 850,
+     "final_speed": 1.0
+    },
+    "modules": {
+     "count": 2,
+     "max": 3,
+     "module_prefab": "GasPump",
+     "delivered_to_hub": false,
+     "items": [
+      {
+       "key": "GasPump@21,31",
+       "prefab": "GasPump",
+       "progress": 0.5,
+       "efficiency": 1.0,
+       "min_guaranteed_speed": 0.25,
+       "max_resources": 4,
+       "speed_replica": 1.0,
+       "resource": "Gas",
+       "nodes": 4,
+       "nodes_depleted": 0,
+       "deposit_remaining": 5000,
+       "user_enabled": true,
+       "requirements_met": true,
+       "is_working": true
+      },
+      {
+       "key": "GasPump@19,29",
+       "prefab": "GasPump",
+       "progress": 0.5,
+       "efficiency": 1.0,
+       "min_guaranteed_speed": 0.25,
+       "max_resources": 4,
+       "speed_replica": 0.8,
+       "resource": "Gas",
+       "nodes": 4,
+       "nodes_depleted": 0,
+       "deposit_remaining": 5000,
+       "user_enabled": true,
+       "requirements_met": true,
+       "is_working": true
+      }
+     ]
+    },
+    "inventory": [
+     {
+      "product": "Gas",
+      "role": "output",
+      "count": 12,
+      "slots": 40,
+      "stored": 12,
+      "incoming_reserved": 0,
+      "outgoing_reserved": 0,
+      "inbound_cap": 0
+     }
+    ],
+    "logistics": {
+     "options": 0,
+     "auto_wh": false,
+     "warehouse": null,
+     "accepted": [],
+     "outgoing": [
+      "Gas"
+     ],
+     "manual_slot_count": 3
+    },
+    "notifications": [],
+    "pollution_at_tile": 0.0,
+    "is_polluted": false,
+    "fleet": null,
+    "is_module": false,
+    "module_owner": null,
+    "is_shop": false
+   },
+   {
+    "key": "GasWell@24,36",
+    "save_guid": "guid-561039b6",
+    "prefab": "GasWell",
+    "display_name": "PUITS DE GAZ 2",
+    "owner_actor_id": 1,
+    "x": 24,
+    "y": 36,
+    "rotation": 0,
+    "region_id": "a1000000-0000-4000-8000-000000000004",
+    "city_id": null,
+    "tags": [
+     "gatherer"
+    ],
+    "kind": "gatherer",
+    "flags": {
+     "user_enabled": true,
+     "requirements_met": true,
+     "is_working": true
+    },
+    "paid_to_build": 200000.0,
+    "efficiency": {
+     "kind": "building",
+     "index": 3,
+     "output_multiplier": 1.0,
+     "upkeep_multiplier": 1.0
+    },
+    "upkeep": {
+     "monthly_full": 5000.0,
+     "monthly_active": 5000.0,
+     "accrued_this_month": 2000.0,
+     "days_up": 12
+    },
+    "recipe": "Gas",
+    "cycle_days_effective": 10.0,
+    "production": {
+     "progress": 0.5,
+     "produced_this_month": 10,
+     "produced_last_month": 150,
+     "total_produced": 500,
+     "average_10_months": 38.5,
+     "production_frames": 1000,
+     "frames_spent_producing": 850,
+     "final_speed": 1.0
+    },
+    "modules": {
+     "count": 3,
+     "max": 3,
+     "module_prefab": "GasPump",
+     "delivered_to_hub": false,
+     "items": [
+      {
+       "key": "GasPump@25,37",
+       "prefab": "GasPump",
+       "progress": 0.5,
+       "efficiency": 1.0,
+       "min_guaranteed_speed": 0.25,
+       "max_resources": 4,
+       "speed_replica": 1.0,
+       "resource": "Gas",
+       "nodes": 4,
+       "nodes_depleted": 0,
+       "deposit_remaining": 5000,
+       "user_enabled": true,
+       "requirements_met": true,
+       "is_working": true
+      },
+      {
+       "key": "GasPump@23,35",
+       "prefab": "GasPump",
+       "progress": 0.5,
+       "efficiency": 1.0,
+       "min_guaranteed_speed": 0.25,
+       "max_resources": 4,
+       "speed_replica": 1.0,
+       "resource": "Gas",
+       "nodes": 4,
+       "nodes_depleted": 0,
+       "deposit_remaining": 5000,
+       "user_enabled": true,
+       "requirements_met": true,
+       "is_working": true
+      },
+      {
+       "key": "GasPump@26,34",
+       "prefab": "GasPump",
+       "progress": 0.5,
+       "efficiency": 1.0,
+       "min_guaranteed_speed": 0.25,
+       "max_resources": 4,
+       "speed_replica": null,
+       "resource": "Gas",
+       "nodes": 4,
+       "nodes_depleted": 1,
+       "deposit_remaining": 5000,
+       "user_enabled": true,
+       "requirements_met": true,
+       "is_working": true
+      }
+     ]
+    },
+    "inventory": [
+     {
+      "product": "Gas",
+      "role": "output",
+      "count": 30,
+      "slots": 40,
+      "stored": 30,
+      "incoming_reserved": 0,
+      "outgoing_reserved": 0,
+      "inbound_cap": 0
+     }
+    ],
+    "logistics": {
+     "options": 0,
+     "auto_wh": false,
+     "warehouse": null,
+     "accepted": [],
+     "outgoing": [
+      "Gas"
+     ],
+     "manual_slot_count": 3
+    },
+    "notifications": [],
+    "pollution_at_tile": 0.0,
+    "is_polluted": false,
+    "fleet": null,
+    "is_module": false,
+    "module_owner": null,
+    "is_shop": false
+   },
+   {
+    "key": "GasWell@80,80",
+    "save_guid": "guid-d59d1a8b",
+    "prefab": "GasWell",
+    "display_name": "PUITS DE GAZ 3",
+    "owner_actor_id": 1,
+    "x": 80,
+    "y": 80,
+    "rotation": 0,
+    "region_id": "a1000000-0000-4000-8000-000000000005",
+    "city_id": null,
+    "tags": [
+     "gatherer"
+    ],
+    "kind": "gatherer",
+    "flags": {
+     "user_enabled": false,
+     "requirements_met": true,
+     "is_working": false
+    },
+    "paid_to_build": 120000.0,
+    "efficiency": {
+     "kind": "building",
+     "index": 3,
+     "output_multiplier": 1.0,
+     "upkeep_multiplier": 1.0
+    },
+    "upkeep": {
+     "monthly_full": 3000.0,
+     "monthly_active": 3000.0,
+     "accrued_this_month": 1200.0,
+     "days_up": 12
+    },
+    "recipe": "Gas",
+    "cycle_days_effective": 10.0,
+    "production": {
+     "progress": 0.5,
+     "produced_this_month": 0,
+     "produced_last_month": 0,
+     "total_produced": 500,
+     "average_10_months": 38.5,
+     "production_frames": 1000,
+     "frames_spent_producing": 850,
+     "final_speed": 1.0
+    },
+    "modules": {
+     "count": 0,
+     "max": 3,
+     "module_prefab": "GasPump",
+     "delivered_to_hub": false,
+     "items": []
+    },
+    "inventory": [
+     {
+      "product": "Gas",
+      "role": "output",
+      "count": 0,
+      "slots": 40,
+      "stored": 0,
+      "incoming_reserved": 0,
+      "outgoing_reserved": 0,
+      "inbound_cap": 0
+     }
+    ],
+    "logistics": {
+     "options": 1,
+     "auto_wh": true,
+     "warehouse": "Warehouse@58,44",
+     "accepted": [],
+     "outgoing": [
+      "Gas"
+     ],
+     "manual_slot_count": 3
+    },
+    "notifications": [],
+    "pollution_at_tile": 0.0,
+    "is_polluted": false,
+    "fleet": null,
+    "is_module": false,
+    "module_owner": null,
+    "is_shop": false
+   },
+   {
+    "key": "PetrochemicalFactory@40,32",
+    "save_guid": "guid-e7f497ab",
+    "prefab": "PetrochemicalFactory",
+    "display_name": "USINE PÉTROCHIMIQUE 1",
+    "owner_actor_id": 1,
+    "x": 40,
+    "y": 32,
+    "rotation": 0,
+    "region_id": "a1000000-0000-4000-8000-000000000004",
+    "city_id": null,
+    "tags": [
+     "factory"
+    ],
+    "kind": "factory",
+    "flags": {
+     "user_enabled": true,
+     "requirements_met": true,
+     "is_working": true
+    },
+    "paid_to_build": 400000.0,
+    "efficiency": {
+     "kind": "building",
+     "index": 3,
+     "output_multiplier": 1.0,
+     "upkeep_multiplier": 1.0
+    },
+    "upkeep": {
+     "monthly_full": 10000.0,
+     "monthly_active": 10000.0,
+     "accrued_this_month": 4000.0,
+     "days_up": 12
+    },
+    "recipe": "Chemicals",
+    "cycle_days_effective": 20.0,
+    "production": {
+     "progress": 0.5,
+     "produced_this_month": 10,
+     "produced_last_month": 3,
+     "total_produced": 500,
+     "average_10_months": 38.5,
+     "production_frames": 1000,
+     "frames_spent_producing": 850,
+     "final_speed": 1.0
+    },
+    "modules": null,
+    "inventory": [
+     {
+      "product": "Gas",
+      "role": "input",
+      "count": 9,
+      "slots": 40,
+      "stored": 9,
+      "incoming_reserved": 4,
+      "outgoing_reserved": 0,
+      "inbound_cap": 8
+     },
+     {
+      "product": "Chemicals",
+      "role": "output",
+      "count": 10,
+      "slots": 40,
+      "stored": 10,
+      "incoming_reserved": 0,
+      "outgoing_reserved": 0,
+      "inbound_cap": 0
+     }
+    ],
+    "logistics": {
+     "options": 0,
+     "auto_wh": false,
+     "warehouse": null,
+     "accepted": [
+      "Gas"
+     ],
+     "outgoing": [
+      "Chemicals"
+     ],
+     "manual_slot_count": 3
+    },
+    "notifications": [],
+    "pollution_at_tile": 0.0,
+    "is_polluted": false,
+    "fleet": null,
+    "is_module": false,
+    "module_owner": null,
+    "is_shop": false
+   },
+   {
+    "key": "PetrochemicalFactory@44,60",
+    "save_guid": "guid-b98b85f4",
+    "prefab": "PetrochemicalFactory",
+    "display_name": "USINE PÉTROCHIMIQUE 2",
+    "owner_actor_id": 1,
+    "x": 44,
+    "y": 60,
+    "rotation": 0,
+    "region_id": "a1000000-0000-4000-8000-000000000005",
+    "city_id": null,
+    "tags": [
+     "factory"
+    ],
+    "kind": "factory",
+    "flags": {
+     "user_enabled": true,
+     "requirements_met": true,
+     "is_working": false
+    },
+    "paid_to_build": 400000.0,
+    "efficiency": {
+     "kind": "building",
+     "index": 3,
+     "output_multiplier": 1.0,
+     "upkeep_multiplier": 1.0
+    },
+    "upkeep": {
+     "monthly_full": 10000.0,
+     "monthly_active": 10000.0,
+     "accrued_this_month": 4000.0,
+     "days_up": 12
+    },
+    "recipe": "Chemicals",
+    "cycle_days_effective": 20.0,
+    "production": {
+     "progress": 0.5,
+     "produced_this_month": 0,
+     "produced_last_month": 0,
+     "total_produced": 500,
+     "average_10_months": 38.5,
+     "production_frames": 1000,
+     "frames_spent_producing": 100,
+     "final_speed": 1.0
+    },
+    "modules": null,
+    "inventory": [
+     {
+      "product": "Gas",
+      "role": "input",
+      "count": 1,
+      "slots": 40,
+      "stored": 1,
+      "incoming_reserved": 0,
+      "outgoing_reserved": 0,
+      "inbound_cap": 0
+     },
+     {
+      "product": "Chemicals",
+      "role": "output",
+      "count": 0,
+      "slots": 40,
+      "stored": 0,
+      "incoming_reserved": 0,
+      "outgoing_reserved": 0,
+      "inbound_cap": 0
+     }
+    ],
+    "logistics": {
+     "options": 0,
+     "auto_wh": false,
+     "warehouse": null,
+     "accepted": [
+      "Gas"
+     ],
+     "outgoing": [
+      "Chemicals"
+     ],
+     "manual_slot_count": 3
+    },
+    "notifications": [],
+    "pollution_at_tile": 0.0,
+    "is_polluted": false,
+    "fleet": null,
+    "is_module": false,
+    "module_owner": null,
+    "is_shop": false
+   },
+   {
+    "key": "FlowerFarm@70,20",
+    "save_guid": "guid-b7777056",
+    "prefab": "FlowerFarm",
+    "display_name": "FERME FLORALE 1",
+    "owner_actor_id": 1,
+    "x": 70,
+    "y": 20,
+    "rotation": 0,
+    "region_id": "a1000000-0000-4000-8000-000000000004",
+    "city_id": null,
+    "tags": [
+     "farm"
+    ],
+    "kind": "farm",
+    "flags": {
+     "user_enabled": true,
+     "requirements_met": true,
+     "is_working": true
+    },
+    "paid_to_build": 105000.0,
+    "efficiency": {
+     "kind": "building",
+     "index": 3,
+     "output_multiplier": 1.0,
+     "upkeep_multiplier": 1.0
+    },
+    "upkeep": {
+     "monthly_full": 2625.0,
+     "monthly_active": 2625.0,
+     "accrued_this_month": 1050.0,
+     "days_up": 12
+    },
+    "recipe": "Flowers",
+    "cycle_days_effective": 30.0,
+    "production": {
+     "progress": 0.5,
+     "produced_this_month": 10,
+     "produced_last_month": 9,
+     "total_produced": 500,
+     "average_10_months": 38.5,
+     "production_frames": 1000,
+     "frames_spent_producing": 850,
+     "final_speed": 1.0
+    },
+    "modules": {
+     "count": 3,
+     "max": 3,
+     "module_prefab": "FlowerField",
+     "delivered_to_hub": false,
+     "items": [
+      {
+       "key": "FlowerField@70,22",
+       "prefab": "FlowerField",
+       "progress": 0.5,
+       "efficiency": 1.0,
+       "min_guaranteed_speed": 0.25,
+       "max_resources": 4,
+       "speed_replica": null,
+       "resource": null,
+       "nodes": null,
+       "nodes_depleted": 0,
+       "deposit_remaining": null,
+       "user_enabled": true,
+       "requirements_met": true,
+       "is_working": true
+      },
+      {
+       "key": "FlowerField@71,23",
+       "prefab": "FlowerField",
+       "progress": 0.5,
+       "efficiency": 1.0,
+       "min_guaranteed_speed": 0.25,
+       "max_resources": 4,
+       "speed_replica": null,
+       "resource": null,
+       "nodes": null,
+       "nodes_depleted": 0,
+       "deposit_remaining": null,
+       "user_enabled": true,
+       "requirements_met": true,
+       "is_working": true
+      },
+      {
+       "key": "FlowerField@72,24",
+       "prefab": "FlowerField",
+       "progress": 0.5,
+       "efficiency": 1.0,
+       "min_guaranteed_speed": 0.25,
+       "max_resources": 4,
+       "speed_replica": null,
+       "resource": null,
+       "nodes": null,
+       "nodes_depleted": 0,
+       "deposit_remaining": null,
+       "user_enabled": true,
+       "requirements_met": true,
+       "is_working": true
+      }
+     ]
+    },
+    "inventory": [
+     {
+      "product": "Flowers",
+      "role": "output",
+      "count": 20,
+      "slots": 100,
+      "stored": 20,
+      "incoming_reserved": 0,
+      "outgoing_reserved": 0,
+      "inbound_cap": 0
+     }
+    ],
+    "logistics": {
+     "options": 0,
+     "auto_wh": false,
+     "warehouse": null,
+     "accepted": [],
+     "outgoing": [
+      "Flowers"
+     ],
+     "manual_slot_count": 3
+    },
+    "notifications": [],
+    "pollution_at_tile": 0.0,
+    "is_polluted": false,
+    "fleet": null,
+    "is_module": false,
+    "module_owner": null,
+    "is_shop": false
+   },
+   {
+    "key": "WaterSiphon@72,26",
+    "save_guid": "guid-525acc5c",
+    "prefab": "WaterSiphon",
+    "display_name": "SIPHON 1",
+    "owner_actor_id": 1,
+    "x": 72,
+    "y": 26,
+    "rotation": 0,
+    "region_id": "a1000000-0000-4000-8000-000000000004",
+    "city_id": null,
+    "tags": [
+     "gatherer"
+    ],
+    "kind": "gatherer",
+    "flags": {
+     "user_enabled": true,
+     "requirements_met": true,
+     "is_working": true
+    },
+    "paid_to_build": 90000.0,
+    "efficiency": {
+     "kind": "building",
+     "index": 3,
+     "output_multiplier": 1.0,
+     "upkeep_multiplier": 1.0
+    },
+    "upkeep": {
+     "monthly_full": 2250.0,
+     "monthly_active": 2250.0,
+     "accrued_this_month": 900.0,
+     "days_up": 12
+    },
+    "recipe": "Water",
+    "cycle_days_effective": 10.0,
+    "production": {
+     "progress": 0.5,
+     "produced_this_month": 10,
+     "produced_last_month": 12,
+     "total_produced": 500,
+     "average_10_months": 38.5,
+     "production_frames": 1000,
+     "frames_spent_producing": 850,
+     "final_speed": 1.0
+    },
+    "modules": {
+     "count": 1,
+     "max": 3,
+     "module_prefab": "WaterPump",
+     "delivered_to_hub": false,
+     "items": [
+      {
+       "key": "WaterPump@73,27",
+       "prefab": "WaterPump",
+       "progress": 0.5,
+       "efficiency": 1.0,
+       "min_guaranteed_speed": 0.25,
+       "max_resources": 4,
+       "speed_replica": 1.0,
+       "resource": "Water",
+       "nodes": 4,
+       "nodes_depleted": 0,
+       "deposit_remaining": 5000,
+       "user_enabled": true,
+       "requirements_met": true,
+       "is_working": true
+      }
+     ]
+    },
+    "inventory": [
+     {
+      "product": "Water",
+      "role": "output",
+      "count": 8,
+      "slots": 40,
+      "stored": 8,
+      "incoming_reserved": 0,
+      "outgoing_reserved": 0,
+      "inbound_cap": 0
+     }
+    ],
+    "logistics": {
+     "options": 0,
+     "auto_wh": false,
+     "warehouse": null,
+     "accepted": [],
+     "outgoing": [
+      "Water"
+     ],
+     "manual_slot_count": 3
+    },
+    "notifications": [],
+    "pollution_at_tile": 0.0,
+    "is_polluted": false,
+    "fleet": null,
+    "is_module": false,
+    "module_owner": null,
+    "is_shop": false
+   },
+   {
+    "key": "ChemicalPlant@60,30",
+    "save_guid": "guid-3dc73a9b",
+    "prefab": "ChemicalPlant",
+    "display_name": "USINE CHIMIQUE 1",
+    "owner_actor_id": 1,
+    "x": 60,
+    "y": 30,
+    "rotation": 0,
+    "region_id": "a1000000-0000-4000-8000-000000000004",
+    "city_id": null,
+    "tags": [
+     "factory"
+    ],
+    "kind": "factory",
+    "flags": {
+     "user_enabled": true,
+     "requirements_met": true,
+     "is_working": true
+    },
+    "paid_to_build": 300000.0,
+    "efficiency": {
+     "kind": "building",
+     "index": 3,
+     "output_multiplier": 1.0,
+     "upkeep_multiplier": 1.0
+    },
+    "upkeep": {
+     "monthly_full": 7500.0,
+     "monthly_active": 7500.0,
+     "accrued_this_month": 3000.0,
+     "days_up": 12
+    },
+    "recipe": "Dye",
+    "cycle_days_effective": 20.0,
+    "production": {
+     "progress": 0.5,
+     "produced_this_month": 10,
+     "produced_last_month": 3,
+     "total_produced": 500,
+     "average_10_months": 38.5,
+     "production_frames": 1000,
+     "frames_spent_producing": 850,
+     "final_speed": 1.0
+    },
+    "modules": null,
+    "inventory": [
+     {
+      "product": "Flowers",
+      "role": "input",
+      "count": 6,
+      "slots": 40,
+      "stored": 6,
+      "incoming_reserved": 0,
+      "outgoing_reserved": 0,
+      "inbound_cap": 0
+     },
+     {
+      "product": "Water",
+      "role": "input",
+      "count": 4,
+      "slots": 40,
+      "stored": 4,
+      "incoming_reserved": 0,
+      "outgoing_reserved": 0,
+      "inbound_cap": 0
+     },
+     {
+      "product": "Dye",
+      "role": "output",
+      "count": 8,
+      "slots": 40,
+      "stored": 8,
+      "incoming_reserved": 0,
+      "outgoing_reserved": 0,
+      "inbound_cap": 0
+     }
+    ],
+    "logistics": {
+     "options": 0,
+     "auto_wh": false,
+     "warehouse": null,
+     "accepted": [
+      "Flowers",
+      "Water"
+     ],
+     "outgoing": [
+      "Dye"
+     ],
+     "manual_slot_count": 3
+    },
+    "notifications": [],
+    "pollution_at_tile": 0.4,
+    "is_polluted": true,
+    "fleet": null,
+    "is_module": false,
+    "module_owner": null,
+    "is_shop": false
+   },
+   {
+    "key": "PaintFactory@55,40",
+    "save_guid": "guid-bc9c68c5",
+    "prefab": "PaintFactory",
+    "display_name": "USINE DE PEINTURE 1",
+    "owner_actor_id": 1,
+    "x": 55,
+    "y": 40,
+    "rotation": 0,
+    "region_id": "a1000000-0000-4000-8000-000000000001",
+    "city_id": 10,
+    "tags": [
+     "factory"
+    ],
+    "kind": "factory",
+    "flags": {
+     "user_enabled": true,
+     "requirements_met": true,
+     "is_working": true
+    },
+    "paid_to_build": 500000.0,
+    "efficiency": {
+     "kind": "building",
+     "index": 3,
+     "output_multiplier": 1.0,
+     "upkeep_multiplier": 1.0
+    },
+    "upkeep": {
+     "monthly_full": 12500.0,
+     "monthly_active": 12500.0,
+     "accrued_this_month": 5000.0,
+     "days_up": 12
+    },
+    "recipe": "Paints",
+    "cycle_days_effective": 35.0,
+    "production": {
+     "progress": 0.5,
+     "produced_this_month": 10,
+     "produced_last_month": 2,
+     "total_produced": 500,
+     "average_10_months": 38.5,
+     "production_frames": 1000,
+     "frames_spent_producing": 850,
+     "final_speed": 1.0
+    },
+    "modules": null,
+    "inventory": [
+     {
+      "product": "Chemicals",
+      "role": "input",
+      "count": 5,
+      "slots": 40,
+      "stored": 5,
+      "incoming_reserved": 0,
+      "outgoing_reserved": 0,
+      "inbound_cap": 10
+     },
+     {
+      "product": "Dye",
+      "role": "input",
+      "count": 6,
+      "slots": 40,
+      "stored": 6,
+      "incoming_reserved": 0,
+      "outgoing_reserved": 0,
+      "inbound_cap": 0
+     },
+     {
+      "product": "Paint",
+      "role": "output",
+      "count": 38,
+      "slots": 40,
+      "stored": 38,
+      "incoming_reserved": 0,
+      "outgoing_reserved": 0,
+      "inbound_cap": 0
+     }
+    ],
+    "logistics": {
+     "options": 0,
+     "auto_wh": false,
+     "warehouse": null,
+     "accepted": [
+      "Chemicals",
+      "Dye"
+     ],
+     "outgoing": [
+      "Paint"
+     ],
+     "manual_slot_count": 3
+    },
+    "notifications": [],
+    "pollution_at_tile": 0.0,
+    "is_polluted": false,
+    "fleet": null,
+    "is_module": false,
+    "module_owner": null,
+    "is_shop": false
+   },
+   {
+    "key": "PaintFactory@90,90",
+    "save_guid": null,
+    "prefab": "PaintFactory",
+    "display_name": "USINE DE PEINTURE 2",
+    "owner_actor_id": 1,
+    "x": 90,
+    "y": 90,
+    "rotation": 0,
+    "region_id": "a1000000-0000-4000-8000-000000000001",
+    "city_id": 10,
+    "tags": [
+     "factory"
+    ],
+    "kind": "factory",
+    "flags": {
+     "user_enabled": true,
+     "requirements_met": true,
+     "is_working": false
+    },
+    "paid_to_build": 500000.0,
+    "efficiency": {
+     "kind": "building",
+     "index": 3,
+     "output_multiplier": 1.0,
+     "upkeep_multiplier": 1.0
+    },
+    "upkeep": {
+     "monthly_full": 12500.0,
+     "monthly_active": 12500.0,
+     "accrued_this_month": 5000.0,
+     "days_up": 12
+    },
+    "recipe": null,
+    "cycle_days_effective": null,
+    "production": {
+     "progress": 0.5,
+     "produced_this_month": 0,
+     "produced_last_month": 0,
+     "total_produced": 0,
+     "average_10_months": null,
+     "production_frames": 0,
+     "frames_spent_producing": 0,
+     "final_speed": 1.0
+    },
+    "modules": null,
+    "inventory": [],
+    "logistics": {
+     "options": 0,
+     "auto_wh": false,
+     "warehouse": null,
+     "accepted": [],
+     "outgoing": [],
+     "manual_slot_count": 3
+    },
+    "notifications": [],
+    "pollution_at_tile": 0.0,
+    "is_polluted": false,
+    "fleet": null,
+    "is_module": false,
+    "module_owner": null,
+    "is_shop": false
+   },
+   {
+    "key": "Warehouse@58,44",
+    "save_guid": "guid-c4ba5dbf",
+    "prefab": "Warehouse",
+    "display_name": "ENTREPÔT 1",
+    "owner_actor_id": 1,
+    "x": 58,
+    "y": 44,
+    "rotation": 0,
+    "region_id": "a1000000-0000-4000-8000-000000000001",
+    "city_id": 10,
+    "tags": [
+     "warehouse"
+    ],
+    "kind": "warehouse",
+    "flags": {
+     "user_enabled": true,
+     "requirements_met": true,
+     "is_working": true
+    },
+    "paid_to_build": 150000.0,
+    "efficiency": {
+     "kind": "building",
+     "index": 3,
+     "output_multiplier": 1.0,
+     "upkeep_multiplier": 1.0
+    },
+    "upkeep": {
+     "monthly_full": 3750.0,
+     "monthly_active": 3750.0,
+     "accrued_this_month": 1500.0,
+     "days_up": 12
+    },
+    "recipe": null,
+    "cycle_days_effective": null,
+    "production": null,
+    "modules": null,
+    "inventory": [
+     {
+      "product": "Paint",
+      "role": "accepted",
+      "count": 15,
+      "slots": 100,
+      "stored": 15,
+      "incoming_reserved": 5,
+      "outgoing_reserved": 0,
+      "inbound_cap": 20
+     },
+     {
+      "product": "Chemicals",
+      "role": "accepted",
+      "count": 0,
+      "slots": 100,
+      "stored": 0,
+      "incoming_reserved": 0,
+      "outgoing_reserved": 0,
+      "inbound_cap": 0
+     }
+    ],
+    "logistics": {
+     "options": 0,
+     "auto_wh": false,
+     "warehouse": null,
+     "accepted": [
+      "Paint",
+      "Chemicals"
+     ],
+     "outgoing": [
+      "Paint",
+      "Chemicals"
+     ],
+     "manual_slot_count": 9
+    },
+    "notifications": [],
+    "pollution_at_tile": 0.0,
+    "is_polluted": false,
+    "fleet": null,
+    "is_module": false,
+    "module_owner": null,
+    "is_shop": false
+   },
+   {
+    "key": "TruckDepot@30,35",
+    "save_guid": "guid-17a3c0d4",
+    "prefab": "TruckDepot",
+    "display_name": "DÉPÔT DE CAMIONS 1",
+    "owner_actor_id": 1,
+    "x": 30,
+    "y": 35,
+    "rotation": 0,
+    "region_id": "a1000000-0000-4000-8000-000000000004",
+    "city_id": null,
+    "tags": [
+     "depot"
+    ],
+    "kind": "depot",
+    "flags": {
+     "user_enabled": true,
+     "requirements_met": true,
+     "is_working": true
+    },
+    "paid_to_build": 100000.0,
+    "efficiency": {
+     "kind": "building",
+     "index": 3,
+     "output_multiplier": 1.0,
+     "upkeep_multiplier": 1.0
+    },
+    "upkeep": {
+     "monthly_full": 2500.0,
+     "monthly_active": 2500.0,
+     "accrued_this_month": 1000.0,
+     "days_up": 12
+    },
+    "recipe": null,
+    "cycle_days_effective": null,
+    "production": null,
+    "modules": null,
+    "inventory": [],
+    "logistics": null,
+    "notifications": [],
+    "pollution_at_tile": 0.0,
+    "is_polluted": false,
+    "fleet": {
+     "vehicle_prefab": "Vehicle",
+     "active": 3,
+     "inactive": 1,
+     "max": 5,
+     "infinite": false
+    },
+    "is_module": false,
+    "module_owner": null,
+    "is_shop": false
+   }
+  ],
+  "routes_player": [
+   {
+    "route_key": "GasWell@20,30|Gas|PetrochemicalFactory@40,32|own|0",
+    "origin": "GasWell@20,30",
+    "destination": "PetrochemicalFactory@40,32",
+    "endpoint": "PetrochemicalFactory@40,32",
+    "destination_kind": "factory",
+    "destination_owner_actor_id": 1,
+    "destination_city_id": null,
+    "product": "Gas",
+    "source": "own",
+    "transport_mode": "Road",
+    "slot_index": 0,
+    "occurrence": 0,
+    "paused": false,
+    "wait_for_full_vehicle": false,
+    "dormant_auto_warehouse": false,
+    "max_send": {
+     "value": 8,
+     "unlimited": false,
+     "mode": "manual",
+     "scope": "destination_product_shared",
+     "headroom_now": 0,
+     "ui_label_validated": false,
+     "storage_kind": "product_specific"
+    },
+    "min_keep": {
+     "value": 1,
+     "keep_all": false,
+     "ui_label_validated": false
+    },
+    "distance_tiles": 22,
+    "path_status": "cached",
+    "dispatch_cost": 587.5,
+    "dispatch_formula": "ManualDestinationDispatchCost",
+    "vehicle_capacity": 10,
+    "dispatch_amount_now": {
+     "value": 0,
+     "complete": true,
+     "limited_by": [
+      "max_send"
+     ],
+     "inputs": {
+      "vehicle_capacity": 10,
+      "origin_stock": 12,
+      "min_keep": 1,
+      "available": 11,
+      "free_space": 27,
+      "max_send": 8,
+      "destination_slots": 40,
+      "max_send_room": 0,
+      "contract_room": null,
+      "world_event_targets_destination": false,
+      "wait_for_full_vehicle": false
+     },
+     "method": "replica:ManualDestinationManager.GetRequestedAmount"
+    },
+    "in_flight": {
+     "requests_total": 1,
+     "requests_new": 0,
+     "requests_started": 1,
+     "requests_other": 0,
+     "units_requested": 4,
+     "units_started": 4,
+     "invalid_handles": 0
+    },
+    "destination_stock": 9,
+    "destination_incoming_reserved": 4,
+    "destination_free_space": 27,
+    "destination_slots": 40,
+    "origin_stock": 12,
+    "validation_error": null,
+    "has_error": false,
+    "destination_accepts_product": true,
+    "destination_dead_city": false,
+    "errors": []
+   },
+   {
+    "route_key": "GasWell@24,36|Gas|PetrochemicalFactory@40,32|own|0",
+    "origin": "GasWell@24,36",
+    "destination": "PetrochemicalFactory@40,32",
+    "endpoint": "PetrochemicalFactory@40,32",
+    "destination_kind": "factory",
+    "destination_owner_actor_id": 1,
+    "destination_city_id": null,
+    "product": "Gas",
+    "source": "own",
+    "transport_mode": "Road",
+    "slot_index": 0,
+    "occurrence": 0,
+    "paused": false,
+    "wait_for_full_vehicle": false,
+    "dormant_auto_warehouse": false,
+    "max_send": {
+     "value": 8,
+     "unlimited": false,
+     "mode": "manual",
+     "scope": "destination_product_shared",
+     "headroom_now": 0,
+     "ui_label_validated": false,
+     "storage_kind": "product_specific"
+    },
+    "min_keep": {
+     "value": 0,
+     "keep_all": false,
+     "ui_label_validated": false
+    },
+    "distance_tiles": 18,
+    "path_status": "cached",
+    "dispatch_cost": 537.5,
+    "dispatch_formula": "ManualDestinationDispatchCost",
+    "vehicle_capacity": 10,
+    "dispatch_amount_now": {
+     "value": 0,
+     "complete": true,
+     "limited_by": [
+      "max_send"
+     ],
+     "inputs": {
+      "vehicle_capacity": 10,
+      "origin_stock": 30,
+      "min_keep": 0,
+      "available": 30,
+      "free_space": 27,
+      "max_send": 8,
+      "destination_slots": 40,
+      "max_send_room": 0,
+      "contract_room": null,
+      "world_event_targets_destination": false,
+      "wait_for_full_vehicle": false
+     },
+     "method": "replica:ManualDestinationManager.GetRequestedAmount"
+    },
+    "in_flight": {
+     "requests_total": 0,
+     "requests_new": 0,
+     "requests_started": 0,
+     "requests_other": 0,
+     "units_requested": 0,
+     "units_started": 0,
+     "invalid_handles": 0
+    },
+    "destination_stock": 9,
+    "destination_incoming_reserved": 4,
+    "destination_free_space": 27,
+    "destination_slots": 40,
+    "origin_stock": 30,
+    "validation_error": null,
+    "has_error": false,
+    "destination_accepts_product": true,
+    "destination_dead_city": false,
+    "errors": []
+   },
+   {
+    "route_key": "GasWell@24,36|Gas|PetrochemicalFactory@44,60|own|0",
+    "origin": "GasWell@24,36",
+    "destination": "PetrochemicalFactory@44,60",
+    "endpoint": "PetrochemicalFactory@44,60",
+    "destination_kind": "factory",
+    "destination_owner_actor_id": 1,
+    "destination_city_id": null,
+    "product": "Gas",
+    "source": "own",
+    "transport_mode": "Road",
+    "slot_index": 1,
+    "occurrence": 0,
+    "paused": false,
+    "wait_for_full_vehicle": false,
+    "dormant_auto_warehouse": false,
+    "max_send": {
+     "value": 0,
+     "unlimited": true,
+     "mode": "manual",
+     "scope": "destination_product_shared",
+     "headroom_now": null,
+     "ui_label_validated": false,
+     "storage_kind": "product_specific"
+    },
+    "min_keep": {
+     "value": 2147483647,
+     "keep_all": true,
+     "ui_label_validated": false
+    },
+    "distance_tiles": 26,
+    "path_status": "cached",
+    "dispatch_cost": 637.5,
+    "dispatch_formula": "ManualDestinationDispatchCost",
+    "vehicle_capacity": 10,
+    "dispatch_amount_now": {
+     "value": 0,
+     "complete": true,
+     "limited_by": [
+      "available"
+     ],
+     "inputs": {
+      "vehicle_capacity": 10,
+      "origin_stock": 30,
+      "min_keep": 2147483647,
+      "available": 0,
+      "free_space": 39,
+      "max_send": 0,
+      "destination_slots": 40,
+      "max_send_room": null,
+      "contract_room": null,
+      "world_event_targets_destination": false,
+      "wait_for_full_vehicle": false
+     },
+     "method": "replica:ManualDestinationManager.GetRequestedAmount"
+    },
+    "in_flight": {
+     "requests_total": 0,
+     "requests_new": 0,
+     "requests_started": 0,
+     "requests_other": 0,
+     "units_requested": 0,
+     "units_started": 0,
+     "invalid_handles": 0
+    },
+    "destination_stock": 1,
+    "destination_incoming_reserved": 0,
+    "destination_free_space": 39,
+    "destination_slots": 40,
+    "origin_stock": 30,
+    "validation_error": null,
+    "has_error": false,
+    "destination_accepts_product": true,
+    "destination_dead_city": false,
+    "errors": []
+   },
+   {
+    "route_key": "PetrochemicalFactory@40,32|Chemicals|PaintFactory@55,40|own|0",
+    "origin": "PetrochemicalFactory@40,32",
+    "destination": "PaintFactory@55,40",
+    "endpoint": "PaintFactory@55,40",
+    "destination_kind": "factory",
+    "destination_owner_actor_id": 1,
+    "destination_city_id": 10,
+    "product": "Chemicals",
+    "source": "own",
+    "transport_mode": "Road",
+    "slot_index": 0,
+    "occurrence": 0,
+    "paused": false,
+    "wait_for_full_vehicle": false,
+    "dormant_auto_warehouse": false,
+    "max_send": {
+     "value": 10,
+     "unlimited": false,
+     "mode": "manual",
+     "scope": "destination_product_shared",
+     "headroom_now": 5,
+     "ui_label_validated": false,
+     "storage_kind": "product_specific"
+    },
+    "min_keep": {
+     "value": 2,
+     "keep_all": false,
+     "ui_label_validated": false
+    },
+    "distance_tiles": 17,
+    "path_status": "cached",
+    "dispatch_cost": 525.0,
+    "dispatch_formula": "ManualDestinationDispatchCost",
+    "vehicle_capacity": 10,
+    "dispatch_amount_now": {
+     "value": 5,
+     "complete": true,
+     "limited_by": [
+      "max_send"
+     ],
+     "inputs": {
+      "vehicle_capacity": 10,
+      "origin_stock": 10,
+      "min_keep": 2,
+      "available": 8,
+      "free_space": 35,
+      "max_send": 10,
+      "destination_slots": 40,
+      "max_send_room": 5,
+      "contract_room": null,
+      "world_event_targets_destination": false,
+      "wait_for_full_vehicle": false
+     },
+     "method": "replica:ManualDestinationManager.GetRequestedAmount"
+    },
+    "in_flight": {
+     "requests_total": 0,
+     "requests_new": 0,
+     "requests_started": 0,
+     "requests_other": 0,
+     "units_requested": 0,
+     "units_started": 0,
+     "invalid_handles": 0
+    },
+    "destination_stock": 5,
+    "destination_incoming_reserved": 0,
+    "destination_free_space": 35,
+    "destination_slots": 40,
+    "origin_stock": 10,
+    "validation_error": null,
+    "has_error": false,
+    "destination_accepts_product": true,
+    "destination_dead_city": false,
+    "errors": []
+   },
+   {
+    "route_key": "PetrochemicalFactory@40,32|Chemicals|PaintFactory@55,40|own|1",
+    "origin": "PetrochemicalFactory@40,32",
+    "destination": "PaintFactory@55,40",
+    "endpoint": "PaintFactory@55,40",
+    "destination_kind": "factory",
+    "destination_owner_actor_id": 1,
+    "destination_city_id": 10,
+    "product": "Chemicals",
+    "source": "own",
+    "transport_mode": "Road",
+    "slot_index": 1,
+    "occurrence": 1,
+    "paused": true,
+    "wait_for_full_vehicle": false,
+    "dormant_auto_warehouse": false,
+    "max_send": {
+     "value": 10,
+     "unlimited": false,
+     "mode": "manual",
+     "scope": "destination_product_shared",
+     "headroom_now": 5,
+     "ui_label_validated": false,
+     "storage_kind": "product_specific"
+    },
+    "min_keep": {
+     "value": 2,
+     "keep_all": false,
+     "ui_label_validated": false
+    },
+    "distance_tiles": 17,
+    "path_status": "cached",
+    "dispatch_cost": 525.0,
+    "dispatch_formula": "ManualDestinationDispatchCost",
+    "vehicle_capacity": 10,
+    "dispatch_amount_now": {
+     "value": 5,
+     "complete": true,
+     "limited_by": [
+      "max_send"
+     ],
+     "inputs": {
+      "vehicle_capacity": 10,
+      "origin_stock": 10,
+      "min_keep": 2,
+      "available": 8,
+      "free_space": 35,
+      "max_send": 10,
+      "destination_slots": 40,
+      "max_send_room": 5,
+      "contract_room": null,
+      "world_event_targets_destination": false,
+      "wait_for_full_vehicle": false
+     },
+     "method": "replica:ManualDestinationManager.GetRequestedAmount"
+    },
+    "in_flight": {
+     "requests_total": 0,
+     "requests_new": 0,
+     "requests_started": 0,
+     "requests_other": 0,
+     "units_requested": 0,
+     "units_started": 0,
+     "invalid_handles": 0
+    },
+    "destination_stock": 5,
+    "destination_incoming_reserved": 0,
+    "destination_free_space": 35,
+    "destination_slots": 40,
+    "origin_stock": 10,
+    "validation_error": null,
+    "has_error": false,
+    "destination_accepts_product": true,
+    "destination_dead_city": false,
+    "errors": []
+   },
+   {
+    "route_key": "ChemicalPlant@60,30|Dye|PaintFactory@55,40|own|0",
+    "origin": "ChemicalPlant@60,30",
+    "destination": "PaintFactory@55,40",
+    "endpoint": "PaintFactory@55,40",
+    "destination_kind": "factory",
+    "destination_owner_actor_id": 1,
+    "destination_city_id": 10,
+    "product": "Dye",
+    "source": "own",
+    "transport_mode": "Road",
+    "slot_index": 0,
+    "occurrence": 0,
+    "paused": false,
+    "wait_for_full_vehicle": false,
+    "dormant_auto_warehouse": false,
+    "max_send": {
+     "value": 0,
+     "unlimited": true,
+     "mode": "manual",
+     "scope": "destination_product_shared",
+     "headroom_now": null,
+     "ui_label_validated": false,
+     "storage_kind": "product_specific"
+    },
+    "min_keep": {
+     "value": 0,
+     "keep_all": false,
+     "ui_label_validated": false
+    },
+    "distance_tiles": 18,
+    "path_status": "cached",
+    "dispatch_cost": 537.5,
+    "dispatch_formula": "ManualDestinationDispatchCost",
+    "vehicle_capacity": 10,
+    "dispatch_amount_now": {
+     "value": 8,
+     "complete": true,
+     "limited_by": [
+      "available"
+     ],
+     "inputs": {
+      "vehicle_capacity": 10,
+      "origin_stock": 8,
+      "min_keep": 0,
+      "available": 8,
+      "free_space": 34,
+      "max_send": 0,
+      "destination_slots": 40,
+      "max_send_room": null,
+      "contract_room": null,
+      "world_event_targets_destination": false,
+      "wait_for_full_vehicle": false
+     },
+     "method": "replica:ManualDestinationManager.GetRequestedAmount"
+    },
+    "in_flight": {
+     "requests_total": 0,
+     "requests_new": 0,
+     "requests_started": 0,
+     "requests_other": 0,
+     "units_requested": 0,
+     "units_started": 0,
+     "invalid_handles": 0
+    },
+    "destination_stock": 6,
+    "destination_incoming_reserved": 0,
+    "destination_free_space": 34,
+    "destination_slots": 40,
+    "origin_stock": 8,
+    "validation_error": null,
+    "has_error": false,
+    "destination_accepts_product": true,
+    "destination_dead_city": false,
+    "errors": []
+   },
+   {
+    "route_key": "FlowerFarm@70,20|Flowers|ChemicalPlant@60,30|own|0",
+    "origin": "FlowerFarm@70,20",
+    "destination": "ChemicalPlant@60,30",
+    "endpoint": "ChemicalPlant@60,30",
+    "destination_kind": "factory",
+    "destination_owner_actor_id": 1,
+    "destination_city_id": null,
+    "product": "Flowers",
+    "source": "own",
+    "transport_mode": "Road",
+    "slot_index": 0,
+    "occurrence": 0,
+    "paused": false,
+    "wait_for_full_vehicle": false,
+    "dormant_auto_warehouse": false,
+    "max_send": {
+     "value": 0,
+     "unlimited": true,
+     "mode": "manual",
+     "scope": "destination_product_shared",
+     "headroom_now": null,
+     "ui_label_validated": false,
+     "storage_kind": "product_specific"
+    },
+    "min_keep": {
+     "value": 0,
+     "keep_all": false,
+     "ui_label_validated": false
+    },
+    "distance_tiles": 11,
+    "path_status": "cached",
+    "dispatch_cost": 450.0,
+    "dispatch_formula": "ManualDestinationDispatchCost",
+    "vehicle_capacity": 10,
+    "dispatch_amount_now": {
+     "value": 10,
+     "complete": true,
+     "limited_by": [
+      "cap"
+     ],
+     "inputs": {
+      "vehicle_capacity": 10,
+      "origin_stock": 20,
+      "min_keep": 0,
+      "available": 20,
+      "free_space": 34,
+      "max_send": 0,
+      "destination_slots": 40,
+      "max_send_room": null,
+      "contract_room": null,
+      "world_event_targets_destination": false,
+      "wait_for_full_vehicle": false
+     },
+     "method": "replica:ManualDestinationManager.GetRequestedAmount"
+    },
+    "in_flight": {
+     "requests_total": 0,
+     "requests_new": 0,
+     "requests_started": 0,
+     "requests_other": 0,
+     "units_requested": 0,
+     "units_started": 0,
+     "invalid_handles": 0
+    },
+    "destination_stock": 6,
+    "destination_incoming_reserved": 0,
+    "destination_free_space": 34,
+    "destination_slots": 40,
+    "origin_stock": 20,
+    "validation_error": null,
+    "has_error": false,
+    "destination_accepts_product": true,
+    "destination_dead_city": false,
+    "errors": []
+   },
+   {
+    "route_key": "WaterSiphon@72,26|Water|ChemicalPlant@60,30|own|0",
+    "origin": "WaterSiphon@72,26",
+    "destination": "ChemicalPlant@60,30",
+    "endpoint": "ChemicalPlant@60,30",
+    "destination_kind": "factory",
+    "destination_owner_actor_id": 1,
+    "destination_city_id": null,
+    "product": "Water",
+    "source": "own",
+    "transport_mode": "Road",
+    "slot_index": 0,
+    "occurrence": 0,
+    "paused": false,
+    "wait_for_full_vehicle": false,
+    "dormant_auto_warehouse": false,
+    "max_send": {
+     "value": 0,
+     "unlimited": true,
+     "mode": "manual",
+     "scope": "destination_product_shared",
+     "headroom_now": null,
+     "ui_label_validated": false,
+     "storage_kind": "product_specific"
+    },
+    "min_keep": {
+     "value": 0,
+     "keep_all": false,
+     "ui_label_validated": false
+    },
+    "distance_tiles": 13,
+    "path_status": "cached",
+    "dispatch_cost": 475.0,
+    "dispatch_formula": "ManualDestinationDispatchCost",
+    "vehicle_capacity": 10,
+    "dispatch_amount_now": {
+     "value": 8,
+     "complete": true,
+     "limited_by": [
+      "available"
+     ],
+     "inputs": {
+      "vehicle_capacity": 10,
+      "origin_stock": 8,
+      "min_keep": 0,
+      "available": 8,
+      "free_space": 36,
+      "max_send": 0,
+      "destination_slots": 40,
+      "max_send_room": null,
+      "contract_room": null,
+      "world_event_targets_destination": false,
+      "wait_for_full_vehicle": false
+     },
+     "method": "replica:ManualDestinationManager.GetRequestedAmount"
+    },
+    "in_flight": {
+     "requests_total": 0,
+     "requests_new": 0,
+     "requests_started": 0,
+     "requests_other": 0,
+     "units_requested": 0,
+     "units_started": 0,
+     "invalid_handles": 0
+    },
+    "destination_stock": 4,
+    "destination_incoming_reserved": 0,
+    "destination_free_space": 36,
+    "destination_slots": 40,
+    "origin_stock": 8,
+    "validation_error": null,
+    "has_error": false,
+    "destination_accepts_product": true,
+    "destination_dead_city": false,
+    "errors": []
+   },
+   {
+    "route_key": "PaintFactory@55,40|Paint|HardwareStore@100,100|own|0",
+    "origin": "PaintFactory@55,40",
+    "destination": "HardwareStore@100,100",
+    "endpoint": "HardwareStore@100,100",
+    "destination_kind": "shop",
+    "destination_owner_actor_id": 10,
+    "destination_city_id": 10,
+    "product": "Paint",
+    "source": "own",
+    "transport_mode": "Road",
+    "slot_index": 0,
+    "occurrence": 0,
+    "paused": false,
+    "wait_for_full_vehicle": false,
+    "dormant_auto_warehouse": false,
+    "max_send": {
+     "value": 10,
+     "unlimited": false,
+     "mode": "auto_shop_demand",
+     "scope": "destination_product_shared",
+     "headroom_now": 4,
+     "ui_label_validated": false,
+     "storage_kind": null
+    },
+    "min_keep": {
+     "value": 0,
+     "keep_all": false,
+     "ui_label_validated": false
+    },
+    "distance_tiles": 75,
+    "path_status": "cached",
+    "dispatch_cost": 1250.0,
+    "dispatch_formula": "ManualDestinationDispatchCost",
+    "vehicle_capacity": 10,
+    "dispatch_amount_now": {
+     "value": 4,
+     "complete": true,
+     "limited_by": [
+      "max_send"
+     ],
+     "inputs": {
+      "vehicle_capacity": 10,
+      "origin_stock": 38,
+      "min_keep": 0,
+      "available": 38,
+      "free_space": 34,
+      "max_send": 10,
+      "destination_slots": 40,
+      "max_send_room": 4,
+      "contract_room": null,
+      "world_event_targets_destination": false,
+      "wait_for_full_vehicle": false
+     },
+     "method": "replica:ManualDestinationManager.GetRequestedAmount"
+    },
+    "in_flight": {
+     "requests_total": 0,
+     "requests_new": 0,
+     "requests_started": 0,
+     "requests_other": 0,
+     "units_requested": 0,
+     "units_started": 0,
+     "invalid_handles": 0
+    },
+    "destination_stock": 4,
+    "destination_incoming_reserved": 2,
+    "destination_free_space": 34,
+    "destination_slots": 40,
+    "origin_stock": 38,
+    "validation_error": null,
+    "has_error": false,
+    "destination_accepts_product": true,
+    "destination_dead_city": false,
+    "errors": []
+   },
+   {
+    "route_key": "PaintFactory@55,40|Paint|Warehouse@58,44|own|0",
+    "origin": "PaintFactory@55,40",
+    "destination": "Warehouse@58,44",
+    "endpoint": "Warehouse@58,44",
+    "destination_kind": "warehouse",
+    "destination_owner_actor_id": 1,
+    "destination_city_id": 10,
+    "product": "Paint",
+    "source": "own",
+    "transport_mode": "Road",
+    "slot_index": 1,
+    "occurrence": 0,
+    "paused": false,
+    "wait_for_full_vehicle": true,
+    "dormant_auto_warehouse": false,
+    "max_send": {
+     "value": 20,
+     "unlimited": false,
+     "mode": "manual",
+     "scope": "destination_product_shared",
+     "headroom_now": 0,
+     "ui_label_validated": false,
+     "storage_kind": "product_specific"
+    },
+    "min_keep": {
+     "value": 0,
+     "keep_all": false,
+     "ui_label_validated": false
+    },
+    "distance_tiles": 5,
+    "path_status": "cached",
+    "dispatch_cost": 375.0,
+    "dispatch_formula": "ManualDestinationDispatchCost",
+    "vehicle_capacity": 10,
+    "dispatch_amount_now": {
+     "value": 0,
+     "complete": true,
+     "limited_by": [
+      "wait_full"
+     ],
+     "inputs": {
+      "vehicle_capacity": 10,
+      "origin_stock": 38,
+      "min_keep": 0,
+      "available": 38,
+      "free_space": 80,
+      "max_send": 20,
+      "destination_slots": 100,
+      "max_send_room": 0,
+      "contract_room": null,
+      "world_event_targets_destination": false,
+      "wait_for_full_vehicle": true
+     },
+     "method": "replica:ManualDestinationManager.GetRequestedAmount"
+    },
+    "in_flight": {
+     "requests_total": 0,
+     "requests_new": 0,
+     "requests_started": 0,
+     "requests_other": 0,
+     "units_requested": 0,
+     "units_started": 0,
+     "invalid_handles": 0
+    },
+    "destination_stock": 15,
+    "destination_incoming_reserved": 5,
+    "destination_free_space": 80,
+    "destination_slots": 100,
+    "origin_stock": 38,
+    "validation_error": null,
+    "has_error": false,
+    "destination_accepts_product": true,
+    "destination_dead_city": false,
+    "errors": []
+   },
+   {
+    "route_key": "PaintFactory@55,40|Paint|ConstructionStore@104,98|own|0",
+    "origin": "PaintFactory@55,40",
+    "destination": "ConstructionStore@104,98",
+    "endpoint": "ConstructionStore@104,98",
+    "destination_kind": "shop",
+    "destination_owner_actor_id": 10,
+    "destination_city_id": 10,
+    "product": "Paint",
+    "source": "own",
+    "transport_mode": "Road",
+    "slot_index": 2,
+    "occurrence": 0,
+    "paused": false,
+    "wait_for_full_vehicle": false,
+    "dormant_auto_warehouse": false,
+    "max_send": {
+     "value": 0,
+     "unlimited": true,
+     "mode": "manual",
+     "scope": "destination_product_shared",
+     "headroom_now": null,
+     "ui_label_validated": false,
+     "storage_kind": "product_specific"
+    },
+    "min_keep": {
+     "value": 0,
+     "keep_all": false,
+     "ui_label_validated": false
+    },
+    "distance_tiles": null,
+    "path_status": "unavailable",
+    "dispatch_cost": null,
+    "dispatch_formula": "ManualDestinationDispatchCost",
+    "vehicle_capacity": 10,
+    "dispatch_amount_now": {
+     "value": 10,
+     "complete": true,
+     "limited_by": [
+      "cap"
+     ],
+     "inputs": {
+      "vehicle_capacity": 10,
+      "origin_stock": 38,
+      "min_keep": 0,
+      "available": 38,
+      "free_space": 40,
+      "max_send": 0,
+      "destination_slots": 40,
+      "max_send_room": null,
+      "contract_room": null,
+      "world_event_targets_destination": false,
+      "wait_for_full_vehicle": false
+     },
+     "method": "replica:ManualDestinationManager.GetRequestedAmount"
+    },
+    "in_flight": {
+     "requests_total": 0,
+     "requests_new": 0,
+     "requests_started": 0,
+     "requests_other": 0,
+     "units_requested": 0,
+     "units_started": 0,
+     "invalid_handles": 0
+    },
+    "destination_stock": 0,
+    "destination_incoming_reserved": 0,
+    "destination_free_space": 40,
+    "destination_slots": 40,
+    "origin_stock": 38,
+    "validation_error": "NoPath",
+    "has_error": true,
+    "destination_accepts_product": true,
+    "destination_dead_city": false,
+    "errors": [
+     "no_path",
+     "validation_error:NoPath"
+    ]
+   },
+   {
+    "route_key": "GasWell@80,80|Gas|PetrochemicalFactory@40,32|own|0",
+    "origin": "GasWell@80,80",
+    "destination": "PetrochemicalFactory@40,32",
+    "endpoint": "PetrochemicalFactory@40,32",
+    "destination_kind": "factory",
+    "destination_owner_actor_id": 1,
+    "destination_city_id": null,
+    "product": "Gas",
+    "source": "own",
+    "transport_mode": "Road",
+    "slot_index": 0,
+    "occurrence": 0,
+    "paused": false,
+    "wait_for_full_vehicle": false,
+    "dormant_auto_warehouse": true,
+    "max_send": {
+     "value": 8,
+     "unlimited": false,
+     "mode": "manual",
+     "scope": "destination_product_shared",
+     "headroom_now": 0,
+     "ui_label_validated": false,
+     "storage_kind": "product_specific"
+    },
+    "min_keep": {
+     "value": 0,
+     "keep_all": false,
+     "ui_label_validated": false
+    },
+    "distance_tiles": 48,
+    "path_status": "cached",
+    "dispatch_cost": 912.5,
+    "dispatch_formula": "ManualDestinationDispatchCost",
+    "vehicle_capacity": 10,
+    "dispatch_amount_now": {
+     "value": 0,
+     "complete": true,
+     "limited_by": [
+      "available",
+      "max_send"
+     ],
+     "inputs": {
+      "vehicle_capacity": 10,
+      "origin_stock": 0,
+      "min_keep": 0,
+      "available": 0,
+      "free_space": 27,
+      "max_send": 8,
+      "destination_slots": 40,
+      "max_send_room": 0,
+      "contract_room": null,
+      "world_event_targets_destination": false,
+      "wait_for_full_vehicle": false
+     },
+     "method": "replica:ManualDestinationManager.GetRequestedAmount"
+    },
+    "in_flight": {
+     "requests_total": 0,
+     "requests_new": 0,
+     "requests_started": 0,
+     "requests_other": 0,
+     "units_requested": 0,
+     "units_started": 0,
+     "invalid_handles": 0
+    },
+    "destination_stock": 9,
+    "destination_incoming_reserved": 4,
+    "destination_free_space": 27,
+    "destination_slots": 40,
+    "origin_stock": 0,
+    "validation_error": null,
+    "has_error": false,
+    "destination_accepts_product": true,
+    "destination_dead_city": false,
+    "errors": []
+   },
+   {
+    "route_key": "PetrochemicalFactory@40,32|Chemicals|Warehouse@58,44|TrainTerminal|0",
+    "origin": "PetrochemicalFactory@40,32",
+    "destination": "Warehouse@58,44",
+    "endpoint": "Warehouse@58,44",
+    "destination_kind": "warehouse",
+    "destination_owner_actor_id": 1,
+    "destination_city_id": 10,
+    "product": "Chemicals",
+    "source": "TrainTerminal",
+    "transport_mode": "Rail",
+    "slot_index": 2,
+    "occurrence": 0,
+    "paused": false,
+    "wait_for_full_vehicle": false,
+    "dormant_auto_warehouse": false,
+    "max_send": {
+     "value": 0,
+     "unlimited": true,
+     "mode": "manual",
+     "scope": "destination_product_shared",
+     "headroom_now": null,
+     "ui_label_validated": false,
+     "storage_kind": "product_specific"
+    },
+    "min_keep": {
+     "value": 0,
+     "keep_all": false,
+     "ui_label_validated": false
+    },
+    "distance_tiles": 40,
+    "path_status": "cached",
+    "dispatch_cost": 4062.5,
+    "dispatch_formula": "TrainTerminalDispatchCost",
+    "vehicle_capacity": 40,
+    "dispatch_amount_now": {
+     "value": 10,
+     "complete": true,
+     "limited_by": [
+      "available"
+     ],
+     "inputs": {
+      "vehicle_capacity": 40,
+      "origin_stock": 10,
+      "min_keep": 0,
+      "available": 10,
+      "free_space": 100,
+      "max_send": 0,
+      "destination_slots": 100,
+      "max_send_room": null,
+      "contract_room": null,
+      "world_event_targets_destination": false,
+      "wait_for_full_vehicle": false
+     },
+     "method": "replica:ManualDestinationManager.GetRequestedAmount"
+    },
+    "in_flight": {
+     "requests_total": 0,
+     "requests_new": 0,
+     "requests_started": 0,
+     "requests_other": 0,
+     "units_requested": 0,
+     "units_started": 0,
+     "invalid_handles": 0
+    },
+    "destination_stock": 0,
+    "destination_incoming_reserved": 0,
+    "destination_free_space": 100,
+    "destination_slots": 100,
+    "origin_stock": 10,
+    "validation_error": null,
+    "has_error": false,
+    "destination_accepts_product": true,
+    "destination_dead_city": false,
+    "errors": []
+   }
+  ],
+  "requests_player": [
+   {
+    "request_key": "Warehouse@58,44|Paint|0",
+    "endpoint": "Warehouse@58,44",
+    "product": "Paint",
+    "occurrence": 0,
+    "requested_amount": null,
+    "fill": true,
+    "remaining": 85,
+    "amount_being_moved": 5,
+    "priority": 1,
+    "active": true,
+    "use_full_vehicles": false,
+    "fulfilled": false,
+    "allowed_graphs": [
+     "TruckDepot"
+    ],
+    "expenses_this_month": 1200.0,
+    "expenses_last_month": 3400.0,
+    "endpoint_pull_disabled": false
+   },
+   {
+    "request_key": "Warehouse@58,44|Chemicals|0",
+    "endpoint": "Warehouse@58,44",
+    "product": "Chemicals",
+    "occurrence": 0,
+    "requested_amount": 50,
+    "fill": false,
+    "remaining": 50,
+    "amount_being_moved": 0,
+    "priority": 2,
+    "active": true,
+    "use_full_vehicles": false,
+    "fulfilled": false,
+    "allowed_graphs": [
+     "TruckDepot"
+    ],
+    "expenses_this_month": 1200.0,
+    "expenses_last_month": 3400.0,
+    "endpoint_pull_disabled": false
+   }
+  ],
+  "buildings_ai": [
+   {
+    "key": "Headquarters@140,110",
+    "prefab": "Headquarters",
+    "display_name": "SIEGE BOREALIS",
+    "owner_actor_id": 2,
+    "x": 140,
+    "y": 110,
+    "region_id": "a1000000-0000-4000-8000-000000000002",
+    "city_id": 11,
+    "kind": "hq",
+    "tags": [
+     "hq"
+    ],
+    "flags": {
+     "user_enabled": true,
+     "requirements_met": true,
+     "is_working": true
+    },
+    "recipe": null,
+    "produced_last_month": null,
+    "cycle_days_effective": null,
+    "module_count": null,
+    "is_module": false
+   },
+   {
+    "key": "PaintFactory@150,120",
+    "prefab": "PaintFactory",
+    "display_name": "USINE DE PEINTURE 1",
+    "owner_actor_id": 2,
+    "x": 150,
+    "y": 120,
+    "region_id": "a1000000-0000-4000-8000-000000000002",
+    "city_id": 11,
+    "kind": "factory",
+    "tags": [
+     "factory"
+    ],
+    "flags": {
+     "user_enabled": true,
+     "requirements_met": true,
+     "is_working": true
+    },
+    "recipe": "Paints",
+    "produced_last_month": 4,
+    "cycle_days_effective": 35.0,
+    "module_count": null,
+    "is_module": false
+   },
+   {
+    "key": "GasWell@160,118",
+    "prefab": "GasWell",
+    "display_name": "PUITS DE GAZ 1",
+    "owner_actor_id": 2,
+    "x": 160,
+    "y": 118,
+    "region_id": "a1000000-0000-4000-8000-000000000002",
+    "city_id": null,
+    "kind": "gatherer",
+    "tags": [
+     "gatherer"
+    ],
+    "flags": {
+     "user_enabled": true,
+     "requirements_met": true,
+     "is_working": true
+    },
+    "recipe": "Gas",
+    "produced_last_month": 120,
+    "cycle_days_effective": 10.0,
+    "module_count": 3,
+    "is_module": false
+   },
+   {
+    "key": "PetrochemicalFactory@170,125",
+    "prefab": "PetrochemicalFactory",
+    "display_name": "USINE PÉTROCHIMIQUE 1",
+    "owner_actor_id": 2,
+    "x": 170,
+    "y": 125,
+    "region_id": "a1000000-0000-4000-8000-000000000002",
+    "city_id": null,
+    "kind": "factory",
+    "tags": [
+     "factory"
+    ],
+    "flags": {
+     "user_enabled": true,
+     "requirements_met": true,
+     "is_working": true
+    },
+    "recipe": "Chemicals",
+    "produced_last_month": 6,
+    "cycle_days_effective": 20.0,
+    "module_count": null,
+    "is_module": false
+   },
+   {
+    "key": "Headquarters@240,50",
+    "prefab": "Headquarters",
+    "display_name": "SIEGE COBALT",
+    "owner_actor_id": 3,
+    "x": 240,
+    "y": 50,
+    "region_id": "a1000000-0000-4000-8000-000000000003",
+    "city_id": 12,
+    "kind": "hq",
+    "tags": [
+     "hq"
+    ],
+    "flags": {
+     "user_enabled": true,
+     "requirements_met": true,
+     "is_working": true
+    },
+    "recipe": null,
+    "produced_last_month": null,
+    "cycle_days_effective": null,
+    "module_count": null,
+    "is_module": false
+   },
+   {
+    "key": "FlowerFarm@250,60",
+    "prefab": "FlowerFarm",
+    "display_name": "FERME FLORALE 1",
+    "owner_actor_id": 3,
+    "x": 250,
+    "y": 60,
+    "region_id": "a1000000-0000-4000-8000-000000000003",
+    "city_id": null,
+    "kind": "farm",
+    "tags": [
+     "farm"
+    ],
+    "flags": {
+     "user_enabled": true,
+     "requirements_met": true,
+     "is_working": true
+    },
+    "recipe": "Flowers",
+    "produced_last_month": 9,
+    "cycle_days_effective": 30.0,
+    "module_count": 3,
+    "is_module": false
+   },
+   {
+    "key": "ChemicalPlant@255,70",
+    "prefab": "ChemicalPlant",
+    "display_name": "USINE CHIMIQUE 1",
+    "owner_actor_id": 3,
+    "x": 255,
+    "y": 70,
+    "region_id": "a1000000-0000-4000-8000-000000000003",
+    "city_id": null,
+    "kind": "factory",
+    "tags": [
+     "factory"
+    ],
+    "flags": {
+     "user_enabled": true,
+     "requirements_met": true,
+     "is_working": false
+    },
+    "recipe": "Dye",
+    "produced_last_month": 0,
+    "cycle_days_effective": 20.0,
+    "module_count": null,
+    "is_module": false
+   },
+   {
+    "key": "TradingPost@5,5",
+    "prefab": "TradingPost",
+    "display_name": "COMPTOIR D'ETAT",
+    "owner_actor_id": 5,
+    "x": 5,
+    "y": 5,
+    "region_id": "a1000000-0000-4000-8000-000000000005",
+    "city_id": null,
+    "kind": "other",
+    "tags": [
+     "other"
+    ],
+    "flags": {
+     "user_enabled": true,
+     "requirements_met": true,
+     "is_working": true
+    },
+    "recipe": null,
+    "produced_last_month": null,
+    "cycle_days_effective": null,
+    "module_count": null,
+    "is_module": false
+   }
+  ],
+  "buildings_ai_detail": null,
+  "routes_ai": null,
+  "shops": [
+   {
+    "building": "HardwareStore@100,100",
+    "display_name": "QUINCAILLERIE",
+    "prefab": "HardwareStore",
+    "city_id": 10,
+    "owner_actor_id": 10,
+    "is_dead": false,
+    "days_to_next_price_update": 4,
+    "products": [
+     {
+      "product": "Paint",
+      "stock": 4,
+      "slots": 40,
+      "player_delivered_stock": 3,
+      "demand_raw": 12,
+      "demand_for_player": 10,
+      "price_for_player": 1450.5,
+      "shop_modifier": 1.05,
+      "market_modifier": 0.98,
+      "price_modifier_pct": 3.0,
+      "sold_last_30d": 22
+     },
+     {
+      "product": "Chemicals",
+      "stock": 0,
+      "slots": 40,
+      "player_delivered_stock": 0,
+      "demand_raw": 6,
+      "demand_for_player": 5,
+      "price_for_player": 610.0,
+      "shop_modifier": 1.05,
+      "market_modifier": 0.98,
+      "price_modifier_pct": 3.0,
+      "sold_last_30d": 3
+     }
+    ]
+   },
+   {
+    "building": "ConstructionStore@104,98",
+    "display_name": "MAGASIN DE CONSTRUCTION",
+    "prefab": "ConstructionStore",
+    "city_id": 10,
+    "owner_actor_id": 10,
+    "is_dead": false,
+    "days_to_next_price_update": 4,
+    "products": [
+     {
+      "product": "Paint",
+      "stock": 0,
+      "slots": 40,
+      "player_delivered_stock": 0,
+      "demand_raw": 9,
+      "demand_for_player": 8,
+      "price_for_player": 1460.0,
+      "shop_modifier": 1.05,
+      "market_modifier": 0.98,
+      "price_modifier_pct": 3.0,
+      "sold_last_30d": 0
+     }
+    ]
+   },
+   {
+    "building": "HardwareStore@200,150",
+    "display_name": "QUINCAILLERIE",
+    "prefab": "HardwareStore",
+    "city_id": 11,
+    "owner_actor_id": 11,
+    "is_dead": false,
+    "days_to_next_price_update": 9,
+    "products": [
+     {
+      "product": "Paint",
+      "stock": 2,
+      "slots": 40,
+      "player_delivered_stock": 0,
+      "demand_raw": 7,
+      "demand_for_player": 6,
+      "price_for_player": 1500.0,
+      "shop_modifier": 1.05,
+      "market_modifier": 0.98,
+      "price_modifier_pct": 3.0,
+      "sold_last_30d": 5
+     }
+    ]
+   },
+   {
+    "building": "GeneralStore@300,40",
+    "display_name": "ÉPICERIE GÉNÉRALE",
+    "prefab": "GeneralStore",
+    "city_id": 12,
+    "owner_actor_id": 12,
+    "is_dead": false,
+    "days_to_next_price_update": 1,
+    "products": [
+     {
+      "product": "Paint",
+      "stock": 1,
+      "slots": 40,
+      "player_delivered_stock": 0,
+      "demand_raw": 5,
+      "demand_for_player": 5,
+      "price_for_player": 1520.0,
+      "shop_modifier": 1.05,
+      "market_modifier": 0.98,
+      "price_modifier_pct": 3.0,
+      "sold_last_30d": 1
+     }
+    ]
+   }
+  ],
+  "cities": [
+   {
+    "city_id": 10,
+    "name": "Valmont",
+    "region_id": "a1000000-0000-4000-8000-000000000001",
+    "type": "Settlement",
+    "tier": "Town",
+    "tier_id": 2,
+    "next_tier": "City",
+    "population": 52000,
+    "population_limit": 80000,
+    "population_limit_reached": false,
+    "growth": {
+     "waiting_for_sponsor": false,
+     "prospering": false,
+     "growing": true,
+     "consumed_products": 120,
+     "growth_threshold": 100,
+     "prosperity_threshold": 300,
+     "state": "Growing"
+    },
+    "dead": false,
+    "advancement": {
+     "can_advance": false,
+     "can_accept": true,
+     "is_advancing": false,
+     "contracts": []
+    },
+    "contract_offer": null,
+    "consumption_interval_days": 30,
+    "house_count": 80,
+    "shops": [
+     "HardwareStore@100,100",
+     "ConstructionStore@104,98"
+    ],
+    "center_x": 102,
+    "center_y": 101
+   },
+   {
+    "city_id": 11,
+    "name": "Brindlewick",
+    "region_id": "a1000000-0000-4000-8000-000000000002",
+    "type": "Settlement",
+    "tier": "Village",
+    "tier_id": 1,
+    "next_tier": "Town",
+    "population": 15000,
+    "population_limit": 20000,
+    "population_limit_reached": false,
+    "growth": {
+     "waiting_for_sponsor": false,
+     "prospering": null,
+     "growing": null,
+     "consumed_products": 50,
+     "growth_threshold": 100,
+     "prosperity_threshold": 300,
+     "state": null
+    },
+    "dead": false,
+    "advancement": {
+     "can_advance": false,
+     "can_accept": true,
+     "is_advancing": false,
+     "contracts": []
+    },
+    "contract_offer": {
+     "product": "Paint",
+     "amount": 200,
+     "delivered": 0,
+     "reserved": 0,
+     "issuer_actor_id": 11,
+     "issuer_name": "Brindlewick",
+     "target_building": "HardwareStore@200,150",
+     "accepted_actor_id": null,
+     "active": false,
+     "completed": false,
+     "price": 1600.0,
+     "reward": 50000.0,
+     "penalty": 10000.0,
+     "remaining_days": 30,
+     "duration_days": 120,
+     "fulfilled": false,
+     "failed": false
+    },
+    "consumption_interval_days": 15,
+    "house_count": 60,
+    "shops": [
+     "HardwareStore@200,150"
+    ],
+    "center_x": 201,
+    "center_y": 151
+   },
+   {
+    "city_id": 12,
+    "name": "Saint-Éloi",
+    "region_id": "a1000000-0000-4000-8000-000000000003",
+    "type": "Settlement",
+    "tier": "Village",
+    "tier_id": 1,
+    "next_tier": "Town",
+    "population": 8000,
+    "population_limit": 20000,
+    "population_limit_reached": false,
+    "growth": {
+     "waiting_for_sponsor": true,
+     "prospering": null,
+     "growing": null,
+     "consumed_products": null,
+     "growth_threshold": null,
+     "prosperity_threshold": null,
+     "state": null
+    },
+    "dead": false,
+    "advancement": {
+     "can_advance": false,
+     "can_accept": true,
+     "is_advancing": false,
+     "contracts": []
+    },
+    "contract_offer": null,
+    "consumption_interval_days": 10,
+    "house_count": 60,
+    "shops": [
+     "GeneralStore@300,40"
+    ],
+    "center_x": 301,
+    "center_y": 41
+   }
+  ],
+  "regions": [
+   {
+    "region_id": "a1000000-0000-4000-8000-000000000001",
+    "name": "Valmont",
+    "center_x": 100,
+    "center_y": 100,
+    "tile_count": 1500,
+    "city_id": 10,
+    "resources": [
+     {
+      "product": "Water",
+      "tiles": null,
+      "water_unlimited": true
+     }
+    ],
+    "resource_sites": [],
+    "permit": {
+     "owner_actor_id": 1,
+     "amount_paid": 1500000.0,
+     "type": "RegionFull"
+    },
+    "permit_cost": 1500000,
+    "permit_auction_cooldown": 0,
+    "permit_purchase_cooldown": 0
+   },
+   {
+    "region_id": "a1000000-0000-4000-8000-000000000002",
+    "name": "Brindlewick",
+    "center_x": 200,
+    "center_y": 150,
+    "tile_count": 1400,
+    "city_id": 11,
+    "resources": [
+     {
+      "product": "Gas",
+      "tiles": 30,
+      "water_unlimited": false
+     }
+    ],
+    "resource_sites": [],
+    "permit": {
+     "owner_actor_id": 2,
+     "amount_paid": 1400000.0,
+     "type": "RegionFull"
+    },
+    "permit_cost": 1400000,
+    "permit_auction_cooldown": 0,
+    "permit_purchase_cooldown": 0
+   },
+   {
+    "region_id": "a1000000-0000-4000-8000-000000000003",
+    "name": "Saint-Éloi",
+    "center_x": 300,
+    "center_y": 40,
+    "tile_count": 1200,
+    "city_id": 12,
+    "resources": [],
+    "resource_sites": [],
+    "permit": {
+     "owner_actor_id": 3,
+     "amount_paid": 1200000.0,
+     "type": "RegionFull"
+    },
+    "permit_cost": 1200000,
+    "permit_auction_cooldown": 0,
+    "permit_purchase_cooldown": 0
+   },
+   {
+    "region_id": "a1000000-0000-4000-8000-000000000004",
+    "name": "Greyhollow",
+    "center_x": 30,
+    "center_y": 30,
+    "tile_count": 1600,
+    "city_id": null,
+    "resources": [
+     {
+      "product": "Gas",
+      "tiles": 48,
+      "water_unlimited": false
+     },
+     {
+      "product": "Water",
+      "tiles": null,
+      "water_unlimited": true
+     }
+    ],
+    "resource_sites": [
+     {
+      "product": "Gas",
+      "center_x": 22,
+      "center_y": 32,
+      "radius": 6.0,
+      "amount": 40000,
+      "nodes": 12
+     }
+    ],
+    "permit": {
+     "owner_actor_id": 1,
+     "amount_paid": 1200000.0,
+     "type": "RegionFull"
+    },
+    "permit_cost": 1200000,
+    "permit_auction_cooldown": 0,
+    "permit_purchase_cooldown": 0
+   },
+   {
+    "region_id": "a1000000-0000-4000-8000-000000000005",
+    "name": "Northmarch",
+    "center_x": 80,
+    "center_y": 70,
+    "tile_count": 1600,
+    "city_id": null,
+    "resources": [
+     {
+      "product": "Gas",
+      "tiles": 12,
+      "water_unlimited": false
+     }
+    ],
+    "resource_sites": [],
+    "permit": {
+     "owner_actor_id": null,
+     "amount_paid": 0.0,
+     "type": "RegionFull"
+    },
+    "permit_cost": null,
+    "permit_auction_cooldown": 0,
+    "permit_purchase_cooldown": 0
+   }
+  ],
+  "market": {
+   "prices": [
+    {
+     "product": "Gas",
+     "value": 90.0,
+     "price": 95.0,
+     "modifier": 0.05,
+     "trend": "GOING_UP",
+     "final_price_for_player": 96.0
+    },
+    {
+     "product": "Water",
+     "value": 40.0,
+     "price": 40.0,
+     "modifier": 0.0,
+     "trend": "STABLE",
+     "final_price_for_player": 40.0
+    },
+    {
+     "product": "Flowers",
+     "value": 120.0,
+     "price": 115.0,
+     "modifier": -0.04,
+     "trend": "GOING_DOWN",
+     "final_price_for_player": 114.0
+    },
+    {
+     "product": "Chemicals",
+     "value": 600.0,
+     "price": 610.0,
+     "modifier": 0.02,
+     "trend": "STABLE",
+     "final_price_for_player": 612.0
+    },
+    {
+     "product": "Dye",
+     "value": 700.0,
+     "price": 690.0,
+     "modifier": -0.01,
+     "trend": "STABLE",
+     "final_price_for_player": 688.0
+    },
+    {
+     "product": "Paint",
+     "value": 1400.0,
+     "price": 1450.0,
+     "modifier": 0.03,
+     "trend": "GOING_UP",
+     "final_price_for_player": 1455.0
+    }
+   ],
+   "state": {
+    "sold": [
+     {
+      "product": "Water",
+      "price_for_player": 55.0
+     },
+     {
+      "product": "Gas",
+      "price_for_player": 130.0
+     }
+    ],
+    "incoming_trade_allowed": true,
+    "sale_markup": 1.4,
+    "trading_handlers": 1
+   },
+   "city_contract_offers": [
+    {
+     "product": "Paint",
+     "amount": 200,
+     "delivered": 0,
+     "reserved": 0,
+     "issuer_actor_id": 11,
+     "issuer_name": "Brindlewick",
+     "target_building": "HardwareStore@200,150",
+     "accepted_actor_id": null,
+     "active": false,
+     "completed": false,
+     "price": 1600.0,
+     "reward": 50000.0,
+     "penalty": 10000.0,
+     "remaining_days": 30,
+     "duration_days": 120,
+     "fulfilled": false,
+     "failed": false
+    }
+   ],
+   "auctions": {
+    "current": {
+     "definition": "RegionAuction",
+     "title": "Northmarch permit",
+     "reward_kind": "region",
+     "remaining_days": 12,
+     "duration_days": 30,
+     "start_bid": 500000.0,
+     "highest_bid": 650000.0,
+     "highest_bidder_actor_id": 2,
+     "next_bid": 700000.0,
+     "bid_count": 3,
+     "region_id": "a1000000-0000-4000-8000-000000000005",
+     "contract_product": null
+    },
+    "queue": []
+   }
+  },
+  "research": {
+   "player": {
+    "active": "AdvancedPaints",
+    "queue": [
+     "Railways"
+    ],
+    "active_progress": 0.4,
+    "progress": [
+     {
+      "unlock": "AdvancedPaints",
+      "progress": 0.4
+     }
+    ],
+    "remaining_days": 324.0,
+    "remaining_cost": 1080000.0,
+    "current_cost": 3333.33,
+    "efficiency_index": 2,
+    "efficiency": 1.0,
+    "unlock_points": 3,
+    "unlocked": [
+     "BasicGas",
+     "BasicFarming",
+     "Petrochemistry",
+     "Dyes",
+     "Paints"
+    ],
+    "costs": [
+     {
+      "unlock": "AdvancedPaints",
+      "daily_cost": 3333.33,
+      "days": 1680.0,
+      "total_cost_at_efficiency_1": 5600000.0
+     },
+     {
+      "unlock": "Railways",
+      "daily_cost": 3333.33,
+      "days": 540.0,
+      "total_cost_at_efficiency_1": 1800000.0
+     },
+     {
+      "unlock": "Plastics",
+      "daily_cost": 3333.33,
+      "days": 1680.0,
+      "total_cost_at_efficiency_1": 5600000.0
+     },
+     {
+      "unlock": "PaintDiscount",
+      "daily_cost": 3333.33,
+      "days": 540.0,
+      "total_cost_at_efficiency_1": 1800000.0
+     }
+    ],
+    "building_costs": [
+     {
+      "building_type": "GasWell",
+      "cost": 80000.0
+     },
+     {
+      "building_type": "PaintFactory",
+      "cost": 180000.0
+     }
+    ]
+   },
+   "ai": [
+    {
+     "actor_id": 2,
+     "unlocked_count": 3,
+     "unlocked": [
+      "BasicGas",
+      "Petrochemistry",
+      "Paints"
+     ]
+    },
+    {
+     "actor_id": 3,
+     "unlocked_count": 2,
+     "unlocked": [
+      "BasicFarming",
+      "Dyes"
+     ]
+    }
+   ]
+  },
+  "vehicles": {
+   "groups": [
+    {
+     "owner_actor_id": 1,
+     "transport_mode": "Road",
+     "product": "Gas",
+     "vehicles": 2,
+     "units_in_transit": 8
+    },
+    {
+     "owner_actor_id": 1,
+     "transport_mode": "Road",
+     "product": "Paint",
+     "vehicles": 1,
+     "units_in_transit": 10
+    },
+    {
+     "owner_actor_id": 1,
+     "transport_mode": "Road",
+     "product": null,
+     "vehicles": 1,
+     "units_in_transit": 0
+    },
+    {
+     "owner_actor_id": 2,
+     "transport_mode": "Road",
+     "product": "Paint",
+     "vehicles": 2,
+     "units_in_transit": 14
+    }
+   ],
+   "fleets_player": [
+    {
+     "building": "TruckDepot@30,35",
+     "vehicle_prefab": "Vehicle",
+     "transport_mode": "Road",
+     "active": 3,
+     "inactive": 1,
+     "max": 5,
+     "infinite": false
+    }
+   ],
+   "vehicles_player": [
+    {
+     "instance_id": -1201,
+     "trip_counter_id": 501,
+     "prefab": "Vehicle",
+     "transport_mode": "Road",
+     "fleet_building": "TruckDepot@30,35",
+     "product": "Gas",
+     "amount": 4,
+     "job_origin": "GasWell@20,30",
+     "job_destination": "PetrochemicalFactory@40,32",
+     "job_product": "Gas",
+     "job_amount": 4,
+     "going_home": false,
+     "position_x": 30.5,
+     "position_z": 31.5,
+     "tile_x": 30,
+     "tile_y": 31
+    },
+    {
+     "instance_id": -1202,
+     "trip_counter_id": 502,
+     "prefab": "Vehicle",
+     "transport_mode": "Road",
+     "fleet_building": "TruckDepot@30,35",
+     "product": "Gas",
+     "amount": 4,
+     "job_origin": "GasWell@24,36",
+     "job_destination": "PetrochemicalFactory@40,32",
+     "job_product": "Gas",
+     "job_amount": 4,
+     "going_home": false,
+     "position_x": 33.5,
+     "position_z": 34.5,
+     "tile_x": 33,
+     "tile_y": 34
+    },
+    {
+     "instance_id": -1203,
+     "trip_counter_id": 503,
+     "prefab": "Vehicle",
+     "transport_mode": "Road",
+     "fleet_building": "TruckDepot@30,35",
+     "product": "Paint",
+     "amount": 10,
+     "job_origin": "PaintFactory@55,40",
+     "job_destination": "HardwareStore@100,100",
+     "job_product": "Paint",
+     "job_amount": 10,
+     "going_home": false,
+     "position_x": 70.5,
+     "position_z": 60.5,
+     "tile_x": 70,
+     "tile_y": 60
+    },
+    {
+     "instance_id": -1204,
+     "trip_counter_id": 504,
+     "prefab": "Vehicle",
+     "transport_mode": "Road",
+     "fleet_building": "TruckDepot@30,35",
+     "product": null,
+     "amount": 0,
+     "job_origin": null,
+     "job_destination": null,
+     "job_product": null,
+     "job_amount": null,
+     "going_home": true,
+     "position_x": 31.5,
+     "position_z": 35.5,
+     "tile_x": 31,
+     "tile_y": 35
+    }
+   ],
+   "total_active": 6,
+   "identity": "session_pooled_object"
+  },
+  "route_paths": null
+ }
+}

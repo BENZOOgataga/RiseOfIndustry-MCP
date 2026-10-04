@@ -1,0 +1,1759 @@
+{
+ "schema": "roi-mcp/static",
+ "schema_version": "1.0.0",
+ "observer_version": "1.0.0",
+ "compatibility": "verified",
+ "game": {
+  "version": "2.3.3",
+  "build": "0507b",
+  "commit": "76359e59644ebf55cafacf9a50b3d19800df22d7",
+  "savegame_version": 2304,
+  "assembly_sha256": "D62599EFD0CFCB9F343E7FF74AAC19533F572062B9CECA82E1D3911507D04803",
+  "release": "Steam - Public"
+ },
+ "pid": 4242,
+ "world_session": "5e5510a0-0000-4000-8000-000000000001",
+ "seq": 1,
+ "content_hash": "e48430ed609dfe363ab3f25ba8fc4d409a858512ac12ab1376eaa7bf57b4fe9e",
+ "written_utc": "2026-01-01T11:59:00.050Z",
+ "captured": {
+  "utc_start": "2026-01-01T11:58:59.700Z",
+  "utc_end": "2026-01-01T11:59:00.000Z",
+  "game_day_start": 1512,
+  "game_day_end": 1512,
+  "game_date": "Y5-03-12",
+  "frames": [
+   1000,
+   1010
+  ],
+  "main_thread_ms": 12.5,
+  "slices": 8,
+  "max_slice_ms": 1.9,
+  "consistent": true
+ },
+ "static_ref": null,
+ "sections": {
+  "products": {
+   "status": "ok",
+   "reason": null,
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 1,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  },
+  "recipes": {
+   "status": "ok",
+   "reason": null,
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 1,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  },
+  "building_types": {
+   "status": "ok",
+   "reason": null,
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 1,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  },
+  "tech": {
+   "status": "ok",
+   "reason": null,
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 1,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  },
+  "formulas": {
+   "status": "ok",
+   "reason": null,
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 1,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  }
+ },
+ "warnings": [],
+ "data": {
+  "module": {
+   "id": "base",
+   "name": "Base Game"
+  },
+  "language": "French",
+  "english_names_available": true,
+  "products": [
+   {
+    "name": "Gas",
+    "display_name": "Gaz",
+    "english_name": "Gas",
+    "category": "RawResources",
+    "category_group": "RawResources",
+    "tags": [
+     "raw"
+    ],
+    "price_formula": "RawResources",
+    "demand_modifier": 1.0,
+    "end_game": false,
+    "disable_contracts": false
+   },
+   {
+    "name": "Water",
+    "display_name": "Eau",
+    "english_name": "Water",
+    "category": "RawResources",
+    "category_group": "RawResources",
+    "tags": [
+     "raw",
+     "water"
+    ],
+    "price_formula": "RawResources",
+    "demand_modifier": 1.0,
+    "end_game": false,
+    "disable_contracts": false
+   },
+   {
+    "name": "Flowers",
+    "display_name": "Fleurs",
+    "english_name": "Flowers",
+    "category": "FarmProduce",
+    "category_group": "FarmProduce",
+    "tags": [
+     "farm"
+    ],
+    "price_formula": "FarmProduce",
+    "demand_modifier": 1.0,
+    "end_game": false,
+    "disable_contracts": false
+   },
+   {
+    "name": "Chemicals",
+    "display_name": "Produits chimiques",
+    "english_name": "Chemicals",
+    "category": "Components",
+    "category_group": "Components",
+    "tags": [
+     "component"
+    ],
+    "price_formula": "Factories",
+    "demand_modifier": 1.0,
+    "end_game": false,
+    "disable_contracts": false
+   },
+   {
+    "name": "Dye",
+    "display_name": "Teinture",
+    "english_name": "Dye",
+    "category": "Components",
+    "category_group": "Components",
+    "tags": [
+     "component"
+    ],
+    "price_formula": "Factories",
+    "demand_modifier": 1.0,
+    "end_game": false,
+    "disable_contracts": false
+   },
+   {
+    "name": "Paint",
+    "display_name": "Peinture",
+    "english_name": "Paint",
+    "category": "Row1",
+    "category_group": "Products",
+    "tags": [
+     "paint",
+     "consumer"
+    ],
+    "price_formula": "Factories",
+    "demand_modifier": 1.2,
+    "end_game": false,
+    "disable_contracts": false
+   }
+  ],
+  "product_categories": [
+   {
+    "name": "RawResources",
+    "display_name": "Ressources brutes",
+    "english_name": "Raw resources",
+    "parent": null,
+    "price_multiplier": 1.0,
+    "growth_multiplier": null
+   },
+   {
+    "name": "FarmProduce",
+    "display_name": "Produits agricoles",
+    "english_name": "Farm produce",
+    "parent": null,
+    "price_multiplier": 1.0,
+    "growth_multiplier": null
+   },
+   {
+    "name": "Components",
+    "display_name": "Composants",
+    "english_name": "Components",
+    "parent": null,
+    "price_multiplier": 1.0,
+    "growth_multiplier": null
+   },
+   {
+    "name": "Row1",
+    "display_name": "Biens de consommation",
+    "english_name": "Consumer goods",
+    "parent": null,
+    "price_multiplier": 1.1,
+    "growth_multiplier": 1.0
+   }
+  ],
+  "recipes": [
+   {
+    "name": "Gas",
+    "display_name": "Gaz",
+    "english_name": "Gas",
+    "ingredients": [],
+    "results": [
+     {
+      "product": "Gas",
+      "amount": 2
+     }
+    ],
+    "game_days": 10.0,
+    "game_days_for_price": 10.0,
+    "required_modules": [
+     "GasPump"
+    ],
+    "tier": 1,
+    "building_types": [
+     "GasWell"
+    ],
+    "used_by_water_harvester": false
+   },
+   {
+    "name": "Water",
+    "display_name": "Eau",
+    "english_name": "Water",
+    "ingredients": [],
+    "results": [
+     {
+      "product": "Water",
+      "amount": 4
+     }
+    ],
+    "game_days": 10.0,
+    "game_days_for_price": 10.0,
+    "required_modules": [
+     "WaterPump"
+    ],
+    "tier": 1,
+    "building_types": [
+     "WaterSiphon"
+    ],
+    "used_by_water_harvester": true
+   },
+   {
+    "name": "Flowers",
+    "display_name": "Fleurs",
+    "english_name": "Flowers",
+    "ingredients": [],
+    "results": [
+     {
+      "product": "Flowers",
+      "amount": 3
+     }
+    ],
+    "game_days": 30.0,
+    "game_days_for_price": 30.0,
+    "required_modules": [
+     "FlowerField"
+    ],
+    "tier": 1,
+    "building_types": [
+     "FlowerFarm"
+    ],
+    "used_by_water_harvester": false
+   },
+   {
+    "name": "Chemicals",
+    "display_name": "Produits chimiques",
+    "english_name": "Chemicals",
+    "ingredients": [
+     {
+      "product": "Gas",
+      "amount": 3
+     }
+    ],
+    "results": [
+     {
+      "product": "Chemicals",
+      "amount": 2
+     }
+    ],
+    "game_days": 20.0,
+    "game_days_for_price": 20.0,
+    "required_modules": [],
+    "tier": 1,
+    "building_types": [
+     "PetrochemicalFactory"
+    ],
+    "used_by_water_harvester": false
+   },
+   {
+    "name": "Dye",
+    "display_name": "Teinture",
+    "english_name": "Dye",
+    "ingredients": [
+     {
+      "product": "Flowers",
+      "amount": 2
+     },
+     {
+      "product": "Water",
+      "amount": 1
+     }
+    ],
+    "results": [
+     {
+      "product": "Dye",
+      "amount": 2
+     }
+    ],
+    "game_days": 20.0,
+    "game_days_for_price": 20.0,
+    "required_modules": [],
+    "tier": 1,
+    "building_types": [
+     "ChemicalPlant"
+    ],
+    "used_by_water_harvester": false
+   },
+   {
+    "name": "Paints",
+    "display_name": "Peintures",
+    "english_name": "Paints",
+    "ingredients": [
+     {
+      "product": "Chemicals",
+      "amount": 1
+     },
+     {
+      "product": "Dye",
+      "amount": 2
+     }
+    ],
+    "results": [
+     {
+      "product": "Paint",
+      "amount": 2
+     }
+    ],
+    "game_days": 35.0,
+    "game_days_for_price": 35.0,
+    "required_modules": [],
+    "tier": 1,
+    "building_types": [
+     "PaintFactory"
+    ],
+    "used_by_water_harvester": false
+   },
+   {
+    "name": "PaintsAdvanced",
+    "display_name": "Peintures avancees",
+    "english_name": "Advanced paints",
+    "ingredients": [
+     {
+      "product": "Chemicals",
+      "amount": 2
+     },
+     {
+      "product": "Dye",
+      "amount": 1
+     }
+    ],
+    "results": [
+     {
+      "product": "Paint",
+      "amount": 3
+     }
+    ],
+    "game_days": 30.0,
+    "game_days_for_price": 30.0,
+    "required_modules": [],
+    "tier": 2,
+    "building_types": [
+     "PaintFactory"
+    ],
+    "used_by_water_harvester": false
+   }
+  ],
+  "building_types": [
+   {
+    "name": "Headquarters",
+    "display_name": "Siege",
+    "english_name": "Headquarters",
+    "base_cost": 0.0,
+    "tags": [
+     "hq"
+    ],
+    "category": "Special",
+    "recipes": [],
+    "production_speed": null,
+    "storage_slots": 0,
+    "storage_kind": "product_specific",
+    "max_module_count": null,
+    "module_radius": null,
+    "module_prefab": null,
+    "delivered_to_hub": null,
+    "upkeep_cost_percentage": 0.025,
+    "min_upkeep": 0.25,
+    "efficiency_output": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "efficiency_upkeep": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "initial_efficiency_index": 3,
+    "fleet_vehicle_prefab": null,
+    "fleet_max_vehicles": null,
+    "manual_destination_slots": 0,
+    "manual_destination_infinite": false,
+    "name_format": "%n %i",
+    "shop": null,
+    "is_module": false,
+    "dispatch_formula": "ManualDestinationDispatchCost"
+   },
+   {
+    "name": "GasWell",
+    "display_name": "Puits de gaz",
+    "english_name": "Gas Well",
+    "base_cost": 120000.0,
+    "tags": [
+     "gatherer"
+    ],
+    "category": "Gatherers",
+    "recipes": [
+     "Gas"
+    ],
+    "production_speed": 1.0,
+    "storage_slots": 40,
+    "storage_kind": "product_specific",
+    "max_module_count": 3,
+    "module_radius": 15.0,
+    "module_prefab": "GasPump",
+    "delivered_to_hub": false,
+    "upkeep_cost_percentage": 0.025,
+    "min_upkeep": 0.25,
+    "efficiency_output": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "efficiency_upkeep": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "initial_efficiency_index": 3,
+    "fleet_vehicle_prefab": null,
+    "fleet_max_vehicles": null,
+    "manual_destination_slots": 3,
+    "manual_destination_infinite": false,
+    "name_format": "%n %i",
+    "shop": null,
+    "is_module": false,
+    "dispatch_formula": "ManualDestinationDispatchCost"
+   },
+   {
+    "name": "GasPump",
+    "display_name": "Pompe a gaz",
+    "english_name": "Gas Pump",
+    "base_cost": 20000.0,
+    "tags": [
+     "harvester"
+    ],
+    "category": "Gatherers",
+    "recipes": [],
+    "production_speed": null,
+    "storage_slots": 0,
+    "storage_kind": "product_specific",
+    "max_module_count": null,
+    "module_radius": null,
+    "module_prefab": null,
+    "delivered_to_hub": null,
+    "upkeep_cost_percentage": 0.025,
+    "min_upkeep": 0.25,
+    "efficiency_output": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "efficiency_upkeep": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "initial_efficiency_index": 3,
+    "fleet_vehicle_prefab": null,
+    "fleet_max_vehicles": null,
+    "manual_destination_slots": 3,
+    "manual_destination_infinite": false,
+    "name_format": "%n %i",
+    "shop": null,
+    "is_module": true,
+    "dispatch_formula": null
+   },
+   {
+    "name": "WaterSiphon",
+    "display_name": "Siphon",
+    "english_name": "Water Siphon",
+    "base_cost": 80000.0,
+    "tags": [
+     "gatherer"
+    ],
+    "category": "Gatherers",
+    "recipes": [
+     "Water"
+    ],
+    "production_speed": 1.0,
+    "storage_slots": 40,
+    "storage_kind": "product_specific",
+    "max_module_count": 3,
+    "module_radius": 15.0,
+    "module_prefab": "WaterPump",
+    "delivered_to_hub": false,
+    "upkeep_cost_percentage": 0.025,
+    "min_upkeep": 0.25,
+    "efficiency_output": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "efficiency_upkeep": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "initial_efficiency_index": 3,
+    "fleet_vehicle_prefab": null,
+    "fleet_max_vehicles": null,
+    "manual_destination_slots": 3,
+    "manual_destination_infinite": false,
+    "name_format": "%n %i",
+    "shop": null,
+    "is_module": false,
+    "dispatch_formula": "ManualDestinationDispatchCost"
+   },
+   {
+    "name": "WaterPump",
+    "display_name": "Pompe a eau",
+    "english_name": "Water Pump",
+    "base_cost": 10000.0,
+    "tags": [
+     "harvester"
+    ],
+    "category": "Gatherers",
+    "recipes": [],
+    "production_speed": null,
+    "storage_slots": 0,
+    "storage_kind": "product_specific",
+    "max_module_count": null,
+    "module_radius": null,
+    "module_prefab": null,
+    "delivered_to_hub": null,
+    "upkeep_cost_percentage": 0.025,
+    "min_upkeep": 0.25,
+    "efficiency_output": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "efficiency_upkeep": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "initial_efficiency_index": 3,
+    "fleet_vehicle_prefab": null,
+    "fleet_max_vehicles": null,
+    "manual_destination_slots": 3,
+    "manual_destination_infinite": false,
+    "name_format": "%n %i",
+    "shop": null,
+    "is_module": true,
+    "dispatch_formula": null
+   },
+   {
+    "name": "FlowerFarm",
+    "display_name": "Ferme florale",
+    "english_name": "Flower Farm",
+    "base_cost": 90000.0,
+    "tags": [
+     "farm"
+    ],
+    "category": "Farms",
+    "recipes": [
+     "Flowers"
+    ],
+    "production_speed": 1.0,
+    "storage_slots": 100,
+    "storage_kind": "product_specific",
+    "max_module_count": 3,
+    "module_radius": 15.0,
+    "module_prefab": "FlowerField",
+    "delivered_to_hub": false,
+    "upkeep_cost_percentage": 0.025,
+    "min_upkeep": 0.25,
+    "efficiency_output": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "efficiency_upkeep": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "initial_efficiency_index": 3,
+    "fleet_vehicle_prefab": null,
+    "fleet_max_vehicles": null,
+    "manual_destination_slots": 3,
+    "manual_destination_infinite": false,
+    "name_format": "%n %i",
+    "shop": null,
+    "is_module": false,
+    "dispatch_formula": "ManualDestinationDispatchCost"
+   },
+   {
+    "name": "FlowerField",
+    "display_name": "Champ de fleurs",
+    "english_name": "Flower Field",
+    "base_cost": 5000.0,
+    "tags": [
+     "field"
+    ],
+    "category": "Farms",
+    "recipes": [],
+    "production_speed": null,
+    "storage_slots": 0,
+    "storage_kind": "product_specific",
+    "max_module_count": null,
+    "module_radius": null,
+    "module_prefab": null,
+    "delivered_to_hub": null,
+    "upkeep_cost_percentage": 0.025,
+    "min_upkeep": 0.25,
+    "efficiency_output": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "efficiency_upkeep": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "initial_efficiency_index": 3,
+    "fleet_vehicle_prefab": null,
+    "fleet_max_vehicles": null,
+    "manual_destination_slots": 3,
+    "manual_destination_infinite": false,
+    "name_format": "%n %i",
+    "shop": null,
+    "is_module": true,
+    "dispatch_formula": null
+   },
+   {
+    "name": "PetrochemicalFactory",
+    "display_name": "Usine petrochimique",
+    "english_name": "Petrochemical Plant",
+    "base_cost": 400000.0,
+    "tags": [
+     "factory"
+    ],
+    "category": "Factories",
+    "recipes": [
+     "Chemicals"
+    ],
+    "production_speed": 1.0,
+    "storage_slots": 40,
+    "storage_kind": "product_specific",
+    "max_module_count": null,
+    "module_radius": null,
+    "module_prefab": null,
+    "delivered_to_hub": null,
+    "upkeep_cost_percentage": 0.025,
+    "min_upkeep": 0.25,
+    "efficiency_output": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "efficiency_upkeep": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "initial_efficiency_index": 3,
+    "fleet_vehicle_prefab": null,
+    "fleet_max_vehicles": null,
+    "manual_destination_slots": 3,
+    "manual_destination_infinite": false,
+    "name_format": "%n %i",
+    "shop": null,
+    "is_module": false,
+    "dispatch_formula": "ManualDestinationDispatchCost"
+   },
+   {
+    "name": "ChemicalPlant",
+    "display_name": "Usine chimique",
+    "english_name": "Chemical Plant",
+    "base_cost": 300000.0,
+    "tags": [
+     "factory"
+    ],
+    "category": "Factories",
+    "recipes": [
+     "Dye"
+    ],
+    "production_speed": 1.0,
+    "storage_slots": 40,
+    "storage_kind": "product_specific",
+    "max_module_count": null,
+    "module_radius": null,
+    "module_prefab": null,
+    "delivered_to_hub": null,
+    "upkeep_cost_percentage": 0.025,
+    "min_upkeep": 0.25,
+    "efficiency_output": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "efficiency_upkeep": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "initial_efficiency_index": 3,
+    "fleet_vehicle_prefab": null,
+    "fleet_max_vehicles": null,
+    "manual_destination_slots": 3,
+    "manual_destination_infinite": false,
+    "name_format": "%n %i",
+    "shop": null,
+    "is_module": false,
+    "dispatch_formula": "ManualDestinationDispatchCost"
+   },
+   {
+    "name": "PaintFactory",
+    "display_name": "Usine de peinture",
+    "english_name": "Paint Factory",
+    "base_cost": 500000.0,
+    "tags": [
+     "factory"
+    ],
+    "category": "Factories",
+    "recipes": [
+     "Paints",
+     "PaintsAdvanced"
+    ],
+    "production_speed": 1.0,
+    "storage_slots": 40,
+    "storage_kind": "product_specific",
+    "max_module_count": null,
+    "module_radius": null,
+    "module_prefab": null,
+    "delivered_to_hub": null,
+    "upkeep_cost_percentage": 0.025,
+    "min_upkeep": 0.25,
+    "efficiency_output": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "efficiency_upkeep": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "initial_efficiency_index": 3,
+    "fleet_vehicle_prefab": null,
+    "fleet_max_vehicles": null,
+    "manual_destination_slots": 3,
+    "manual_destination_infinite": false,
+    "name_format": "%n %i",
+    "shop": null,
+    "is_module": false,
+    "dispatch_formula": "ManualDestinationDispatchCost"
+   },
+   {
+    "name": "Warehouse",
+    "display_name": "Entrepot",
+    "english_name": "Warehouse",
+    "base_cost": 150000.0,
+    "tags": [
+     "warehouse"
+    ],
+    "category": "Logistics",
+    "recipes": [],
+    "production_speed": null,
+    "storage_slots": 100,
+    "storage_kind": "product_specific",
+    "max_module_count": null,
+    "module_radius": null,
+    "module_prefab": null,
+    "delivered_to_hub": null,
+    "upkeep_cost_percentage": 0.025,
+    "min_upkeep": 0.25,
+    "efficiency_output": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "efficiency_upkeep": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "initial_efficiency_index": 3,
+    "fleet_vehicle_prefab": null,
+    "fleet_max_vehicles": null,
+    "manual_destination_slots": 9,
+    "manual_destination_infinite": false,
+    "name_format": "%n %i",
+    "shop": null,
+    "is_module": false,
+    "dispatch_formula": "ManualDestinationDispatchCost"
+   },
+   {
+    "name": "TruckDepot",
+    "display_name": "Depot de camions",
+    "english_name": "Truck Depot",
+    "base_cost": 100000.0,
+    "tags": [
+     "depot"
+    ],
+    "category": "Logistics",
+    "recipes": [],
+    "production_speed": null,
+    "storage_slots": 0,
+    "storage_kind": "product_specific",
+    "max_module_count": null,
+    "module_radius": null,
+    "module_prefab": null,
+    "delivered_to_hub": null,
+    "upkeep_cost_percentage": 0.025,
+    "min_upkeep": 0.25,
+    "efficiency_output": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "efficiency_upkeep": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "initial_efficiency_index": 3,
+    "fleet_vehicle_prefab": "Vehicle",
+    "fleet_max_vehicles": 5,
+    "manual_destination_slots": 3,
+    "manual_destination_infinite": false,
+    "name_format": "%n %i",
+    "shop": null,
+    "is_module": false,
+    "dispatch_formula": "ManualDestinationDispatchCost"
+   },
+   {
+    "name": "TrainTerminal",
+    "display_name": "Terminal ferroviaire",
+    "english_name": "Train Terminal",
+    "base_cost": 250000.0,
+    "tags": [
+     "depot",
+     "module"
+    ],
+    "category": "Logistics",
+    "recipes": [],
+    "production_speed": null,
+    "storage_slots": 0,
+    "storage_kind": "product_specific",
+    "max_module_count": null,
+    "module_radius": null,
+    "module_prefab": null,
+    "delivered_to_hub": null,
+    "upkeep_cost_percentage": 0.025,
+    "min_upkeep": 0.25,
+    "efficiency_output": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "efficiency_upkeep": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "initial_efficiency_index": 3,
+    "fleet_vehicle_prefab": "TrainVehicle",
+    "fleet_max_vehicles": 5,
+    "manual_destination_slots": 3,
+    "manual_destination_infinite": false,
+    "name_format": "%n %i",
+    "shop": null,
+    "is_module": true,
+    "dispatch_formula": null
+   },
+   {
+    "name": "HardwareStore",
+    "display_name": "Quincaillerie",
+    "english_name": "Hardware Store",
+    "base_cost": 0.0,
+    "tags": [
+     "shop"
+    ],
+    "category": "Shops",
+    "recipes": [],
+    "production_speed": null,
+    "storage_slots": 40,
+    "storage_kind": "product_specific",
+    "max_module_count": null,
+    "module_radius": null,
+    "module_prefab": null,
+    "delivered_to_hub": null,
+    "upkeep_cost_percentage": 0.025,
+    "min_upkeep": 0.25,
+    "efficiency_output": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "efficiency_upkeep": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "initial_efficiency_index": 3,
+    "fleet_vehicle_prefab": null,
+    "fleet_max_vehicles": null,
+    "manual_destination_slots": 3,
+    "manual_destination_infinite": false,
+    "name_format": "%n %i",
+    "shop": {
+     "max_products": 8,
+     "sold_tags": [
+      "paint",
+      "component"
+     ],
+     "demand_modifier": 5.0
+    },
+    "is_module": false,
+    "dispatch_formula": null
+   },
+   {
+    "name": "ConstructionStore",
+    "display_name": "Magasin de construction",
+    "english_name": "Construction Store",
+    "base_cost": 0.0,
+    "tags": [
+     "shop"
+    ],
+    "category": "Shops",
+    "recipes": [],
+    "production_speed": null,
+    "storage_slots": 40,
+    "storage_kind": "product_specific",
+    "max_module_count": null,
+    "module_radius": null,
+    "module_prefab": null,
+    "delivered_to_hub": null,
+    "upkeep_cost_percentage": 0.025,
+    "min_upkeep": 0.25,
+    "efficiency_output": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "efficiency_upkeep": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "initial_efficiency_index": 3,
+    "fleet_vehicle_prefab": null,
+    "fleet_max_vehicles": null,
+    "manual_destination_slots": 3,
+    "manual_destination_infinite": false,
+    "name_format": "%n %i",
+    "shop": {
+     "max_products": 8,
+     "sold_tags": [
+      "paint",
+      "component"
+     ],
+     "demand_modifier": 5.0
+    },
+    "is_module": false,
+    "dispatch_formula": null
+   },
+   {
+    "name": "GeneralStore",
+    "display_name": "Epicerie generale",
+    "english_name": "General Store",
+    "base_cost": 0.0,
+    "tags": [
+     "shop"
+    ],
+    "category": "Shops",
+    "recipes": [],
+    "production_speed": null,
+    "storage_slots": 40,
+    "storage_kind": "product_specific",
+    "max_module_count": null,
+    "module_radius": null,
+    "module_prefab": null,
+    "delivered_to_hub": null,
+    "upkeep_cost_percentage": 0.025,
+    "min_upkeep": 0.25,
+    "efficiency_output": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "efficiency_upkeep": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "initial_efficiency_index": 3,
+    "fleet_vehicle_prefab": null,
+    "fleet_max_vehicles": null,
+    "manual_destination_slots": 3,
+    "manual_destination_infinite": false,
+    "name_format": "%n %i",
+    "shop": {
+     "max_products": 8,
+     "sold_tags": [
+      "paint",
+      "consumer"
+     ],
+     "demand_modifier": 1.0
+    },
+    "is_module": false,
+    "dispatch_formula": null
+   },
+   {
+    "name": "TradingPost",
+    "display_name": "Comptoir d'Etat",
+    "english_name": "State Trading Post",
+    "base_cost": 0.0,
+    "tags": [
+     "state_trading"
+    ],
+    "category": "Special",
+    "recipes": [],
+    "production_speed": null,
+    "storage_slots": 0,
+    "storage_kind": "product_specific",
+    "max_module_count": null,
+    "module_radius": null,
+    "module_prefab": null,
+    "delivered_to_hub": null,
+    "upkeep_cost_percentage": 0.025,
+    "min_upkeep": 0.25,
+    "efficiency_output": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "efficiency_upkeep": [
+     0.25,
+     0.5,
+     0.75,
+     1.0,
+     1.25,
+     1.5,
+     2.0
+    ],
+    "initial_efficiency_index": 3,
+    "fleet_vehicle_prefab": null,
+    "fleet_max_vehicles": null,
+    "manual_destination_slots": 3,
+    "manual_destination_infinite": false,
+    "name_format": "%n %i",
+    "shop": null,
+    "is_module": false,
+    "dispatch_formula": "ManualDestinationDispatchCost"
+   }
+  ],
+  "tech_trees": [
+   {
+    "name": "Chemistry",
+    "display_name": "Chimie",
+    "english_name": "Chemistry",
+    "category": "Industry",
+    "ui_order": 0,
+    "tier_count": 5
+   },
+   {
+    "name": "Logistics",
+    "display_name": "Logistique",
+    "english_name": "Logistics",
+    "category": "Industry",
+    "ui_order": 1,
+    "tier_count": 3
+   }
+  ],
+  "tech_categories": [
+   {
+    "name": "Industry",
+    "display_name": "Industrie",
+    "english_name": "Industry",
+    "trees": [
+     "Chemistry",
+     "Logistics"
+    ]
+   }
+  ],
+  "tech_unlocks": [
+   {
+    "name": "BasicGas",
+    "display_name": "Gaz de base",
+    "english_name": "Basic gas",
+    "kind": "building",
+    "tier": 1,
+    "required": [],
+    "included": [],
+    "teaser": false,
+    "unlocked_by_default": true,
+    "placements": [
+     {
+      "tree": "Chemistry",
+      "column": 0
+     }
+    ],
+    "research_cost_formula": "Research Cost",
+    "research_time_formula": "Research Time",
+    "buildings": [
+     "GasWell",
+     "GasPump"
+    ],
+    "building_category": null,
+    "recipes": [
+     "Gas"
+    ],
+    "price_percentage": null
+   },
+   {
+    "name": "BasicFarming",
+    "display_name": "Agriculture",
+    "english_name": "Basic farming",
+    "kind": "building",
+    "tier": 1,
+    "required": [],
+    "included": [],
+    "teaser": false,
+    "unlocked_by_default": true,
+    "placements": [
+     {
+      "tree": "Chemistry",
+      "column": 1
+     }
+    ],
+    "research_cost_formula": "Research Cost",
+    "research_time_formula": "Research Time",
+    "buildings": [
+     "FlowerFarm",
+     "FlowerField",
+     "WaterSiphon",
+     "WaterPump"
+    ],
+    "building_category": null,
+    "recipes": [
+     "Flowers",
+     "Water"
+    ],
+    "price_percentage": null
+   },
+   {
+    "name": "Petrochemistry",
+    "display_name": "Petrochimie",
+    "english_name": "Petrochemistry",
+    "kind": "building",
+    "tier": 1,
+    "required": [],
+    "included": [],
+    "teaser": false,
+    "unlocked_by_default": false,
+    "placements": [
+     {
+      "tree": "Chemistry",
+      "column": 2
+     }
+    ],
+    "research_cost_formula": "Research Cost",
+    "research_time_formula": "Research Time",
+    "buildings": [
+     "PetrochemicalFactory"
+    ],
+    "building_category": null,
+    "recipes": [
+     "Chemicals"
+    ],
+    "price_percentage": null
+   },
+   {
+    "name": "Dyes",
+    "display_name": "Teintures",
+    "english_name": "Dyes",
+    "kind": "building",
+    "tier": 1,
+    "required": [],
+    "included": [],
+    "teaser": false,
+    "unlocked_by_default": false,
+    "placements": [
+     {
+      "tree": "Chemistry",
+      "column": 3
+     }
+    ],
+    "research_cost_formula": "Research Cost",
+    "research_time_formula": "Research Time",
+    "buildings": [
+     "ChemicalPlant"
+    ],
+    "building_category": null,
+    "recipes": [
+     "Dye"
+    ],
+    "price_percentage": null
+   },
+   {
+    "name": "Paints",
+    "display_name": "Peintures",
+    "english_name": "Paints",
+    "kind": "building",
+    "tier": 2,
+    "required": [
+     "Petrochemistry",
+     "Dyes"
+    ],
+    "included": [],
+    "teaser": false,
+    "unlocked_by_default": false,
+    "placements": [
+     {
+      "tree": "Chemistry",
+      "column": 4
+     }
+    ],
+    "research_cost_formula": "Research Cost",
+    "research_time_formula": "Research Time",
+    "buildings": [
+     "PaintFactory"
+    ],
+    "building_category": null,
+    "recipes": [
+     "Paints"
+    ],
+    "price_percentage": null
+   },
+   {
+    "name": "AdvancedPaints",
+    "display_name": "Peintures avancees",
+    "english_name": "Advanced paints",
+    "kind": "recipe",
+    "tier": 3,
+    "required": [
+     "Paints"
+    ],
+    "included": [],
+    "teaser": false,
+    "unlocked_by_default": false,
+    "placements": [
+     {
+      "tree": "Chemistry",
+      "column": 5
+     }
+    ],
+    "research_cost_formula": "Research Cost",
+    "research_time_formula": "Research Time",
+    "buildings": [],
+    "building_category": null,
+    "recipes": [
+     "PaintsAdvanced"
+    ],
+    "price_percentage": null
+   },
+   {
+    "name": "Railways",
+    "display_name": "Chemins de fer",
+    "english_name": "Railways",
+    "kind": "building",
+    "tier": 2,
+    "required": [],
+    "included": [],
+    "teaser": false,
+    "unlocked_by_default": false,
+    "placements": [
+     {
+      "tree": "Logistics",
+      "column": 0
+     }
+    ],
+    "research_cost_formula": "Research Cost",
+    "research_time_formula": "Research Time",
+    "buildings": [
+     "TrainTerminal"
+    ],
+    "building_category": null,
+    "recipes": [],
+    "price_percentage": null
+   },
+   {
+    "name": "Plastics",
+    "display_name": "Plastiques",
+    "english_name": "Plastics",
+    "kind": "generic",
+    "tier": 3,
+    "required": [
+     "Petrochemistry"
+    ],
+    "included": [],
+    "teaser": false,
+    "unlocked_by_default": false,
+    "placements": [
+     {
+      "tree": "Chemistry",
+      "column": 6
+     }
+    ],
+    "research_cost_formula": "Research Cost",
+    "research_time_formula": "Research Time",
+    "buildings": [],
+    "building_category": null,
+    "recipes": [],
+    "price_percentage": null
+   },
+   {
+    "name": "Polymers",
+    "display_name": "Polymeres",
+    "english_name": "Polymers",
+    "kind": "other",
+    "tier": 4,
+    "required": [
+     "Plastics"
+    ],
+    "included": [],
+    "teaser": false,
+    "unlocked_by_default": false,
+    "placements": [
+     {
+      "tree": "Chemistry",
+      "column": 7
+     }
+    ],
+    "research_cost_formula": "Research Cost",
+    "research_time_formula": "Research Time",
+    "buildings": [],
+    "building_category": null,
+    "recipes": [],
+    "price_percentage": null
+   },
+   {
+    "name": "FutureTech",
+    "display_name": "Technologie future",
+    "english_name": "Future tech",
+    "kind": "other",
+    "tier": 5,
+    "required": [],
+    "included": [],
+    "teaser": true,
+    "unlocked_by_default": false,
+    "placements": [
+     {
+      "tree": "Chemistry",
+      "column": 8
+     }
+    ],
+    "research_cost_formula": "Research Cost",
+    "research_time_formula": "Research Time",
+    "buildings": [],
+    "building_category": null,
+    "recipes": [],
+    "price_percentage": null
+   },
+   {
+    "name": "PaintDiscount",
+    "display_name": "Remise peinture",
+    "english_name": "Paint discount",
+    "kind": "building_price",
+    "tier": 2,
+    "required": [
+     "Paints"
+    ],
+    "included": [],
+    "teaser": false,
+    "unlocked_by_default": false,
+    "placements": [
+     {
+      "tree": "Chemistry",
+      "column": 9
+     }
+    ],
+    "research_cost_formula": "Research Cost",
+    "research_time_formula": "Research Time",
+    "buildings": [
+     "PaintFactory"
+    ],
+    "building_category": null,
+    "recipes": [],
+    "price_percentage": 0.9
+   }
+  ],
+  "tech_config": {
+   "max_enqueued_unlocks": 9,
+   "efficiency_values": [
+    0.5,
+    0.75,
+    1.0,
+    1.25,
+    1.5
+   ],
+   "efficiency_unlocks": [
+    null,
+    null,
+    "ResearchEfficiencyL2",
+    "ResearchEfficiencyL3",
+    "ResearchEfficiencyL4"
+   ]
+  },
+  "formulas": [
+   {
+    "name": "ManualDestinationDispatchCost",
+    "text": "(250 + distance * 10) * difficulty * actor"
+   },
+   {
+    "name": "TruckDepotDispatchCost",
+    "text": "(350 + distance * 15) * difficulty * actor"
+   },
+   {
+    "name": "TrainTerminalDispatchCost",
+    "text": "(2250 + distance * 25) * difficulty * actor"
+   },
+   {
+    "name": "Research Cost",
+    "text": "3333.333333 * efficiency"
+   },
+   {
+    "name": "Research Time",
+    "text": "(60 + (tier ^ 3) * 60) / efficiency"
+   },
+   {
+    "name": "Settlement Distance Restriction",
+    "text": "max(abs(x0 - x1), abs(y0 - y1))"
+   }
+  ],
+  "bill_categories": [
+   {
+    "name": "ProductTrade",
+    "display_name": "Commerce",
+    "english_name": "Product trade"
+   },
+   {
+    "name": "Upkeep",
+    "display_name": "Location",
+    "english_name": "Renting"
+   },
+   {
+    "name": "RouteVehicleUpkeep",
+    "display_name": "Entretien vehicules de route",
+    "english_name": "Route Vehicle Upkeep"
+   },
+   {
+    "name": "ResearchCosts",
+    "display_name": "R&D",
+    "english_name": "R&D Expenses"
+   },
+   {
+    "name": "Loan Payments",
+    "display_name": "Remboursements",
+    "english_name": "Loan Payments"
+   },
+   {
+    "name": "BuildingConstruction",
+    "display_name": "Construction",
+    "english_name": "Building construction"
+   },
+   {
+    "name": "PermitPurchase",
+    "display_name": "Permis",
+    "english_name": "Permit purchase"
+   }
+  ],
+  "overview_categories": [
+   {
+    "name": "Operations",
+    "display_name": "Operations",
+    "english_name": "Operations",
+    "type": "REOCCURRING",
+    "ui_order": 0,
+    "bill_categories": [
+     "ProductTrade",
+     "Upkeep",
+     "RouteVehicleUpkeep",
+     "ResearchCosts"
+    ]
+   },
+   {
+    "name": "Financing",
+    "display_name": "Financement",
+    "english_name": "Financing",
+    "type": "REOCCURRING",
+    "ui_order": 1,
+    "bill_categories": [
+     "Loan Payments"
+    ]
+   },
+   {
+    "name": "Investments",
+    "display_name": "Investissements",
+    "english_name": "Investments",
+    "type": "ONE_TIME",
+    "ui_order": 2,
+    "bill_categories": [
+     "BuildingConstruction",
+     "PermitPurchase"
+    ]
+   }
+  ],
+  "settlement_tiers": [
+   {
+    "name": "Village",
+    "display_name": "Village",
+    "english_name": "Village",
+    "tier_id": 1,
+    "threshold_min": 0,
+    "threshold_max": 20000,
+    "placed_shops_count": 2,
+    "efficiency": 1.0,
+    "next_tier": "Town"
+   },
+   {
+    "name": "Town",
+    "display_name": "Bourg",
+    "english_name": "Town",
+    "tier_id": 2,
+    "threshold_min": 20000,
+    "threshold_max": 80000,
+    "placed_shops_count": 4,
+    "efficiency": 1.2,
+    "next_tier": "City"
+   },
+   {
+    "name": "City",
+    "display_name": "Ville",
+    "english_name": "City",
+    "tier_id": 3,
+    "threshold_min": 80000,
+    "threshold_max": 400000,
+    "placed_shops_count": 6,
+    "efficiency": 1.5,
+    "next_tier": null
+   }
+  ],
+  "settlement_types": [
+   {
+    "name": "Settlement",
+    "display_name": "Ville",
+    "english_name": "Settlement"
+   }
+  ],
+  "permit_types": [
+   {
+    "name": "Region",
+    "display_name": "Region",
+    "english_name": "Region",
+    "cost_per_tile": 1000.0,
+    "cost_modifier": 1.0,
+    "parent": null,
+    "top_level": "Region"
+   },
+   {
+    "name": "RegionFull",
+    "display_name": "Permis complet",
+    "english_name": "Full permit",
+    "cost_per_tile": 0.0,
+    "cost_modifier": 1.0,
+    "parent": "Region",
+    "top_level": "Region"
+   }
+  ],
+  "loan_infos": [
+   {
+    "name": "StarterLoanNormal",
+    "type": "STARTER",
+    "title": "Starter Loan",
+    "amount": 7500000.0,
+    "apr": 0.0,
+    "duration_months": 120,
+    "grace_months": 24
+   },
+   {
+    "name": "BankLoan",
+    "type": "BANK",
+    "title": "Bank Loan",
+    "amount": 1000000.0,
+    "apr": 0.08,
+    "duration_months": 60,
+    "grace_months": 0
+   }
+  ],
+  "mods": []
+ }
+}

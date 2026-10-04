@@ -1,0 +1,1287 @@
+{
+  "schema": "roi-mcp/readonly-gate-denylist",
+  "schema_version": 1,
+  "description": "Members and types the observer must never reference (PRD 9.3, 10.3 G3). Entries are glob patterns over canonical member strings (see README.md). Every entry must match at least one member or type of the baseline game assemblies (checked by --check-denylist and by the test suite).",
+  "entries": [
+    {
+      "member": "ProjectAutomata.Utils::GetSafe",
+      "reason": "Inserts a missing key into the dictionary (all overloads)",
+      "source": "PRD 9.3"
+    },
+    {
+      "member": "ProjectAutomata.ProductSpecificProductStorage::GetMaxAccepted",
+      "reason": "Utils.GetSafe insert into the saved _maxAcceptedMap",
+      "source": "PRD 9.3 | data-map production.inbound_cap"
+    },
+    {
+      "member": "ProjectAutomata.ManualDestinationSlot::get_maxAcceptedAtDestination",
+      "reason": "GetSafe insert into the saved _maxAcceptedMap",
+      "source": "PRD 9.3 | data-map logistics.max_send"
+    },
+    {
+      "member": "ProjectAutomata.ProductSpecificProductStorage::CanReserve",
+      "reason": "Inserts or mutates storage/reservations (enumeration allocates a Product per entry)",
+      "source": "PRD 9.3 | data-map production.inventory"
+    },
+    {
+      "member": "ProjectAutomata.ProductSpecificProductStorage::Reserve",
+      "reason": "Inserts or mutates storage/reservations (enumeration allocates a Product per entry)",
+      "source": "PRD 9.3 | data-map production.inventory"
+    },
+    {
+      "member": "ProjectAutomata.ProductSpecificProductStorage::Clear",
+      "reason": "Inserts or mutates storage/reservations (enumeration allocates a Product per entry)",
+      "source": "PRD 9.3 | data-map production.inventory"
+    },
+    {
+      "member": "ProjectAutomata.ProductSpecificProductStorage::Put",
+      "reason": "Inserts or mutates storage/reservations (enumeration allocates a Product per entry)",
+      "source": "PRD 9.3 | data-map production.inventory"
+    },
+    {
+      "member": "ProjectAutomata.ProductSpecificProductStorage::Pull",
+      "reason": "Inserts or mutates storage/reservations (enumeration allocates a Product per entry)",
+      "source": "PRD 9.3 | data-map production.inventory"
+    },
+    {
+      "member": "ProjectAutomata.ProductSpecificProductStorage::ReleaseReservation*",
+      "reason": "Inserts or mutates storage/reservations (enumeration allocates a Product per entry)",
+      "source": "PRD 9.3 | data-map production.inventory"
+    },
+    {
+      "member": "ProjectAutomata.ProductSpecificProductStorage::GetEnumerator",
+      "reason": "Inserts or mutates storage/reservations (enumeration allocates a Product per entry)",
+      "source": "PRD 9.3 | data-map production.inventory"
+    },
+    {
+      "member": "ProjectAutomata.ProductSpecificProductStorage::System.Collections.IEnumerable.GetEnumerator",
+      "reason": "Inserts or mutates storage/reservations (enumeration allocates a Product per entry)",
+      "source": "PRD 9.3 | data-map production.inventory"
+    },
+    {
+      "member": "ProjectAutomata.StorageHelper::CanReserveAll",
+      "reason": "Calls storage CanReserve (GetSafe insert)",
+      "source": "PRD 9.3 | data-map production.inventory"
+    },
+    {
+      "member": "ProjectAutomata.StorageHelper::CanStore",
+      "reason": "Calls storage reservation checks (GetSafe insert)",
+      "source": "PRD 9.3 | data-map production.inventory"
+    },
+    {
+      "member": "ProjectAutomata.MoneyManager::GetBalance",
+      "reason": "Registers (inserts) a saved 0-balance agent or writes the balance",
+      "source": "PRD 9.3 | data-map company.cash"
+    },
+    {
+      "member": "ProjectAutomata.MoneyManager::GetRawBalance",
+      "reason": "Registers (inserts) a saved 0-balance agent or writes the balance",
+      "source": "PRD 9.3 | data-map company.cash"
+    },
+    {
+      "member": "ProjectAutomata.MoneyManager::RegisterAgent",
+      "reason": "Registers (inserts) a saved 0-balance agent or writes the balance",
+      "source": "PRD 9.3 | data-map company.cash"
+    },
+    {
+      "member": "ProjectAutomata.MoneyManager::SetRawBalance",
+      "reason": "Registers (inserts) a saved 0-balance agent or writes the balance",
+      "source": "PRD 9.3 | data-map company.cash"
+    },
+    {
+      "member": "GuidMapper::GetGUIDForObject",
+      "reason": "Mints and stores a GUID",
+      "source": "PRD 9.3 | data-map building.id"
+    },
+    {
+      "member": "GuidMapper::Write",
+      "reason": "Mints GUIDs while writing",
+      "source": "PRD 9.3"
+    },
+    {
+      "member": "ProjectAutomata.PermitManager::GetPermitOwner",
+      "reason": "Utils.GetSafe insert into _permits",
+      "source": "PRD 9.3 | data-map region.permits"
+    },
+    {
+      "member": "ProjectAutomata.PermitManager::GetPermitCost",
+      "reason": "Utils.GetSafe insert into _permits",
+      "source": "PRD 9.3 | data-map region.permits"
+    },
+    {
+      "member": "ProjectAutomata.PermitManager::OwnsPermitForRegion",
+      "reason": "Utils.GetSafe insert into _permits",
+      "source": "PRD 9.3 | data-map region.permits"
+    },
+    {
+      "member": "ProjectAutomata.PermitManager::OwnsPermitForTile",
+      "reason": "Utils.GetSafe insert into _permits",
+      "source": "PRD 9.3 | data-map region.permits"
+    },
+    {
+      "member": "ProjectAutomata.PermitManager::IsPermitTaken",
+      "reason": "Utils.GetSafe insert into _permits",
+      "source": "PRD 9.3 | data-map region.permits"
+    },
+    {
+      "member": "ProjectAutomata.PermitManager::TryGetPermit",
+      "reason": "Utils.GetSafe insert into _permits",
+      "source": "PRD 9.3 | data-map region.permits"
+    },
+    {
+      "member": "ProjectAutomata.PermitManager::CanTerraformAt",
+      "reason": "Utils.GetSafe insert into _permits",
+      "source": "PRD 9.3 | data-map region.permits"
+    },
+    {
+      "member": "ProjectAutomata.Shop::GetDeliveredByActorCount",
+      "reason": "GetSafe insert into the saved _deliveredByActors",
+      "source": "PRD 9.3 | data-map shop.inventory"
+    },
+    {
+      "member": "ProjectAutomata.Shop::GetSoldCount(ProjectAutomata.IActor,ProjectAutomata.ProductDefinition,ProjectAutomata.GameDate,ProjectAutomata.GameDate)",
+      "reason": "Per-actor statistics: GetSafe insert (partly into saved dictionaries)",
+      "source": "PRD 9.3 | data-map shop.history"
+    },
+    {
+      "member": "ProjectAutomata.Shop::GetSoldCount(ProjectAutomata.IActor,ProjectAutomata.ProductDefinition,ProjectAutomata.GamePeriod)",
+      "reason": "Per-actor statistics: GetSafe insert (partly into saved dictionaries)",
+      "source": "PRD 9.3 | data-map shop.history"
+    },
+    {
+      "member": "ProjectAutomata.Shop::GetSalesFigures",
+      "reason": "Per-actor statistics: GetSafe insert (partly into saved dictionaries)",
+      "source": "PRD 9.3 | data-map shop.history"
+    },
+    {
+      "member": "ProjectAutomata.Shop::GetSoldCountRanged",
+      "reason": "Per-actor statistics: GetSafe insert (partly into saved dictionaries)",
+      "source": "PRD 9.3 | data-map shop.history"
+    },
+    {
+      "member": "ProjectAutomata.Shop::GetSalesFiguresRanged",
+      "reason": "Per-actor statistics: GetSafe insert (partly into saved dictionaries)",
+      "source": "PRD 9.3 | data-map shop.history"
+    },
+    {
+      "member": "ProjectAutomata.Shop::GetStorageRanged",
+      "reason": "Per-actor statistics: GetSafe insert (partly into saved dictionaries)",
+      "source": "PRD 9.3 | data-map shop.history"
+    },
+    {
+      "member": "ProjectAutomata.SettlementProductStatistics::GetSoldCount(ProjectAutomata.ProductDefinition,ProjectAutomata.GameDate,ProjectAutomata.GameDate,ProjectAutomata.IActor)",
+      "reason": "Per-actor overload: GetSafe insert",
+      "source": "PRD 9.3 | data-map shop.city_aggregate"
+    },
+    {
+      "member": "ProjectAutomata.SettlementProductStatistics::GetSoldCount(ProjectAutomata.ProductDefinition,ProjectAutomata.GamePeriod,ProjectAutomata.IActor)",
+      "reason": "Per-actor overload: GetSafe insert",
+      "source": "PRD 9.3 | data-map shop.city_aggregate"
+    },
+    {
+      "member": "ProjectAutomata.SettlementProductStatistics::GetSalesFigures",
+      "reason": "Per-actor overload: GetSafe insert",
+      "source": "PRD 9.3 | data-map shop.city_aggregate"
+    },
+    {
+      "member": "ProjectAutomata.GameData::get_editorInstance",
+      "reason": "Re-initializes game data",
+      "source": "PRD 9.3 | data-map static.registry"
+    },
+    {
+      "member": "ProjectAutomata.GameData::GetAssets",
+      "reason": "Pooled list API (all overloads); use GetAssetsRO for known types",
+      "source": "PRD 9.3 | data-map static.registry"
+    },
+    {
+      "member": "ProjectAutomata.GameData::GetAsset(System.Int32)",
+      "reason": "Throws for unknown ids; AssetId is session-only",
+      "source": "data-map static.registry"
+    },
+    {
+      "member": "ProjectAutomata.GameDataManifest::GetAsset(System.Int32)",
+      "reason": "Throws for unknown ids; AssetId is session-only",
+      "source": "data-map static.registry"
+    },
+    {
+      "member": "ProjectAutomata.CompanyStats::Compute*",
+      "reason": "PermitManager.GetSafe insert; activeActor bias; O(regions x buildings)",
+      "source": "PRD 9.3 | data-map company.value"
+    },
+    {
+      "member": "ProjectAutomata.CompanySharesAgent::GetCompanyValue",
+      "reason": "PermitManager.GetSafe insert; activeActor bias",
+      "source": "PRD 9.3 | data-map company.value"
+    },
+    {
+      "member": "ProjectAutomata.CompanySharesAgent::GetRegionsValue",
+      "reason": "PermitManager.GetSafe insert; activeActor bias",
+      "source": "PRD 9.3 | data-map company.value"
+    },
+    {
+      "member": "ProjectAutomata.CompanySharesAgent::GetBundle*Price",
+      "reason": "PermitManager.GetSafe insert; activeActor bias",
+      "source": "PRD 9.3 | data-map company.value"
+    },
+    {
+      "member": "ProjectAutomata.Headquarters::get_totalAssets",
+      "reason": "Uses Player.activeActor; O(all buildings)",
+      "source": "PRD 9.3 | data-map company.total_assets"
+    },
+    {
+      "member": "ProjectAutomata.GlobalMarket::UpdatePrices",
+      "reason": "Deterministic RNG and price state",
+      "source": "PRD 9.3 | data-map market.global_prices"
+    },
+    {
+      "member": "ProjectAutomata.GlobalMarket::ComputePriceModifier",
+      "reason": "Deterministic RNG",
+      "source": "PRD 9.3 | data-map market.global_prices"
+    },
+    {
+      "member": "ProjectAutomata.Shop::UpdatePriceModifiers",
+      "reason": "RNG and state",
+      "source": "PRD 9.3 | data-map shop.price_multiplier"
+    },
+    {
+      "member": "ProjectAutomata.Shop::UpdateDemand",
+      "reason": "Mutates demand",
+      "source": "PRD 9.3 | data-map shop.demand"
+    },
+    {
+      "member": "ProjectAutomata.SettlementGrowth::GetTierFor*",
+      "reason": "GetTierForCurrentPopulation(Capacity) call GetTier, which may initialize thresholds with RNG (InitializeTierThresholds)",
+      "source": "PRD 9.3 | data-map city.population"
+    },
+    {
+      "member": "ProjectAutomata.SettlementGrowth::GetTier(*",
+      "reason": "Private GetTier: InitializeTierThresholds (RNG) when thresholds are empty",
+      "source": "PRD 9.3 | data-map city.population"
+    },
+    {
+      "member": "ProjectAutomata.ISettlementGrowth::GetTierFor*",
+      "reason": "Dispatches to SettlementGrowth.GetTierFor*",
+      "source": "PRD 9.3 | data-map city.population"
+    },
+    {
+      "member": "ProjectAutomata.GameDate::RandomInRange",
+      "reason": "Consumes RNG",
+      "source": "PRD 9.3 | data-map game.date"
+    },
+    {
+      "member": "ProjectAutomata.BuildingRequirementController::get_allRequirementsMet",
+      "reason": "Timers, reservations, flag writes",
+      "source": "PRD 9.3 | data-map building.blocking"
+    },
+    {
+      "member": "ProjectAutomata.BuildingRequirementController::Check",
+      "reason": "Timers, reservations, flag writes",
+      "source": "PRD 9.3 | data-map building.blocking"
+    },
+    {
+      "member": "ProjectAutomata.*::IsRequirementMet",
+      "reason": "Requirement checks have side effects (timers, reservations)",
+      "source": "PRD 9.3 | data-map building.blocking"
+    },
+    {
+      "member": "ProjectAutomata.*::CanStartProducing",
+      "reason": "RecipeUser/GathererHub write IsWorking",
+      "source": "PRD 9.3 | data-map building.blocking"
+    },
+    {
+      "member": "ProjectAutomata.*Harvester::CanStartWork",
+      "reason": "Reserves resource nodes",
+      "source": "PRD 9.3 | data-map building.blocking"
+    },
+    {
+      "member": "ProjectAutomata.Harvester::HasResources",
+      "reason": "Reserves resource nodes",
+      "source": "PRD 9.3 | data-map building.blocking"
+    },
+    {
+      "member": "ProjectAutomata.TransportRequest::Validate",
+      "reason": "Transport request mutation",
+      "source": "PRD 9.3 | data-map logistics.in_flight"
+    },
+    {
+      "member": "ProjectAutomata.TransportRequestHandle::Validate",
+      "reason": "Transport request mutation",
+      "source": "PRD 9.3 | data-map logistics.in_flight"
+    },
+    {
+      "member": "ProjectAutomata.TransportRequest::PayVehicleDispatch",
+      "reason": "Transport request mutation",
+      "source": "PRD 9.3 | data-map logistics.in_flight"
+    },
+    {
+      "member": "ProjectAutomata.TransportRequestHandle::PayVehicleDispatch",
+      "reason": "Transport request mutation",
+      "source": "PRD 9.3 | data-map logistics.in_flight"
+    },
+    {
+      "member": "ProjectAutomata.TransportRequest::Complete",
+      "reason": "Transport request mutation",
+      "source": "PRD 9.3 | data-map logistics.in_flight"
+    },
+    {
+      "member": "ProjectAutomata.TransportRequestHandle::Complete",
+      "reason": "Transport request mutation",
+      "source": "PRD 9.3 | data-map logistics.in_flight"
+    },
+    {
+      "member": "ProjectAutomata.TransportRequest::Fail",
+      "reason": "Transport request mutation",
+      "source": "PRD 9.3 | data-map logistics.in_flight"
+    },
+    {
+      "member": "ProjectAutomata.TransportRequestHandle::Fail",
+      "reason": "Transport request mutation",
+      "source": "PRD 9.3 | data-map logistics.in_flight"
+    },
+    {
+      "member": "ProjectAutomata.TransportRequest::CanReserve",
+      "reason": "Transport request mutation",
+      "source": "PRD 9.3 | data-map logistics.in_flight"
+    },
+    {
+      "member": "ProjectAutomata.TransportRequestHandle::CanReserve",
+      "reason": "Transport request mutation",
+      "source": "PRD 9.3 | data-map logistics.in_flight"
+    },
+    {
+      "member": "ProjectAutomata.ManualDestinationManager::ValidateRequest*",
+      "reason": "Validates/mutates requests",
+      "source": "PRD 9.3 | data-map logistics.slot_flags"
+    },
+    {
+      "member": "ProjectAutomata.BuildingTransportManager::AddPath",
+      "reason": "Starts pathfinding",
+      "source": "PRD 9.3 | data-map logistics.distance"
+    },
+    {
+      "member": "ProjectAutomata.BuildingTransportManager::RemovePath",
+      "reason": "Mutates path cache",
+      "source": "PRD 9.3"
+    },
+    {
+      "member": "ProjectAutomata.PathCache::UpdateCachedPath",
+      "reason": "Starts pathfinding",
+      "source": "PRD 9.3 | data-map logistics.distance"
+    },
+    {
+      "member": "ProjectAutomata.DestinationsPanelViewModel::get_autoWhDispatches",
+      "reason": "Mutates view-model lists",
+      "source": "PRD 9.3 | data-map logistics.auto_warehouse"
+    },
+    {
+      "member": "*ViewModel",
+      "reason": "Every view model mutates UI state",
+      "source": "PRD 9.3 | PRD 10.3 G6"
+    },
+    {
+      "member": "*VIewModel",
+      "reason": "View model with a misspelt suffix in the game (e.g. LoanUIVIewModel)",
+      "source": "PRD 9.3"
+    },
+    {
+      "member": "UI.*",
+      "reason": "UI namespace types",
+      "source": "PRD 9.3 | PRD 10.3 G6"
+    },
+    {
+      "member": "UnityEngine.UI.*",
+      "reason": "UI types compiled into Assembly-CSharp",
+      "source": "PRD 9.3 | PRD 10.3 G6"
+    },
+    {
+      "member": "DevConsole.*",
+      "reason": "Developer console (cheat flags, command execution)",
+      "source": "PRD 9.3 | PRD 10.3 G6"
+    },
+    {
+      "member": "ProjectAutomata.PAConsole",
+      "reason": "Developer console",
+      "source": "PRD 9.3 | PRD 10.3 G6"
+    },
+    {
+      "member": "ProjectAutomata.SavegameManager",
+      "reason": "Saving",
+      "source": "PRD 9.3 | PRD 10.3 G6"
+    },
+    {
+      "member": "ProjectAutomata.SavegameStorage",
+      "reason": "Saving",
+      "source": "PRD 9.3 | PRD 10.3 G6"
+    },
+    {
+      "member": "ProjectAutomata.QuicksaveManager",
+      "reason": "Saving",
+      "source": "PRD 9.3 | PRD 10.3 G6"
+    },
+    {
+      "member": "ProjectAutomata.AutosaveManager",
+      "reason": "Saving",
+      "source": "PRD 9.3 | PRD 10.3 G6"
+    },
+    {
+      "member": "ProjectAutomata.VehicleMovementManager::WaitParallelUpdate",
+      "reason": "Blocks the main thread",
+      "source": "PRD 9.3"
+    },
+    {
+      "member": "ProjectAutomata.VehicleManager::NextVehicleIndex",
+      "reason": "Increments a counter",
+      "source": "PRD 9.3 | data-map logistics.vehicles"
+    },
+    {
+      "member": "ProjectAutomata.ListPool",
+      "reason": "Pooled game lists (do not use pooled game lists)",
+      "source": "PRD 9.2"
+    },
+    {
+      "member": "ProjectAutomata.ListPool`1",
+      "reason": "Pooled game lists (do not use pooled game lists)",
+      "source": "PRD 9.2"
+    },
+    {
+      "member": "ProjectAutomata.EventDispatcher",
+      "reason": "Game event system (no subscriptions allowed; no exception isolation)",
+      "source": "PRD 9.5"
+    },
+    {
+      "member": "ProjectAutomata.IWorldReadyListener",
+      "reason": "Game callback interface",
+      "source": "PRD 8.1 OBS-1 | data-map game.scene_state"
+    },
+    {
+      "member": "ProjectAutomata.ICustomUpdateble",
+      "reason": "Game callback interface",
+      "source": "PRD 8.1 OBS-1"
+    },
+    {
+      "member": "ProjectAutomata.DynamicWorldEvent::NeededProductAmount",
+      "reason": "Dispatches to unreviewed NeededProduct implementations; must not be allowlisted",
+      "source": "PRD 10.4"
+    },
+    {
+      "member": "ProjectAutomata.*::NeededProduct",
+      "reason": "Unreviewed implementations (ProductTargetDynamicEventObjective and others)",
+      "source": "PRD 10.4"
+    },
+    {
+      "member": "ProjectAutomata.TechTreeAgent::GetUnlocked",
+      "reason": "Pooled list",
+      "source": "PRD 9.2 | data-map tech.unlocked"
+    },
+    {
+      "member": "ProjectAutomata.ITechTreeAgent::GetUnlocked",
+      "reason": "Pooled list",
+      "source": "PRD 9.2 | data-map tech.unlocked"
+    },
+    {
+      "member": "ProjectAutomata.FullyUnlockedTechTree::GetUnlocked",
+      "reason": "Pooled list",
+      "source": "PRD 9.2 | data-map tech.unlocked"
+    },
+    {
+      "member": "ProjectAutomata.SpeedControls::SetLevel",
+      "reason": "Changes game speed",
+      "source": "data-map game.speed"
+    },
+    {
+      "member": "ProjectAutomata.SpeedControls::SetPause",
+      "reason": "Pauses the game",
+      "source": "data-map game.speed"
+    },
+    {
+      "member": "ProjectAutomata.SpeedControls::TogglePause",
+      "reason": "Pauses the game",
+      "source": "data-map game.speed"
+    },
+    {
+      "member": "ProjectAutomata.SpeedControls::UpdateTimeScale",
+      "reason": "Writes Time.timeScale",
+      "source": "data-map game.speed"
+    },
+    {
+      "member": "ProjectAutomata.SpeedControls::ForceTimeScale",
+      "reason": "Writes Time.timeScale",
+      "source": "data-map game.speed"
+    },
+    {
+      "member": "ProjectAutomata.GameParametersManager::GetParameterValue",
+      "reason": "Lazy cache write",
+      "source": "data-map game.difficulty"
+    },
+    {
+      "member": "ProjectAutomata.GameModuleRepository::SetModule",
+      "reason": "Changes game module",
+      "source": "data-map game.module"
+    },
+    {
+      "member": "ProjectAutomata.ModLoader::EnableMod",
+      "reason": "PlayerPrefs writes",
+      "source": "data-map game.mods"
+    },
+    {
+      "member": "ProjectAutomata.ModLoader::DisableMod",
+      "reason": "PlayerPrefs writes",
+      "source": "data-map game.mods"
+    },
+    {
+      "member": "ProjectAutomata.ModLoader::SetModOrder",
+      "reason": "PlayerPrefs writes",
+      "source": "data-map game.mods"
+    },
+    {
+      "member": "ProjectAutomata.I18n::LoadLanguage",
+      "reason": "Rewrites every asset string",
+      "source": "data-map game.language | data-map static.english_names"
+    },
+    {
+      "member": "ProjectAutomata.I18n::ReloadCurrentLanguage",
+      "reason": "Rewrites every asset string",
+      "source": "data-map game.language"
+    },
+    {
+      "member": "ProjectAutomata.Player::SetActiveActor",
+      "reason": "Switches the active actor",
+      "source": "data-map company.player"
+    },
+    {
+      "member": "ProjectAutomata.Player::ClearActiveActor",
+      "reason": "Switches the active actor",
+      "source": "data-map company.player"
+    },
+    {
+      "member": "ProjectAutomata.AiPlayerManager::SpawnPlayer",
+      "reason": "AI player lifecycle",
+      "source": "data-map company.ai_players"
+    },
+    {
+      "member": "ProjectAutomata.AiPlayerManager::RemovePlayer",
+      "reason": "AI player lifecycle",
+      "source": "data-map company.ai_players"
+    },
+    {
+      "member": "ProjectAutomata.*::TakeTurn",
+      "reason": "AI turn execution",
+      "source": "data-map company.ai_players"
+    },
+    {
+      "member": "ProjectAutomata.ActorManager::GetUniqueActorId",
+      "reason": "Increments a saved counter",
+      "source": "data-map company.all_actors"
+    },
+    {
+      "member": "ProjectAutomata.ActorManager::RegisterActor",
+      "reason": "Actor registry mutation",
+      "source": "data-map company.all_actors"
+    },
+    {
+      "member": "ProjectAutomata.ActorManager::DeregisterActor",
+      "reason": "Actor registry mutation",
+      "source": "data-map company.all_actors"
+    },
+    {
+      "member": "ProjectAutomata.LoansAgent::AddLoan",
+      "reason": "Takes a loan",
+      "source": "data-map company.loans"
+    },
+    {
+      "member": "ProjectAutomata.ILoansAgent::AddLoan",
+      "reason": "Takes a loan",
+      "source": "data-map company.loans"
+    },
+    {
+      "member": "ProjectAutomata.LoansAgent::RepayLoan",
+      "reason": "Repays a loan",
+      "source": "data-map company.loans"
+    },
+    {
+      "member": "ProjectAutomata.ILoansAgent::RepayLoan",
+      "reason": "Repays a loan",
+      "source": "data-map company.loans"
+    },
+    {
+      "member": "ProjectAutomata.LoansAgent::PayForMonth",
+      "reason": "Pays loan instalments",
+      "source": "data-map company.loans"
+    },
+    {
+      "member": "ProjectAutomata.Loan::PayForMonth",
+      "reason": "Pays loan instalments",
+      "source": "data-map company.loans"
+    },
+    {
+      "member": "ProjectAutomata.Loan::Repay",
+      "reason": "Repays a loan",
+      "source": "data-map company.loans"
+    },
+    {
+      "member": "ProjectAutomata.Loan::set_apr",
+      "reason": "Writes the APR",
+      "source": "data-map company.loans"
+    },
+    {
+      "member": "ProjectAutomata.MoneyAgent::HandleBill",
+      "reason": "Ledger mutation",
+      "source": "data-map company.ledger"
+    },
+    {
+      "member": "ProjectAutomata.IMoneyAgent::HandleBill",
+      "reason": "Ledger mutation",
+      "source": "data-map company.ledger"
+    },
+    {
+      "member": "ProjectAutomata.MoneyAgent::ClearOldData",
+      "reason": "Ledger mutation",
+      "source": "data-map company.ledger"
+    },
+    {
+      "member": "ProjectAutomata.*::OnSavegameSerialize",
+      "reason": "Save serialization hooks",
+      "source": "data-map company.ledger"
+    },
+    {
+      "member": "ProjectAutomata.BankruptcyUI",
+      "reason": "UI type with side effects",
+      "source": "data-map company.bankruptcy"
+    },
+    {
+      "member": "ProjectAutomata.CompanySharesAgent::PurchaseBundle",
+      "reason": "Moves money, can trigger takeover",
+      "source": "data-map company.shares"
+    },
+    {
+      "member": "ProjectAutomata.CompanySharesAgent::SellBundle",
+      "reason": "Moves money",
+      "source": "data-map company.shares"
+    },
+    {
+      "member": "ProjectAutomata.AiPlayerCompanySharesAgent::PurchaseBundle",
+      "reason": "Moves money",
+      "source": "data-map company.shares"
+    },
+    {
+      "member": "ProjectAutomata.Ai*Goal::IsSatisfied",
+      "reason": "Side effects unknown",
+      "source": "data-map company.ai_state"
+    },
+    {
+      "member": "ProjectAutomata.Ai*Goal::GetDailyNeed",
+      "reason": "Side effects unknown",
+      "source": "data-map company.ai_state"
+    },
+    {
+      "member": "ProjectAutomata.Ai*Goal::GetUrgency",
+      "reason": "Side effects unknown",
+      "source": "data-map company.ai_state"
+    },
+    {
+      "member": "ProjectAutomata.*::TryGetDifficultyParametersOverride",
+      "reason": "Lazy cache",
+      "source": "data-map company.ai_state"
+    },
+    {
+      "member": "ProjectAutomata.ActorBuildingCollection::Add*",
+      "reason": "Collection mutation",
+      "source": "data-map company.buildings"
+    },
+    {
+      "member": "ProjectAutomata.ActorBuildingCollection::Remove*",
+      "reason": "Collection mutation",
+      "source": "data-map company.buildings"
+    },
+    {
+      "member": "ProjectAutomata.BuildingManager::Register*",
+      "reason": "Building registry mutation",
+      "source": "data-map building.enumerate"
+    },
+    {
+      "member": "ProjectAutomata.BuildingManager::DeRegister*",
+      "reason": "Building registry mutation",
+      "source": "data-map building.enumerate"
+    },
+    {
+      "member": "ProjectAutomata.BuildingManager::CanBuild",
+      "reason": "Placement checks (side effects not reviewed)",
+      "source": "data-map building.enumerate"
+    },
+    {
+      "member": "ProjectAutomata.Building::SetBuildingName",
+      "reason": "Renames a building",
+      "source": "data-map building.name"
+    },
+    {
+      "member": "ProjectAutomata.BuildingNameGenerator::Initialize",
+      "reason": "Name generator state",
+      "source": "data-map building.name"
+    },
+    {
+      "member": "ProjectAutomata.BuildingNameGenerator::UpdateBuildingName",
+      "reason": "Renames a building",
+      "source": "data-map building.name"
+    },
+    {
+      "member": "ProjectAutomata.*::ChangeOwner",
+      "reason": "Changes building owner",
+      "source": "data-map building.owner"
+    },
+    {
+      "member": "ProjectAutomata.Building::SetStateFlag",
+      "reason": "Writes building state flags",
+      "source": "data-map building.active"
+    },
+    {
+      "member": "ProjectAutomata.*::SetEfficiencyIndex",
+      "reason": "Changes efficiency",
+      "source": "data-map building.efficiency"
+    },
+    {
+      "member": "ProjectAutomata.*::UpdateEfficiencyIcon",
+      "reason": "UI side effects",
+      "source": "data-map building.efficiency"
+    },
+    {
+      "member": "ProjectAutomata.PollutionManager::AsTexture",
+      "reason": "Allocates/updates a texture",
+      "source": "data-map building.pollution | data-map world.pollution"
+    },
+    {
+      "member": "ProjectAutomata.*::set_options",
+      "reason": "Changes logistics options",
+      "source": "data-map building.config_logistics"
+    },
+    {
+      "member": "ProjectAutomata.*::UpdateLogistics",
+      "reason": "Logistics mutation",
+      "source": "data-map building.config_logistics"
+    },
+    {
+      "member": "ProjectAutomata.BuildingAnalysis::LogAnalysisData",
+      "reason": "Writes analysis history",
+      "source": "data-map building.history"
+    },
+    {
+      "member": "ProjectAutomata.RecipeUser::set_currentRecipe",
+      "reason": "Clears storage, fires events",
+      "source": "data-map production.recipe"
+    },
+    {
+      "member": "ProjectAutomata.RecipeUser::SetInitialRecipe",
+      "reason": "Clears storage, fires events",
+      "source": "data-map production.recipe"
+    },
+    {
+      "member": "ProjectAutomata.*::WriteMySettingsTo",
+      "reason": "Copies settings into another object",
+      "source": "data-map production.recipe"
+    },
+    {
+      "member": "ProjectAutomata.RecipeUser::get_knownRecipes",
+      "reason": "LINQ allocation",
+      "source": "data-map production.available_recipes"
+    },
+    {
+      "member": "ProjectAutomata.Recipe::get_firstIngredient",
+      "reason": "Throws when empty",
+      "source": "data-map production.io"
+    },
+    {
+      "member": "ProjectAutomata.Recipe::get_firstResult",
+      "reason": "Throws when empty",
+      "source": "data-map production.io"
+    },
+    {
+      "member": "ProjectAutomata.ProductSpecificProductStorage::SetMaxAccepted",
+      "reason": "Writes inbound cap",
+      "source": "data-map production.inbound_cap"
+    },
+    {
+      "member": "ProjectAutomata.ProductSpecificProductStorage::ClearMaxAccepted",
+      "reason": "Writes inbound cap",
+      "source": "data-map production.inbound_cap"
+    },
+    {
+      "member": "ProjectAutomata.ProductionStatsTracker::SetStatsTimeRange",
+      "reason": "Changes UI window",
+      "source": "data-map production.player_product_stats"
+    },
+    {
+      "member": "ProjectAutomata.*::StartBuildNode",
+      "reason": "Builds a node",
+      "source": "data-map gatherer.hub"
+    },
+    {
+      "member": "ProjectAutomata.Harvester::StartWork",
+      "reason": "Mines resource nodes",
+      "source": "data-map gatherer.rate"
+    },
+    {
+      "member": "ProjectAutomata.ResourceNode::get_All",
+      "reason": "Lazy quad-tree allocation",
+      "source": "data-map gatherer.deposits | data-map world.resources"
+    },
+    {
+      "member": "ProjectAutomata.*::MineResource",
+      "reason": "Mines resources",
+      "source": "data-map gatherer.deposits"
+    },
+    {
+      "member": "ProjectAutomata.ResourceNode::Reserve",
+      "reason": "Reserves a node",
+      "source": "data-map gatherer.deposits"
+    },
+    {
+      "member": "ProjectAutomata.WorldResourceNodes::get_resourceNodeQuadTree",
+      "reason": "Lazy allocation",
+      "source": "data-map world.resources"
+    },
+    {
+      "member": "ProjectAutomata.ManualDestinationManager::UpdateSlots",
+      "reason": "Destination slot / request mutation",
+      "source": "data-map logistics.slots | data-map logistics.per_trip_amount"
+    },
+    {
+      "member": "ProjectAutomata.ManualDestinationManager::ClearSlot",
+      "reason": "Destination slot / request mutation",
+      "source": "data-map logistics.slots | data-map logistics.per_trip_amount"
+    },
+    {
+      "member": "ProjectAutomata.ManualDestinationManager::GetOrAddSlotWithoutDestination",
+      "reason": "Destination slot / request mutation",
+      "source": "data-map logistics.slots | data-map logistics.per_trip_amount"
+    },
+    {
+      "member": "ProjectAutomata.ManualDestinationManager::set_slotCount",
+      "reason": "Destination slot / request mutation",
+      "source": "data-map logistics.slots | data-map logistics.per_trip_amount"
+    },
+    {
+      "member": "ProjectAutomata.ManualDestinationManager::AddSource",
+      "reason": "Destination slot / request mutation",
+      "source": "data-map logistics.slots | data-map logistics.per_trip_amount"
+    },
+    {
+      "member": "ProjectAutomata.ManualDestinationManager::RemoveSource",
+      "reason": "Destination slot / request mutation",
+      "source": "data-map logistics.slots | data-map logistics.per_trip_amount"
+    },
+    {
+      "member": "ProjectAutomata.ManualDestinationManager::GetRequestedAmount",
+      "reason": "Destination slot / request mutation",
+      "source": "data-map logistics.slots | data-map logistics.per_trip_amount"
+    },
+    {
+      "member": "ProjectAutomata.ManualDestinationManager::CancelRequest",
+      "reason": "Destination slot / request mutation",
+      "source": "data-map logistics.slots | data-map logistics.per_trip_amount"
+    },
+    {
+      "member": "ProjectAutomata.ManualDestinationSlot::set_product",
+      "reason": "Slot mutation (events, cancellation, pathfinding)",
+      "source": "data-map logistics.slots"
+    },
+    {
+      "member": "ProjectAutomata.ManualDestinationSlot::set_destination",
+      "reason": "Slot mutation (events, cancellation, pathfinding)",
+      "source": "data-map logistics.slots"
+    },
+    {
+      "member": "ProjectAutomata.ManualDestinationSlot::set_autoMaxAccepted",
+      "reason": "Slot mutation (events, cancellation, pathfinding)",
+      "source": "data-map logistics.slots"
+    },
+    {
+      "member": "ProjectAutomata.ManualDestinationSlot::set_minStoredAtSource",
+      "reason": "Slot mutation (events, cancellation, pathfinding)",
+      "source": "data-map logistics.slots"
+    },
+    {
+      "member": "ProjectAutomata.ManualDestinationSlot::set_source",
+      "reason": "Slot mutation (events, cancellation, pathfinding)",
+      "source": "data-map logistics.slots"
+    },
+    {
+      "member": "ProjectAutomata.*::set_warehouse",
+      "reason": "Changes warehouse assignment",
+      "source": "data-map logistics.auto_warehouse"
+    },
+    {
+      "member": "ProjectAutomata.LogisticRequest::get_requestName",
+      "reason": "Localization lookup",
+      "source": "data-map logistics.logistic_requests"
+    },
+    {
+      "member": "ProjectAutomata.LogisticNetworkEndpoint::MakeRequest",
+      "reason": "Logistic request mutation",
+      "source": "data-map logistics.logistic_requests"
+    },
+    {
+      "member": "ProjectAutomata.LogisticNetworkEndpoint::CancelRequest",
+      "reason": "Logistic request mutation",
+      "source": "data-map logistics.logistic_requests"
+    },
+    {
+      "member": "ProjectAutomata.LogisticNetworkEndpoint::SetPullStatus",
+      "reason": "Logistic request mutation",
+      "source": "data-map logistics.logistic_requests"
+    },
+    {
+      "member": "ProjectAutomata.WaypointMover",
+      "reason": "Mover internals updated on the ThreadPool",
+      "source": "data-map logistics.vehicles"
+    },
+    {
+      "member": "ProjectAutomata.TruckMover",
+      "reason": "Mover internals updated on the ThreadPool",
+      "source": "data-map logistics.vehicles"
+    },
+    {
+      "member": "ProjectAutomata.TrainMover",
+      "reason": "Mover internals updated on the ThreadPool",
+      "source": "data-map logistics.vehicles"
+    },
+    {
+      "member": "ProjectAutomata.Vehicle::ExecuteJob",
+      "reason": "Vehicle command",
+      "source": "data-map logistics.vehicles"
+    },
+    {
+      "member": "ProjectAutomata.Vehicle::SetId",
+      "reason": "Vehicle command",
+      "source": "data-map logistics.vehicles"
+    },
+    {
+      "member": "ProjectAutomata.Vehicle::OverrideMaxSpeed",
+      "reason": "Vehicle command",
+      "source": "data-map logistics.vehicles"
+    },
+    {
+      "member": "ProjectAutomata.Job::CancelJob",
+      "reason": "Vehicle command",
+      "source": "data-map logistics.vehicles"
+    },
+    {
+      "member": "ProjectAutomata.JITVehicleFleet::PullVehicle",
+      "reason": "Fleet mutation",
+      "source": "data-map logistics.fleet"
+    },
+    {
+      "member": "ProjectAutomata.JITVehicleFleet::ReturnVehicle",
+      "reason": "Fleet mutation",
+      "source": "data-map logistics.fleet"
+    },
+    {
+      "member": "ProjectAutomata.JITVehicleFleet::RegisterVehicle",
+      "reason": "Fleet mutation",
+      "source": "data-map logistics.fleet"
+    },
+    {
+      "member": "ProjectAutomata.VehicleDispatcher::DeliverTo",
+      "reason": "Dispatches vehicles",
+      "source": "data-map logistics.fleet"
+    },
+    {
+      "member": "ProjectAutomata.VehicleDispatcher::PickUpFrom",
+      "reason": "Dispatches vehicles",
+      "source": "data-map logistics.fleet"
+    },
+    {
+      "member": "ProjectAutomata.PathCache::AddPath",
+      "reason": "Path cache mutation / pathfinding",
+      "source": "data-map logistics.routes"
+    },
+    {
+      "member": "ProjectAutomata.PathCache::RemovePath",
+      "reason": "Path cache mutation",
+      "source": "data-map logistics.routes"
+    },
+    {
+      "member": "ProjectAutomata.PathCache::UpdatePaths",
+      "reason": "Path cache mutation / pathfinding",
+      "source": "data-map logistics.routes"
+    },
+    {
+      "member": "ProjectAutomata.*::FindPath",
+      "reason": "Pathfinding",
+      "source": "data-map world.spatial"
+    },
+    {
+      "member": "ProjectAutomata.SettlementBase::set_tier",
+      "reason": "Writes settlement tier",
+      "source": "data-map city.type_tier"
+    },
+    {
+      "member": "ProjectAutomata.*::TryGrow",
+      "reason": "Settlement growth",
+      "source": "data-map city.growth_state"
+    },
+    {
+      "member": "ProjectAutomata.*::ChangePopulation",
+      "reason": "Settlement growth",
+      "source": "data-map city.growth_state"
+    },
+    {
+      "member": "ProjectAutomata.SettlementGrowth::ForceGrowth",
+      "reason": "Settlement growth",
+      "source": "data-map city.growth_state"
+    },
+    {
+      "member": "ProjectAutomata.SettlementAdvancement*::StartAdvancement",
+      "reason": "City development",
+      "source": "data-map city.development"
+    },
+    {
+      "member": "ProjectAutomata.SettlementAdvancement*::SelectShop",
+      "reason": "City development",
+      "source": "data-map city.development"
+    },
+    {
+      "member": "ProjectAutomata.SettlementAdvancement/*::Cancel",
+      "reason": "City development",
+      "source": "data-map city.development"
+    },
+    {
+      "member": "ProjectAutomata.AdvancementContract::Apply",
+      "reason": "City development",
+      "source": "data-map city.development"
+    },
+    {
+      "member": "ProjectAutomata.AdvancementContract::PayOut",
+      "reason": "City development",
+      "source": "data-map city.development"
+    },
+    {
+      "member": "ProjectAutomata.SettlementBase::Kill",
+      "reason": "Kills a settlement",
+      "source": "data-map city.dead"
+    },
+    {
+      "member": "ProjectAutomata.SettlementContractManager::OfferNewContract",
+      "reason": "Contract mutation",
+      "source": "data-map city.contract"
+    },
+    {
+      "member": "ProjectAutomata.*::AcceptContract",
+      "reason": "Contract mutation",
+      "source": "data-map city.contract | data-map market.contracts"
+    },
+    {
+      "member": "ProjectAutomata.SettlementContractManager::RejectContract",
+      "reason": "Contract mutation",
+      "source": "data-map city.contract"
+    },
+    {
+      "member": "ProjectAutomata.*::CompleteContract",
+      "reason": "Contract mutation",
+      "source": "data-map city.contract"
+    },
+    {
+      "member": "ProjectAutomata.Region::FindAvailableResources",
+      "reason": "Region mutation",
+      "source": "data-map region.identity | data-map region.resources"
+    },
+    {
+      "member": "ProjectAutomata.Region::Tick",
+      "reason": "Region simulation step",
+      "source": "data-map region.identity"
+    },
+    {
+      "member": "ProjectAutomata.PermitManager::AuctionPermit",
+      "reason": "Permit mutation",
+      "source": "data-map region.permits"
+    },
+    {
+      "member": "ProjectAutomata.PermitManager::GrantPermitToActor",
+      "reason": "Permit mutation",
+      "source": "data-map region.permits"
+    },
+    {
+      "member": "ProjectAutomata.PermitManager::TransferPermit",
+      "reason": "Permit mutation",
+      "source": "data-map region.permits"
+    },
+    {
+      "member": "ProjectAutomata.PermitManager::RevokePermit",
+      "reason": "Permit mutation",
+      "source": "data-map region.permits"
+    },
+    {
+      "member": "ProjectAutomata.Shop::GetValidProducts",
+      "reason": "Allocates and shuffles",
+      "source": "data-map shop.accepted"
+    },
+    {
+      "member": "ProjectAutomata.*::OnGameDataLoaded",
+      "reason": "Game data initialization",
+      "source": "data-map static.registry"
+    },
+    {
+      "member": "ProjectAutomata.ProductDefinition::SetIcon",
+      "reason": "Asset mutation",
+      "source": "data-map static.products"
+    },
+    {
+      "member": "ProjectAutomata.ProductDefinition::SetVisualRepresentation",
+      "reason": "Asset mutation",
+      "source": "data-map static.products"
+    },
+    {
+      "member": "ProjectAutomata.ProductDefinition::set_category",
+      "reason": "Asset mutation",
+      "source": "data-map static.products"
+    },
+    {
+      "member": "ProjectAutomata.Recipe::set_gameDays",
+      "reason": "Asset mutation",
+      "source": "data-map static.recipes"
+    },
+    {
+      "member": "ProjectAutomata.Recipe::FindRecipe",
+      "reason": "Uses GameData.editorInstance",
+      "source": "data-map static.recipes"
+    },
+    {
+      "member": "ProjectAutomata.TechTreeManager::Register*",
+      "reason": "Tech tree registry",
+      "source": "data-map tech.manager"
+    },
+    {
+      "member": "ProjectAutomata.TechTreeManager::Deregister*",
+      "reason": "Tech tree registry",
+      "source": "data-map tech.manager"
+    },
+    {
+      "member": "ProjectAutomata.TechTree*::Unlock",
+      "reason": "Unlocks technology",
+      "source": "data-map tech.tree | data-map tech.unlocked"
+    },
+    {
+      "member": "ProjectAutomata.*::ForceUnlock*",
+      "reason": "Unlocks technology",
+      "source": "data-map tech.unlocked"
+    },
+    {
+      "member": "ProjectAutomata.TechTreeAgentResearchState::ResearchUnlock",
+      "reason": "Research state mutation",
+      "source": "data-map tech.research_state | data-map tech.costs"
+    },
+    {
+      "member": "ProjectAutomata.TechTreeAgentResearchState::CancelResearch",
+      "reason": "Research state mutation",
+      "source": "data-map tech.research_state | data-map tech.costs"
+    },
+    {
+      "member": "ProjectAutomata.TechTreeAgentResearchState::MoveInFrontOf",
+      "reason": "Research state mutation",
+      "source": "data-map tech.research_state | data-map tech.costs"
+    },
+    {
+      "member": "ProjectAutomata.TechTreeAgentResearchState::SpendUnlockPoints",
+      "reason": "Research state mutation",
+      "source": "data-map tech.research_state | data-map tech.costs"
+    },
+    {
+      "member": "ProjectAutomata.TechTreeAgentResearchState::Tick",
+      "reason": "Research state mutation",
+      "source": "data-map tech.research_state | data-map tech.costs"
+    },
+    {
+      "member": "ProjectAutomata.TechTreeAgentResearchState::SetEfficiency",
+      "reason": "Research state mutation",
+      "source": "data-map tech.research_state | data-map tech.costs"
+    },
+    {
+      "member": "ProjectAutomata.State::GetClosestStateTradingHandler",
+      "reason": "LINQ sort",
+      "source": "data-map market.state_sells"
+    },
+    {
+      "member": "ProjectAutomata.State::CreateBuilding",
+      "reason": "Creates a building",
+      "source": "data-map market.state_sells"
+    },
+    {
+      "member": "ProjectAutomata.*::AddStateConnection",
+      "reason": "State connection mutation",
+      "source": "data-map market.state_sells | data-map world.state_connections"
+    },
+    {
+      "member": "ProjectAutomata.*::RemoveStateConnection",
+      "reason": "State connection mutation",
+      "source": "data-map world.state_connections"
+    },
+    {
+      "member": "ProjectAutomata.DeliveryContract::Apply",
+      "reason": "Contract mutation",
+      "source": "data-map market.contracts"
+    },
+    {
+      "member": "ProjectAutomata.DeliveryContract::Reject",
+      "reason": "Contract mutation",
+      "source": "data-map market.contracts"
+    },
+    {
+      "member": "ProjectAutomata.*::RegisterContract",
+      "reason": "Contract mutation",
+      "source": "data-map market.contracts"
+    },
+    {
+      "member": "ProjectAutomata.*::MakeBid",
+      "reason": "Auction bid",
+      "source": "data-map market.auctions"
+    },
+    {
+      "member": "ProjectAutomata.AuctionsManager::TryStartNextAuction",
+      "reason": "Auction state",
+      "source": "data-map market.auctions"
+    },
+    {
+      "member": "ProjectAutomata.AuctionsManager::EndCurrentAuction",
+      "reason": "Auction state",
+      "source": "data-map market.auctions"
+    },
+    {
+      "member": "ProjectAutomata.AuctionsManager::EnqueueAuction",
+      "reason": "Auction state",
+      "source": "data-map market.auctions"
+    },
+    {
+      "member": "ProjectAutomata.AuctionDefinition::GenerateAuction",
+      "reason": "Auction generation (RNG)",
+      "source": "data-map market.auctions"
+    },
+    {
+      "member": "Steamworks.*",
+      "reason": "Steam platform/network API",
+      "source": "PRD 10.3 G8"
+    },
+    {
+      "member": "Epic.OnlineServices.*",
+      "reason": "Epic online services (network)",
+      "source": "PRD 10.3 G8"
+    },
+    {
+      "member": "RuntimeInspectorNamespace.*",
+      "reason": "Runtime inspector (can edit live objects)",
+      "source": "PRD 2.1"
+    },
+    {
+      "member": "ProjectAutomata.GlobalMarket::GetProductDemand",
+      "reason": "Expensive aggregate over all cities and shops (PRD 9.2); compute from captured shop rows",
+      "source": "PRD 9.2"
+    },
+    {
+      "member": "ProjectAutomata.GlobalMarket::GetStoredAmount",
+      "reason": "Expensive aggregate over all cities and shops (PRD 9.2)",
+      "source": "PRD 9.2"
+    },
+    {
+      "member": "ProjectAutomata.GlobalMarket::GetSoldAmount",
+      "reason": "Expensive aggregate over all cities, shops and State sales (PRD 9.2)",
+      "source": "PRD 9.2"
+    }
+  ]
+}

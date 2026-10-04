@@ -1,0 +1,48 @@
+name: ci
+
+# Runs only what can be validated without a Rise of Industry install: the MCP server test suite and the
+# IL gate's unit tests (its game-assembly fixture tests skip without the game). The observer itself and the
+# in-game gates (E1-E7, V8) are validated locally; see docs/VALIDATION-REPORT.md.
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ['**/*.md', 'docs/**', 'research/**', '.github/ISSUE_TEMPLATE/**']
+  pull_request:
+    paths-ignore: ['**/*.md', 'docs/**', 'research/**', '.github/ISSUE_TEMPLATE/**']
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  mcp-server:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: mcp-server/uv.lock
+      - name: Test
+        run: uv run --directory mcp-server pytest -q
+
+  readonly-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ hashFiles('observer/readonly-gate/**/*.csproj') }}
+      - name: Test (fixture tests skip without the game)
+        run: dotnet test observer/readonly-gate/RoiMcp.ReadOnlyGate.Tests -c Release

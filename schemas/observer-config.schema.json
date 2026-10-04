@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://roi-mcp.local/schemas/observer-config.schema.json",
+  "title": "Rise of Industry MCP observer.config.json",
+  "description": "Optional user configuration of the observer (PRD 8.7), at %LOCALAPPDATA%\\RoiMcp\\observer.config.json. Every field is optional. Out-of-range values are clamped and unknown fields are ignored, both with a warning in the heartbeat (config_warnings). No key can affect the compatibility gate: capture on a non-baseline game build is impossible in V1.",
+  "x-schema-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "enabled": {"type": "boolean", "default": true, "description": "false puts the observer in the disabled state (heartbeat only)"},
+    "running_interval_s": {"type": "number", "minimum": 2, "maximum": 300, "default": 5},
+    "paused_interval_s": {"type": "number", "minimum": 5, "maximum": 600, "default": 15},
+    "min_gap_s": {"type": "number", "minimum": 1, "maximum": 60, "default": 1},
+    "frame_budget_ms": {"type": "number", "minimum": 0.5, "maximum": 5.0, "default": 2.0},
+    "capture_ceiling_ms": {"type": "number", "minimum": 10, "maximum": 200, "default": 50},
+    "include_ai_building_detail": {"type": "boolean", "default": false},
+    "include_ai_routes": {"type": "boolean", "default": false},
+    "include_route_paths": {"type": "boolean", "default": false},
+    "log_level": {"enum": ["error", "warn", "info", "debug"], "default": "info"}
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://roi-mcp.local/schemas/refresh-request.schema.json",
+  "title": "Rise of Industry MCP refresh-request.json",
+  "description": "The only data flowing towards the game (PRD 11.6). Written atomically by the MCP server only. Holds at most one pending nonce per scope. The observer reads only the three integer values and ignores everything else; files over 1 KB are ignored.",
+  "x-schema-version": "1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schema_version", "requests", "requested_utc"],
+  "properties": {
+    "schema": {"const": "roi-mcp/refresh-request"},
+    "schema_version": {"type": "string", "pattern": "^1\\.[0-9]+\\.[0-9]+$"},
+    "requests": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "history", "static"],
+      "properties": {
+        "state": {"type": ["integer", "null"], "minimum": 1},
+        "history": {"type": ["integer", "null"], "minimum": 1},
+        "static": {"type": ["integer", "null"], "minimum": 1}
+      }
+    },
+    "requested_utc": {"type": "string"}
+  }
+}

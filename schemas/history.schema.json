@@ -1,0 +1,811 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://roi-mcp.local/schemas/history.schema.json",
+  "title": "Rise of Industry MCP history.json",
+  "x-schema-version": "1.0.0",
+  "description": "Common envelope of heartbeat/static/state/history files (PRD 11.2).",
+  "type": "object",
+  "additionalProperties": false,
+  "x-envelope": true,
+  "properties": {
+    "schema": {
+      "const": "roi-mcp/history"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^1\\.[0-9]+\\.[0-9]+$"
+    },
+    "observer_version": {
+      "type": "string"
+    },
+    "compatibility": {
+      "const": "verified"
+    },
+    "game": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/GameInfoDto"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "detected game facts; heartbeat before the first READY: null"
+    },
+    "pid": {
+      "type": "integer"
+    },
+    "world_session": {
+      "type": "string"
+    },
+    "seq": {
+      "type": "integer"
+    },
+    "content_hash": {
+      "type": "string"
+    },
+    "written_utc": {
+      "type": "string"
+    },
+    "captured": {
+      "$ref": "#/$defs/CapturedDto"
+    },
+    "static_ref": {
+      "$ref": "#/$defs/StaticRefDto"
+    },
+    "sections": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/SectionStatusDto"
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/WarningDto"
+      }
+    },
+    "data": {
+      "$ref": "#/$defs/HistoryData"
+    }
+  },
+  "required": [
+    "schema",
+    "schema_version",
+    "observer_version",
+    "compatibility",
+    "game",
+    "pid",
+    "world_session",
+    "seq",
+    "content_hash",
+    "written_utc",
+    "captured",
+    "static_ref",
+    "sections",
+    "warnings",
+    "data"
+  ],
+  "$defs": {
+    "AnalysisSeriesDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "building.history",
+      "x-source": "SAVE",
+      "properties": {
+        "item": {
+          "type": "string"
+        },
+        "window_months": {
+          "type": "integer",
+          "description": "Size of the exported window in calendar months, counting the current month (V1 exports a bounded recent window, not all history the game retains)"
+        },
+        "window_first_month": {
+          "type": "string",
+          "description": "Oldest calendar month inside the exported window (game month label)"
+        },
+        "window_last_month": {
+          "type": "string",
+          "description": "Newest calendar month inside the exported window: the current, in-progress month"
+        },
+        "history_truncated": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "True when the game still holds data older than window_first_month, so this series is a truncated view of game-retained history; false when the window covers everything the game holds; null when it could not be determined"
+        },
+        "aggregation": {
+          "type": "string",
+          "description": "How the values of one month are combined, as the game does for this item (sum, or mean for averaged items such as percentages)",
+          "enum": [
+            "sum",
+            "average"
+          ]
+        },
+        "first_month_available": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Oldest month the game still retains for this series (game month label), which can lie far before window_first_month; null when the series is empty"
+        },
+        "values_retained": {
+          "type": "integer",
+          "description": "Number of raw values the game retains for this series (some series hold one value per day)"
+        },
+        "months": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MonthValueDto"
+          },
+          "description": "Months of the exported window, oldest first; months without values are omitted"
+        }
+      },
+      "required": [
+        "item",
+        "window_months",
+        "window_first_month",
+        "window_last_month",
+        "history_truncated",
+        "aggregation",
+        "first_month_available",
+        "values_retained",
+        "months"
+      ]
+    },
+    "BuildingSeriesDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "building.history",
+      "x-source": "SAVE",
+      "properties": {
+        "building": {
+          "type": "string"
+        },
+        "series": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AnalysisSeriesDto"
+          }
+        }
+      },
+      "required": [
+        "building",
+        "series"
+      ]
+    },
+    "CapturedDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-envelope": true,
+      "properties": {
+        "utc_start": {
+          "type": "string"
+        },
+        "utc_end": {
+          "type": "string"
+        },
+        "game_day_start": {
+          "type": "integer"
+        },
+        "game_day_end": {
+          "type": "integer"
+        },
+        "game_date": {
+          "type": "string",
+          "description": "Y<year>-<MM>-<DD>, 30-day months"
+        },
+        "frames": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "description": "[first frame, last frame]"
+        },
+        "main_thread_ms": {
+          "type": "number"
+        },
+        "slices": {
+          "type": "integer"
+        },
+        "max_slice_ms": {
+          "type": "number"
+        },
+        "consistent": {
+          "type": "boolean",
+          "description": "true when every section was read on the same game day"
+        }
+      },
+      "required": [
+        "utc_start",
+        "utc_end",
+        "game_day_start",
+        "game_day_end",
+        "game_date",
+        "frames",
+        "main_thread_ms",
+        "slices",
+        "max_slice_ms",
+        "consistent"
+      ]
+    },
+    "GameInfoDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Game build facts. In envelopes these are the detected values of the running game.",
+      "x-envelope": true,
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "major.minor.revision"
+        },
+        "build": {
+          "type": "string",
+          "description": "build + suffix, e.g. 0507b"
+        },
+        "commit": {
+          "type": "string"
+        },
+        "savegame_version": {
+          "type": "integer"
+        },
+        "assembly_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "SHA-256 (upper-case hex) of the loaded Assembly-CSharp.dll; null until computed"
+        },
+        "release": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "version",
+        "build",
+        "commit",
+        "savegame_version",
+        "assembly_sha256",
+        "release"
+      ]
+    },
+    "HistoryData": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "history.json data: only history the game itself retains (PRD 12.4).",
+      "x-data-map-id": "company.ledger",
+      "x-source": "SAVE",
+      "properties": {
+        "ledger_player": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/LedgerDto"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "buildings_monthly_player": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/BuildingSeriesDto"
+          }
+        },
+        "production_monthly_player": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/ProductionSeriesDto"
+          }
+        },
+        "shops_monthly": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/ShopSeriesDto"
+          }
+        },
+        "player_product_stats": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/PlayerProductStatsDto"
+          }
+        },
+        "state_sales": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/$defs/StateSalesDto"
+          }
+        }
+      },
+      "required": [
+        "ledger_player",
+        "buildings_monthly_player",
+        "production_monthly_player",
+        "shops_monthly",
+        "player_product_stats",
+        "state_sales"
+      ]
+    },
+    "LedgerCategoryDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "company.revenue_breakdown",
+      "x-source": "SAVE",
+      "properties": {
+        "category": {
+          "type": "string"
+        },
+        "income": {
+          "type": "number"
+        },
+        "expense": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "category",
+        "income",
+        "expense"
+      ]
+    },
+    "LedgerDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "company.ledger",
+      "x-source": "SAVE",
+      "properties": {
+        "actor_id": {
+          "type": "integer"
+        },
+        "current_month": {
+          "type": "string",
+          "description": "Y<year>-<MM> of the current, in-progress month"
+        },
+        "months": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LedgerMonthDto"
+          }
+        },
+        "first_month_available": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "last_month": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "retention_years": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "window_months": {
+          "type": "integer",
+          "description": "Number of calendar months queried, counting the current month (the game's retention period plus the current year)"
+        },
+        "history_truncated": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "True when the game's retention (retention_years) is longer than the exported window, so older ledger months may exist in the game; false when the window covers the retention period; null when the retention is unknown"
+        },
+        "balance_now": {
+          "type": "number"
+        },
+        "balance_infinite": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "actor_id",
+        "current_month",
+        "months",
+        "first_month_available",
+        "last_month",
+        "retention_years",
+        "window_months",
+        "history_truncated",
+        "balance_now",
+        "balance_infinite"
+      ]
+    },
+    "LedgerMonthDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "company.ledger",
+      "x-source": "SAVE",
+      "properties": {
+        "month": {
+          "type": "string"
+        },
+        "current_month_to_date": {
+          "type": "boolean"
+        },
+        "income_total": {
+          "type": "number"
+        },
+        "expense_total": {
+          "type": "number"
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LedgerCategoryDto"
+          }
+        }
+      },
+      "required": [
+        "month",
+        "current_month_to_date",
+        "income_total",
+        "expense_total",
+        "categories"
+      ]
+    },
+    "MonthValueDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "building.history",
+      "x-source": "SAVE",
+      "properties": {
+        "month": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "month",
+        "value"
+      ]
+    },
+    "PlayerProductStatsDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "production.player_product_stats",
+      "x-source": "SAVE",
+      "properties": {
+        "product": {
+          "type": "string"
+        },
+        "produced": {
+          "type": "number"
+        },
+        "production_cost": {
+          "type": "number"
+        },
+        "distribution_cost": {
+          "type": "number"
+        },
+        "total_cost": {
+          "type": "number"
+        },
+        "sold": {
+          "type": "number"
+        },
+        "price_sold": {
+          "type": "number"
+        },
+        "profit": {
+          "type": "number"
+        },
+        "markup": {
+          "type": "number"
+        },
+        "used": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "product",
+        "produced",
+        "production_cost",
+        "distribution_cost",
+        "total_cost",
+        "sold",
+        "price_sold",
+        "profit",
+        "markup",
+        "used"
+      ]
+    },
+    "ProducedMonthDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "production.history",
+      "x-source": "SAVE",
+      "properties": {
+        "month": {
+          "type": "string"
+        },
+        "produced": {
+          "type": "integer"
+        },
+        "consumed": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "month",
+        "produced",
+        "consumed"
+      ]
+    },
+    "ProductionSeriesDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "production.history",
+      "x-source": "SAVE",
+      "properties": {
+        "building": {
+          "type": "string"
+        },
+        "product": {
+          "type": "string"
+        },
+        "window_months": {
+          "type": "integer",
+          "description": "Size of the exported window in calendar months, counting the current month (V1 exports a bounded recent window, not all history the game retains)"
+        },
+        "window_first_month": {
+          "type": "string",
+          "description": "Oldest calendar month inside the exported window (game month label)"
+        },
+        "window_last_month": {
+          "type": "string",
+          "description": "Newest calendar month inside the exported window: the current, in-progress month"
+        },
+        "history_truncated": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "True when the game still holds data older than window_first_month, so this series is a truncated view of game-retained history; false when the window covers everything the game holds; null when it could not be determined"
+        },
+        "first_month_available": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Oldest month the game still retains for this building and product; always null in V1 (not readable without scanning the game's records); use history_truncated"
+        },
+        "months": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ProducedMonthDto"
+          },
+          "description": "Months of the exported window with production or consumption, oldest first"
+        }
+      },
+      "required": [
+        "building",
+        "product",
+        "window_months",
+        "window_first_month",
+        "window_last_month",
+        "history_truncated",
+        "first_month_available",
+        "months"
+      ]
+    },
+    "SectionStatusDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-envelope": true,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "ok",
+            "disabled",
+            "failed",
+            "skipped",
+            "over_budget"
+          ]
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "game_day": {
+          "type": "integer"
+        },
+        "frame_start": {
+          "type": "integer"
+        },
+        "frame_end": {
+          "type": "integer"
+        },
+        "items": {
+          "type": "integer"
+        },
+        "items_vanished": {
+          "type": "integer"
+        },
+        "main_thread_ms": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "status",
+        "reason",
+        "game_day",
+        "frame_start",
+        "frame_end",
+        "items",
+        "items_vanished",
+        "main_thread_ms"
+      ]
+    },
+    "ShopMonthDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "shop.history",
+      "x-source": "SAVE",
+      "properties": {
+        "month": {
+          "type": "string"
+        },
+        "sold": {
+          "type": "integer"
+        },
+        "demand": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "month",
+        "sold",
+        "demand"
+      ]
+    },
+    "ShopSeriesDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "shop.history",
+      "x-source": "SAVE",
+      "properties": {
+        "shop": {
+          "type": "string"
+        },
+        "product": {
+          "type": "string"
+        },
+        "window_months": {
+          "type": "integer",
+          "description": "Size of the exported window in calendar months, counting the current month (V1 exports a bounded recent window, not all history the game retains)"
+        },
+        "window_first_month": {
+          "type": "string",
+          "description": "Oldest calendar month inside the exported window (game month label)"
+        },
+        "window_last_month": {
+          "type": "string",
+          "description": "Newest calendar month inside the exported window: the current, in-progress month"
+        },
+        "history_truncated": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "True when the game still holds data older than window_first_month, so this series is a truncated view of game-retained history; false when the window covers everything the game holds; null when it could not be determined"
+        },
+        "first_month_available": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Oldest month the game still retains for this shop and product; always null in V1 (not readable without scanning the game's records); use history_truncated"
+        },
+        "months": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ShopMonthDto"
+          },
+          "description": "Months of the exported window, oldest first"
+        }
+      },
+      "required": [
+        "shop",
+        "product",
+        "window_months",
+        "window_first_month",
+        "window_last_month",
+        "history_truncated",
+        "first_month_available",
+        "months"
+      ]
+    },
+    "StateSalesDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-data-map-id": "market.state_history",
+      "x-source": "SAVE",
+      "properties": {
+        "product": {
+          "type": "string"
+        },
+        "sold_last_30d": {
+          "type": "integer"
+        },
+        "sold_last_60d": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "product",
+        "sold_last_30d",
+        "sold_last_60d"
+      ]
+    },
+    "StaticRefDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-envelope": true,
+      "properties": {
+        "seq": {
+          "type": "integer"
+        },
+        "content_hash": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "seq",
+        "content_hash"
+      ]
+    },
+    "WarningDto": {
+      "type": "object",
+      "additionalProperties": false,
+      "x-envelope": true,
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "detail": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "code",
+        "detail"
+      ]
+    }
+  }
+}

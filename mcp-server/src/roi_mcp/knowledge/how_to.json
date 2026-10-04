@@ -1,0 +1,324 @@
+{
+ "applies_to": {
+  "game": "Rise of Industry (Steam App 671440)",
+  "build": "2.3.3 : 0507b (Steam build 9064059)"
+ },
+ "curated_from": "repository evidence only (research/, PRD.md, docs/)",
+ "entries": [
+  {
+   "id": "change-max-send",
+   "title": "Change Max Send on a route",
+   "audience": "player_in_game",
+   "aliases": [
+    "set max send",
+    "change max send",
+    "limit deliveries"
+   ],
+   "steps": [
+    "Open the origin building's destinations panel in the game.",
+    "On the route, use the Max Send arrows (infinity = unlimited).",
+    "Remember the value is shared by every origin shipping this product to that destination."
+   ],
+   "evidence": [
+    {
+     "file": "docs/VALIDATION-REPORT.md",
+     "location": "Session D, gate E2",
+     "note": "user set Max Send in the route UI; arrows wrap to infinity"
+    },
+    {
+     "file": "research/notes/logistics.md",
+     "location": "section 1.1",
+     "note": "AddToMaxAmount wraps"
+    }
+   ],
+   "verification": "CONFIRMED_IN_GAME",
+   "caveats": "This MCP is read-only and cannot change it for you.",
+   "related_tools": [
+    "get_route",
+    "review_routes",
+    "what_if"
+   ],
+   "confidence": "high",
+   "title_fr": "Modifier Max Send sur une route"
+  },
+  {
+   "id": "change-min-keep",
+   "title": "Change Min Keep on a route",
+   "audience": "player_in_game",
+   "aliases": [
+    "set min keep",
+    "keep stock at origin"
+   ],
+   "steps": [
+    "Open the origin building's destinations panel.",
+    "On the route, use the Min Keep arrows (0..99; past the ends: keep all)."
+   ],
+   "evidence": [
+    {
+     "file": "docs/VALIDATION-REPORT.md",
+     "location": "Session D, gate E2",
+     "note": "user changed Min Keep in the route UI"
+    },
+    {
+     "file": "research/notes/logistics.md",
+     "location": "section 1.1",
+     "note": "0..99, keep all at the ends"
+    }
+   ],
+   "verification": "CONFIRMED_IN_GAME",
+   "caveats": "This MCP is read-only and cannot change it for you.",
+   "related_tools": [
+    "get_route",
+    "what_if"
+   ],
+   "confidence": "high",
+   "title_fr": "Modifier Min Keep sur une route"
+  },
+  {
+   "id": "change-efficiency",
+   "title": "Change a building's efficiency",
+   "audience": "player_in_game",
+   "aliases": [
+    "set efficiency",
+    "raise efficiency",
+    "wages"
+   ],
+   "steps": [
+    "Select the building in the game and use its efficiency slider.",
+    "Higher levels may need a technology unlock."
+   ],
+   "evidence": [
+    {
+     "file": "research/notes/buildings-production.md",
+     "location": "section 2.5",
+     "note": "efficiency slider; higher indices gated by unlocks"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "caveats": "The exact UI location is not recorded in the repository. This MCP cannot change it.",
+   "related_tools": [
+    "get_building",
+    "what_if"
+   ],
+   "confidence": "high",
+   "title_fr": "Modifier l'efficacité d'un bâtiment"
+  },
+  {
+   "id": "find-best-shop",
+   "title": "Find the best shop for a product",
+   "audience": "mcp_client",
+   "aliases": [
+    "best shop",
+    "where to sell",
+    "find shops"
+   ],
+   "steps": [
+    "Call find_shops(product, from_building=<your producer>) sorted by unmet_demand or price.",
+    "Existing routes show the game's distance and dispatch cost; others show a non-authoritative straight-line estimate.",
+    "Use find_opportunities(types=['route_surplus']) to see where spare supply could go."
+   ],
+   "evidence": [
+    {
+     "file": "PRD.md",
+     "location": "section 14.7",
+     "note": "find_shops parameters and existing_route_status"
+    },
+    {
+     "file": "docs/v1.1/PRD-ADDENDUM.md",
+     "location": "section 6.4",
+     "note": "find_opportunities"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "caveats": null,
+   "related_tools": [
+    "find_shops",
+    "find_opportunities"
+   ],
+   "confidence": "high",
+   "title_fr": "Trouver le meilleur magasin pour un produit"
+  },
+  {
+   "id": "diagnose-production",
+   "title": "Find out why a product is not produced enough",
+   "audience": "mcp_client",
+   "aliases": [
+    "bottleneck",
+    "why is production low",
+    "diagnose"
+   ],
+   "steps": [
+    "Call diagnose_chain(product) for ranked findings with evidence.",
+    "Inspect a building with get_building(include=['production','inventory','incoming_routes']).",
+    "Check routes with review_routes(product=...)."
+   ],
+   "evidence": [
+    {
+     "file": "docs/v1.1/PRD-ADDENDUM.md",
+     "location": "section 6.2",
+     "note": "diagnose_chain"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "caveats": null,
+   "related_tools": [
+    "diagnose_chain",
+    "get_building",
+    "review_routes",
+    "find_production_issues"
+   ],
+   "confidence": "high",
+   "title_fr": "Comprendre pourquoi un produit est trop peu produit"
+  },
+  {
+   "id": "plan-expansion",
+   "title": "Plan buildings for a production target",
+   "audience": "mcp_client",
+   "aliases": [
+    "plan",
+    "how many buildings",
+    "expand production",
+    "target output"
+   ],
+   "steps": [
+    "Call plan_chain(product, target_per_month).",
+    "Compare variants with what_if(change={type:'add_buildings', ...}).",
+    "Read assumptions and confidence before deciding."
+   ],
+   "evidence": [
+    {
+     "file": "docs/v1.1/PRD-ADDENDUM.md",
+     "location": "section 6.6; section 6.7",
+     "note": "plan_chain and what_if"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "caveats": null,
+   "related_tools": [
+    "plan_chain",
+    "what_if",
+    "get_supply_chain"
+   ],
+   "confidence": "high",
+   "title_fr": "Planifier les bâtiments pour un objectif de production"
+  },
+  {
+   "id": "check-profit",
+   "title": "Check which products make money",
+   "audience": "mcp_client",
+   "aliases": [
+    "profit",
+    "profitability",
+    "margin",
+    "which products make money"
+   ],
+   "steps": [
+    "Call get_profitability() for the game's own product statistics and the advisor's unit-cost estimate.",
+    "Use get_finances(months=6) for the monthly ledger by category."
+   ],
+   "evidence": [
+    {
+     "file": "docs/v1.1/PRD-ADDENDUM.md",
+     "location": "section 6.3",
+     "note": "get_profitability"
+    },
+    {
+     "file": "PRD.md",
+     "location": "section 14.2",
+     "note": "get_finances"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "caveats": null,
+   "related_tools": [
+    "get_profitability",
+    "get_finances"
+   ],
+   "confidence": "high",
+   "title_fr": "Voir quels produits rapportent"
+  },
+  {
+   "id": "track-changes",
+   "title": "See what changed recently",
+   "audience": "mcp_client",
+   "aliases": [
+    "what changed",
+    "changes",
+    "since last time"
+   ],
+   "steps": [
+    "Call what_changed(); pass since_seq=<meta.snapshot.seq from an earlier answer> to compare with that snapshot.",
+    "The monthly part compares the last two complete months from game-retained history."
+   ],
+   "evidence": [
+    {
+     "file": "docs/v1.1/PRD-ADDENDUM.md",
+     "location": "section 6.8",
+     "note": "what_changed"
+    }
+   ],
+   "verification": "CONFIRMED_SOURCE",
+   "caveats": "Only snapshots this server loaded while answering calls (last 20 / 30 minutes, current world session) are compared.",
+   "related_tools": [
+    "what_changed"
+   ],
+   "confidence": "high",
+   "title_fr": "Voir ce qui a changé récemment"
+  },
+  {
+   "id": "get-fresh-data",
+   "title": "Get fresh data",
+   "audience": "mcp_client",
+   "aliases": [
+    "refresh",
+    "fresh",
+    "stale"
+   ],
+   "steps": [
+    "Pass fresh=true to a tool; it waits up to 3 s for a new snapshot.",
+    "Always check meta.stale and meta.warnings."
+   ],
+   "evidence": [
+    {
+     "file": "PRD.md",
+     "location": "section 13.2",
+     "note": "fresh parameter"
+    }
+   ],
+   "verification": "CONFIRMED_IN_GAME",
+   "caveats": null,
+   "related_tools": [
+    "get_game_status"
+   ],
+   "confidence": "high",
+   "title_fr": "Obtenir des données fraîches"
+  },
+  {
+   "id": "check-mcp-status",
+   "title": "Check that the MCP sees the game",
+   "audience": "mcp_client",
+   "aliases": [
+    "status",
+    "is it working",
+    "connected"
+   ],
+   "steps": [
+    "Call get_game_status(): game state, observer captures, compatibility."
+   ],
+   "evidence": [
+    {
+     "file": "PRD.md",
+     "location": "section 14.1",
+     "note": "get_game_status"
+    }
+   ],
+   "verification": "CONFIRMED_IN_GAME",
+   "caveats": null,
+   "related_tools": [
+    "get_game_status"
+   ],
+   "confidence": "high",
+   "title_fr": "Vérifier que le MCP voit le jeu"
+  }
+ ]
+}

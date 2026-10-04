@@ -1,0 +1,30 @@
+[project]
+name = "roi-mcp"
+version = "1.1.0"
+description = "Read-only MCP server for the original Rise of Industry (Steam App 671440). Consumes snapshot files written by the in-game observer."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "mcp>=2.3,<3",
+    "jsonschema>=4.18",
+    "psutil>=5.9",
+]
+
+[project.scripts]
+roi-mcp = "roi_mcp.server:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/roi_mcp"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

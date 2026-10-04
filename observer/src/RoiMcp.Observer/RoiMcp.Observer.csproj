@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+    <AssemblyName>RoiMcpObserver</AssemblyName>
+    <RootNamespace>RoiMcp.Observer</RootNamespace>
+    <LangVersion>7.3</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <Deterministic>true</Deterministic>
+    <DebugType>portable</DebugType>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
+    <Version>1.0.0</Version>
+    <Product>Rise of Industry MCP observer</Product>
+    <!-- Location of the Rise of Industry install (read-only compile references). -->
+    <RoiGameDir Condition="'$(RoiGameDir)' == '' and '$(ROI_GAME_DIR)' != ''">$(ROI_GAME_DIR)</RoiGameDir>
+    <RoiGameDir Condition="'$(RoiGameDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\RiseOfIndustry</RoiGameDir>
+    <RoiManagedDir>$(RoiGameDir)\Rise of Industry_Data\Managed</RoiManagedDir>
+  </PropertyGroup>
+
+  <!-- DEBUG_FAULTS builds contain fault injection for validation gate E5 only. Never install them for normal use. -->
+  <PropertyGroup Condition="'$(RoiDebugFaults)' == 'true'">
+    <DefineConstants>$(DefineConstants);DEBUG_FAULTS</DefineConstants>
+    <RoiGateAllowDebugFaults>true</RoiGateAllowDebugFaults>
+    <!-- Separate output so a fault-injection build can never be picked up by install-observer.ps1 by accident. -->
+    <OutputPath>bin\DebugFaults\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\DebugFaults\$(Configuration)\</IntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net461" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp"><HintPath>$(RoiManagedDir)\Assembly-CSharp.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Assembly-CSharp-firstpass"><HintPath>$(RoiManagedDir)\Assembly-CSharp-firstpass.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine"><HintPath>$(RoiManagedDir)\UnityEngine.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.CoreModule"><HintPath>$(RoiManagedDir)\UnityEngine.CoreModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Newtonsoft.Json"><HintPath>$(RoiManagedDir)\Newtonsoft.Json.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+
+  <!-- Read-only IL gate (PRD 10): runs after every build and fails it on any violation. There is no switch to skip it. -->
+  <Import Project="$(MSBuildThisFileDirectory)../../readonly-gate/RoiMcp.ReadOnlyGate.targets" />
+
+</Project>

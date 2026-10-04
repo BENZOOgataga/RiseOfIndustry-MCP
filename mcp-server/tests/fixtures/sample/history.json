@@ -1,0 +1,628 @@
+{
+ "schema": "roi-mcp/history",
+ "schema_version": "1.0.0",
+ "observer_version": "1.0.0",
+ "compatibility": "verified",
+ "game": {
+  "version": "2.3.3",
+  "build": "0507b",
+  "commit": "76359e59644ebf55cafacf9a50b3d19800df22d7",
+  "savegame_version": 2304,
+  "assembly_sha256": "D62599EFD0CFCB9F343E7FF74AAC19533F572062B9CECA82E1D3911507D04803",
+  "release": "Steam - Public"
+ },
+ "pid": 4242,
+ "world_session": "5e5510a0-0000-4000-8000-000000000001",
+ "seq": 3,
+ "content_hash": "2df0be05e3d845452989a70e654acb8e6cf91b08e62aad959f98fb7294f8d4a9",
+ "written_utc": "2026-01-01T11:59:55.050Z",
+ "captured": {
+  "utc_start": "2026-01-01T11:59:54.700Z",
+  "utc_end": "2026-01-01T11:59:55.000Z",
+  "game_day_start": 1512,
+  "game_day_end": 1512,
+  "game_date": "Y5-03-12",
+  "frames": [
+   1000,
+   1010
+  ],
+  "main_thread_ms": 12.5,
+  "slices": 8,
+  "max_slice_ms": 1.9,
+  "consistent": true
+ },
+ "static_ref": {
+  "seq": 1,
+  "content_hash": "e48430ed609dfe363ab3f25ba8fc4d409a858512ac12ab1376eaa7bf57b4fe9e"
+ },
+ "sections": {
+  "ledger_player": {
+   "status": "ok",
+   "reason": null,
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 1,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  },
+  "buildings_monthly_player": {
+   "status": "ok",
+   "reason": null,
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 1,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  },
+  "production_monthly_player": {
+   "status": "ok",
+   "reason": null,
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 1,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  },
+  "shops_monthly": {
+   "status": "ok",
+   "reason": null,
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 1,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  },
+  "player_product_stats": {
+   "status": "ok",
+   "reason": null,
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 1,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  },
+  "state_sales": {
+   "status": "ok",
+   "reason": null,
+   "game_day": 1512,
+   "frame_start": 1000,
+   "frame_end": 1010,
+   "items": 1,
+   "items_vanished": 0,
+   "main_thread_ms": 1.5
+  }
+ },
+ "warnings": [],
+ "data": {
+  "ledger_player": {
+   "actor_id": 1,
+   "current_month": "Y5-03",
+   "months": [
+    {
+     "month": "Y4-10",
+     "current_month_to_date": false,
+     "income_total": 400000.0,
+     "expense_total": 320000.0,
+     "categories": [
+      {
+       "category": "ProductTrade",
+       "income": 400000.0,
+       "expense": 20000.0
+      },
+      {
+       "category": "Upkeep",
+       "income": 0.0,
+       "expense": 90000.0
+      },
+      {
+       "category": "RouteVehicleUpkeep",
+       "income": 0.0,
+       "expense": 30000.0
+      },
+      {
+       "category": "ResearchCosts",
+       "income": 0.0,
+       "expense": 100000.0
+      },
+      {
+       "category": "Loan Payments",
+       "income": 0.0,
+       "expense": 80000.0
+      }
+     ]
+    },
+    {
+     "month": "Y4-11",
+     "current_month_to_date": false,
+     "income_total": 425000.0,
+     "expense_total": 326000.0,
+     "categories": [
+      {
+       "category": "ProductTrade",
+       "income": 425000.0,
+       "expense": 20000.0
+      },
+      {
+       "category": "Upkeep",
+       "income": 0.0,
+       "expense": 95000.0
+      },
+      {
+       "category": "RouteVehicleUpkeep",
+       "income": 0.0,
+       "expense": 31000.0
+      },
+      {
+       "category": "ResearchCosts",
+       "income": 0.0,
+       "expense": 100000.0
+      },
+      {
+       "category": "Loan Payments",
+       "income": 0.0,
+       "expense": 80000.0
+      }
+     ]
+    },
+    {
+     "month": "Y4-12",
+     "current_month_to_date": false,
+     "income_total": 450000.0,
+     "expense_total": 332000.0,
+     "categories": [
+      {
+       "category": "ProductTrade",
+       "income": 450000.0,
+       "expense": 20000.0
+      },
+      {
+       "category": "Upkeep",
+       "income": 0.0,
+       "expense": 100000.0
+      },
+      {
+       "category": "RouteVehicleUpkeep",
+       "income": 0.0,
+       "expense": 32000.0
+      },
+      {
+       "category": "ResearchCosts",
+       "income": 0.0,
+       "expense": 100000.0
+      },
+      {
+       "category": "Loan Payments",
+       "income": 0.0,
+       "expense": 80000.0
+      }
+     ]
+    },
+    {
+     "month": "Y5-01",
+     "current_month_to_date": false,
+     "income_total": 475000.0,
+     "expense_total": 838000.0,
+     "categories": [
+      {
+       "category": "ProductTrade",
+       "income": 475000.0,
+       "expense": 20000.0
+      },
+      {
+       "category": "Upkeep",
+       "income": 0.0,
+       "expense": 105000.0
+      },
+      {
+       "category": "RouteVehicleUpkeep",
+       "income": 0.0,
+       "expense": 33000.0
+      },
+      {
+       "category": "ResearchCosts",
+       "income": 0.0,
+       "expense": 100000.0
+      },
+      {
+       "category": "Loan Payments",
+       "income": 0.0,
+       "expense": 80000.0
+      },
+      {
+       "category": "BuildingConstruction",
+       "income": 0.0,
+       "expense": 500000.0
+      }
+     ]
+    },
+    {
+     "month": "Y5-02",
+     "current_month_to_date": false,
+     "income_total": 500000.0,
+     "expense_total": 344000.0,
+     "categories": [
+      {
+       "category": "ProductTrade",
+       "income": 500000.0,
+       "expense": 20000.0
+      },
+      {
+       "category": "Upkeep",
+       "income": 0.0,
+       "expense": 110000.0
+      },
+      {
+       "category": "RouteVehicleUpkeep",
+       "income": 0.0,
+       "expense": 34000.0
+      },
+      {
+       "category": "ResearchCosts",
+       "income": 0.0,
+       "expense": 100000.0
+      },
+      {
+       "category": "Loan Payments",
+       "income": 0.0,
+       "expense": 80000.0
+      }
+     ]
+    },
+    {
+     "month": "Y5-03",
+     "current_month_to_date": true,
+     "income_total": 210000.0,
+     "expense_total": 140000.0,
+     "categories": [
+      {
+       "category": "ProductTrade",
+       "income": 210000.0,
+       "expense": 8000.0
+      },
+      {
+       "category": "Upkeep",
+       "income": 0.0,
+       "expense": 46000.0
+      },
+      {
+       "category": "RouteVehicleUpkeep",
+       "income": 0.0,
+       "expense": 14000.0
+      },
+      {
+       "category": "ResearchCosts",
+       "income": 0.0,
+       "expense": 40000.0
+      },
+      {
+       "category": "Loan Payments",
+       "income": 0.0,
+       "expense": 32000.0
+      }
+     ]
+    }
+   ],
+   "first_month_available": "Y4-10",
+   "last_month": "Y5-03",
+   "retention_years": 3,
+   "window_months": 6,
+   "history_truncated": false,
+   "balance_now": 2500000.0,
+   "balance_infinite": false
+  },
+  "buildings_monthly_player": [
+   {
+    "building": "PaintFactory@55,40",
+    "series": [
+     {
+      "item": "production",
+      "aggregation": "sum",
+      "window_months": 6,
+      "window_first_month": "Y4-10",
+      "window_last_month": "Y5-03",
+      "history_truncated": false,
+      "first_month_available": "Y4-10",
+      "values_retained": 6,
+      "months": [
+       {
+        "month": "Y4-10",
+        "value": 2.0
+       },
+       {
+        "month": "Y4-11",
+        "value": 3.0
+       },
+       {
+        "month": "Y4-12",
+        "value": 2.0
+       },
+       {
+        "month": "Y5-01",
+        "value": 3.0
+       },
+       {
+        "month": "Y5-02",
+        "value": 2.0
+       },
+       {
+        "month": "Y5-03",
+        "value": 3.0
+       }
+      ]
+     },
+     {
+      "item": "efficiency_pct",
+      "aggregation": "average",
+      "window_months": 6,
+      "window_first_month": "Y4-10",
+      "window_last_month": "Y5-03",
+      "history_truncated": true,
+      "first_month_available": "Y1-04",
+      "values_retained": 34110,
+      "months": [
+       {
+        "month": "Y4-10",
+        "value": 100.0
+       },
+       {
+        "month": "Y4-11",
+        "value": 100.0
+       },
+       {
+        "month": "Y4-12",
+        "value": 100.0
+       },
+       {
+        "month": "Y5-01",
+        "value": 100.0
+       },
+       {
+        "month": "Y5-02",
+        "value": 100.0
+       },
+       {
+        "month": "Y5-03",
+        "value": 100.0
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "building": "PetrochemicalFactory@40,32",
+    "series": [
+     {
+      "item": "production",
+      "aggregation": "sum",
+      "window_months": 6,
+      "window_first_month": "Y4-10",
+      "window_last_month": "Y5-03",
+      "history_truncated": false,
+      "first_month_available": "Y4-10",
+      "values_retained": 6,
+      "months": [
+       {
+        "month": "Y4-10",
+        "value": 3.0
+       },
+       {
+        "month": "Y4-11",
+        "value": 3.0
+       },
+       {
+        "month": "Y4-12",
+        "value": 3.0
+       },
+       {
+        "month": "Y5-01",
+        "value": 3.0
+       },
+       {
+        "month": "Y5-02",
+        "value": 3.0
+       },
+       {
+        "month": "Y5-03",
+        "value": 3.0
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "production_monthly_player": [
+   {
+    "building": "PaintFactory@55,40",
+    "product": "Paint",
+    "window_months": 6,
+    "window_first_month": "Y4-10",
+    "window_last_month": "Y5-03",
+    "history_truncated": true,
+    "first_month_available": null,
+    "months": [
+     {
+      "month": "Y4-10",
+      "produced": 2,
+      "consumed": 0
+     },
+     {
+      "month": "Y4-11",
+      "produced": 2,
+      "consumed": 0
+     },
+     {
+      "month": "Y4-12",
+      "produced": 2,
+      "consumed": 0
+     },
+     {
+      "month": "Y5-01",
+      "produced": 2,
+      "consumed": 0
+     },
+     {
+      "month": "Y5-02",
+      "produced": 2,
+      "consumed": 0
+     },
+     {
+      "month": "Y5-03",
+      "produced": 2,
+      "consumed": 0
+     }
+    ]
+   },
+   {
+    "building": "PetrochemicalFactory@40,32",
+    "product": "Chemicals",
+    "window_months": 6,
+    "window_first_month": "Y4-10",
+    "window_last_month": "Y5-03",
+    "history_truncated": false,
+    "first_month_available": null,
+    "months": [
+     {
+      "month": "Y4-10",
+      "produced": 3,
+      "consumed": 0
+     },
+     {
+      "month": "Y4-11",
+      "produced": 3,
+      "consumed": 0
+     },
+     {
+      "month": "Y4-12",
+      "produced": 3,
+      "consumed": 0
+     },
+     {
+      "month": "Y5-01",
+      "produced": 3,
+      "consumed": 0
+     },
+     {
+      "month": "Y5-02",
+      "produced": 3,
+      "consumed": 0
+     },
+     {
+      "month": "Y5-03",
+      "produced": 3,
+      "consumed": 0
+     }
+    ]
+   },
+   {
+    "building": "PetrochemicalFactory@40,32",
+    "product": "Gas",
+    "window_months": 6,
+    "window_first_month": "Y4-10",
+    "window_last_month": "Y5-03",
+    "history_truncated": false,
+    "first_month_available": null,
+    "months": [
+     {
+      "month": "Y4-10",
+      "produced": 0,
+      "consumed": 4
+     },
+     {
+      "month": "Y4-11",
+      "produced": 0,
+      "consumed": 4
+     },
+     {
+      "month": "Y4-12",
+      "produced": 0,
+      "consumed": 4
+     },
+     {
+      "month": "Y5-01",
+      "produced": 0,
+      "consumed": 4
+     },
+     {
+      "month": "Y5-02",
+      "produced": 0,
+      "consumed": 4
+     },
+     {
+      "month": "Y5-03",
+      "produced": 0,
+      "consumed": 4
+     }
+    ]
+   }
+  ],
+  "shops_monthly": [
+   {
+    "shop": "HardwareStore@100,100",
+    "product": "Paint",
+    "window_months": 6,
+    "window_first_month": "Y4-10",
+    "window_last_month": "Y5-03",
+    "history_truncated": true,
+    "first_month_available": null,
+    "months": [
+     {
+      "month": "Y4-10",
+      "sold": 20,
+      "demand": 12
+     },
+     {
+      "month": "Y4-11",
+      "sold": 21,
+      "demand": 12
+     },
+     {
+      "month": "Y4-12",
+      "sold": 22,
+      "demand": 12
+     },
+     {
+      "month": "Y5-01",
+      "sold": 23,
+      "demand": 12
+     },
+     {
+      "month": "Y5-02",
+      "sold": 24,
+      "demand": 12
+     },
+     {
+      "month": "Y5-03",
+      "sold": 25,
+      "demand": 12
+     }
+    ]
+   }
+  ],
+  "player_product_stats": [
+   {
+    "product": "Paint",
+    "produced": 12.0,
+    "production_cost": 9000.0,
+    "distribution_cost": 1200.0,
+    "total_cost": 10200.0,
+    "sold": 10.0,
+    "price_sold": 1450.0,
+    "profit": 4300.0,
+    "markup": 0.42,
+    "used": 0.0
+   }
+  ],
+  "state_sales": [
+   {
+    "product": "Water",
+    "sold_last_30d": 40,
+    "sold_last_60d": 75
+   }
+  ]
+ }
+}
